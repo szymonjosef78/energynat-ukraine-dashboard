@@ -334,8 +334,9 @@ td.na { color: var(--muted); }
 
 /* Phone layout: single narrow column, smaller type, and wide data tables
    scroll horizontally within their own card instead of squeezing every
-   column unreadably thin. */
-@media (max-width: 640px) {
+   column unreadably thin. Scoped to portrait only - landscape phones get
+   the rotate-prompt treatment below instead, so this never fights with it. */
+@media (max-width: 640px) and (orientation: portrait) {
   .topbar {
     flex-direction: column;
     align-items: flex-start;
@@ -365,4 +366,39 @@ td.na { color: var(--muted); }
 
   .hero-title { font-size: 1rem; }
   .list-source { max-width: 90px; }
+}
+
+/* Phones held upright get a "please rotate" prompt instead of the
+   dashboard itself - there's no reliable, cross-browser way to force
+   landscape programmatically (the Screen Orientation Lock API needs
+   fullscreen and isn't supported in Safari on iOS at all), so asking the
+   user to physically rotate is the standard, robust pattern. Scoped to
+   phone-sized widths only, so a desktop/tablet window that happens to be
+   tall and narrow is never affected. */
+.rotate-prompt { display: none; }
+
+@media (max-width: 640px) and (orientation: portrait) {
+  main#app { display: none; }
+  .rotate-prompt {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    min-height: 70vh;
+    padding: 40px 28px;
+    text-align: center;
+  }
+  .rotate-prompt .rotate-icon { font-size: 44px; line-height: 1; }
+  .rotate-prompt h2 { margin: 0; font-size: 1.1rem; color: var(--text); }
+  .rotate-prompt p { margin: 0; max-width: 280px; color: var(--muted); font-size: 0.9rem; }
+}
+
+/* Once rotated, phones in landscape are still short - trim the sticky
+   topbar so it doesn't eat too much of the limited vertical space. */
+@media (max-height: 500px) and (orientation: landscape) {
+  .topbar { padding: 10px 18px; }
+  .topbar-title .logo { height: 24px; }
+  .topbar-title h1 { font-size: 1rem; }
+  main#app { padding: 14px 18px 40px; }
 }
