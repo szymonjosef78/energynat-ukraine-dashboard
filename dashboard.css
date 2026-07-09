@@ -228,6 +228,14 @@ main#app { padding: 24px 28px 60px; max-width: 1440px; margin: 0 auto; }
 .top-seller-card h3 { margin: 0 0 10px; font-size: 0.9rem; color: var(--muted); font-weight: 600; }
 .top-seller-table td:nth-child(2) { text-align: left; color: var(--text); }
 .top-seller-table td:first-child { padding-right: 0; }
+
+.margin-table { font-size: 0.82rem; }
+.margin-table td:nth-child(2), .margin-table th:nth-child(2) { text-align: left; }
+.margin-table td:nth-child(2) { color: var(--text); }
+.margin-table td:first-child { padding-right: 0; }
+.margin-subtotal { font-size: 0.78rem; color: var(--muted); margin: -2px 0 10px; }
+.margin-negative { color: var(--bad); }
+
 .tag-panel { background: rgba(241, 134, 45, 0.18); color: var(--brand-orange); }
 .tag-deye { background: rgba(15, 172, 223, 0.18); color: var(--brand-blue); }
 

@@ -33,6 +33,7 @@ function render(data) {
   renderTypeSales("panel-sales", data.panel_sales);
   renderTypeSales("deye-sales", data.deye_sales);
   renderSalesTopSellers(data.sales_top_sellers);
+  renderSalesMargin(data.sales_margin);
   renderNews(data.news);
   renderCompetitorActivity(data.competitor_activity);
 
@@ -41,6 +42,7 @@ function render(data) {
   document.getElementById("panel-sales-section").classList.remove("hidden");
   document.getElementById("deye-sales-section").classList.remove("hidden");
   document.getElementById("sales-top-sellers-section").classList.remove("hidden");
+  document.getElementById("sales-margin-section").classList.remove("hidden");
   document.getElementById("news-section").classList.remove("hidden");
   document.getElementById("competitor-section").classList.remove("hidden");
 }
@@ -128,6 +130,50 @@ function renderSalesTopSellers(periods) {
         <tbody>
           ${topSellerRows(p.panels, "tag-panel", "PANEL")}
           ${topSellerRows(p.deye, "tag-deye", "DEYE")}
+        </tbody>
+      </table>
+    </div>
+  `).join("");
+}
+
+function unitMarginText(item) {
+  if (item.unit_margin_usd === null || item.unit_margin_usd === undefined) return "—";
+  const digits = item.unit_margin_label === "Wp" ? 3 : 2;
+  return `$${item.unit_margin_usd.toFixed(digits)}/${item.unit_margin_label}`;
+}
+
+function marginRows(items, tagClass, tagLabel) {
+  return items.map(item => {
+    const negative = (item.unit_margin_usd !== null && item.unit_margin_usd < 0) ? "margin-negative" : "";
+    const flag = item.fully_matched ? "" : "*";
+    return `
+    <tr>
+      <td><span class="badge tag ${tagClass}">${tagLabel}</span></td>
+      <td>${item.name}${flag}</td>
+      <td>${fmtNum(item.qty)}</td>
+      <td class="${negative}">$${fmtNum(item.margin_usd)}</td>
+      <td class="${negative}">${unitMarginText(item)}</td>
+    </tr>`;
+  }).join("");
+}
+
+function marginSubtotalText(label, totals) {
+  const pct = totals.margin_pct === null ? "—" : `${totals.margin_pct}%`;
+  return `${label}: revenue $${fmtNum(totals.revenue_usd)} &middot; cost $${fmtNum(totals.cost_usd)} &middot; margin $${fmtNum(totals.margin_usd)} (${pct})`;
+}
+
+function renderSalesMargin(periods) {
+  const grid = document.getElementById("sales-margin-grid");
+  grid.innerHTML = periods.map(p => `
+    <div class="top-seller-card">
+      <h3>${p.label}<div class="muted period-range">${p.start} to ${p.end}</div></h3>
+      <div class="margin-subtotal">${marginSubtotalText("Panels", p.panels_total)}</div>
+      <div class="margin-subtotal">${marginSubtotalText("DEYE", p.deye_total)}</div>
+      <table class="margin-table">
+        <thead><tr><th></th><th>Product</th><th>Qty</th><th>Margin</th><th>Unit margin</th></tr></thead>
+        <tbody>
+          ${marginRows(p.panels, "tag-panel", "PANEL")}
+          ${marginRows(p.deye, "tag-deye", "DEYE")}
         </tbody>
       </table>
     </div>
