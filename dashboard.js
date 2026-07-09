@@ -32,6 +32,7 @@ function render(data) {
   renderTypeStock("deye-stock", data.deye_stock);
   renderTypeSales("panel-sales", data.panel_sales);
   renderTypeSales("deye-sales", data.deye_sales);
+  renderSalesTopSellers(data.sales_top_sellers);
   renderNews(data.news);
   renderCompetitorActivity(data.competitor_activity);
 
@@ -39,6 +40,7 @@ function render(data) {
   document.getElementById("deye-stock-section").classList.remove("hidden");
   document.getElementById("panel-sales-section").classList.remove("hidden");
   document.getElementById("deye-sales-section").classList.remove("hidden");
+  document.getElementById("sales-top-sellers-section").classList.remove("hidden");
   document.getElementById("news-section").classList.remove("hidden");
   document.getElementById("competitor-section").classList.remove("hidden");
 }
@@ -109,6 +111,27 @@ function renderTypeSales(idPrefix, sales) {
       ).join("")}</tr>
     </tbody>
   `;
+}
+
+function topSellerRows(items, tagClass, tagLabel) {
+  return items.map(s => `
+    <tr><td><span class="badge tag ${tagClass}">${tagLabel}</span></td><td>${s.name}</td><td>${fmtNum(s.qty)}</td></tr>
+  `).join("");
+}
+
+function renderSalesTopSellers(periods) {
+  const grid = document.getElementById("sales-top-sellers-grid");
+  grid.innerHTML = periods.map(p => `
+    <div class="top-seller-card">
+      <h3>${p.label}<div class="muted period-range">${p.start} to ${p.end}</div></h3>
+      <table class="top-seller-table">
+        <tbody>
+          ${topSellerRows(p.panels, "tag-panel", "PANEL")}
+          ${topSellerRows(p.deye, "tag-deye", "DEYE")}
+        </tbody>
+      </table>
+    </div>
+  `).join("");
 }
 
 function newsScoreBadge(article) {
