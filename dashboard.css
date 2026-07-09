@@ -224,6 +224,12 @@ main#app { padding: 24px 28px 60px; max-width: 1440px; margin: 0 auto; }
   border: 1px solid var(--panel-border);
   border-radius: 10px;
   padding: 14px 16px;
+  /* A grid item's default min-width is "auto", which lets an intrinsically
+     wide child (a table forced to width: max-content on phones) grow the
+     grid *track* itself instead of just scrolling inside the card -
+     min-width: 0 lets the card stay within its track and scroll its own
+     overflow instead. */
+  min-width: 0;
 }
 .top-seller-card h3 { margin: 0 0 10px; font-size: 0.9rem; color: var(--muted); font-weight: 600; }
 .top-seller-table td:nth-child(2) { text-align: left; color: var(--text); }
@@ -325,3 +331,38 @@ td.na { color: var(--muted); }
 .list-title:hover { color: var(--accent); }
 
 .list-source { flex-shrink: 0; font-size: 0.76rem; color: var(--muted); max-width: 140px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+/* Phone layout: single narrow column, smaller type, and wide data tables
+   scroll horizontally within their own card instead of squeezing every
+   column unreadably thin. */
+@media (max-width: 640px) {
+  .topbar {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 14px 16px;
+  }
+  .topbar-title h1 { font-size: 1.05rem; }
+  .topbar-actions { width: 100%; flex-wrap: wrap; gap: 8px; }
+
+  main#app { padding: 16px 14px 48px; }
+
+  .dashboard-group { padding: 16px 14px 2px; border-radius: 10px; margin-bottom: 24px; }
+  .group-title { font-size: 0.72rem; }
+  .group-subtitle { font-size: 0.76rem; }
+
+  .cards { grid-template-columns: 1fr; }
+  .card .value { font-size: 1.35rem; }
+
+  .top-sellers-grid { grid-template-columns: 1fr; }
+
+  .panel, .top-seller-card, .hero-card { padding: 12px 14px; }
+  .panel, .top-seller-card { overflow-x: auto; }
+  .panel table, .top-seller-card table { width: max-content; min-width: 100%; }
+
+  table { font-size: 0.8rem; }
+  table th, table td { padding: 5px 6px; }
+
+  .hero-title { font-size: 1rem; }
+  .list-source { max-width: 90px; }
+}
