@@ -141,6 +141,20 @@ button#refresh-btn {
 button#refresh-btn:hover { opacity: 0.9; }
 button#refresh-btn:disabled { opacity: 0.5; cursor: wait; }
 
+button#publish-btn {
+  background: transparent;
+  color: var(--brand-blue);
+  border: 1px solid var(--brand-blue);
+  padding: 7px 16px;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+}
+button#publish-btn:hover { background: rgba(15, 172, 223, 0.12); }
+button#publish-btn:disabled { opacity: 0.5; cursor: wait; }
+
+#publish-status { font-size: 0.8rem; }
+
 main#app { padding: 24px 28px 60px; max-width: 1440px; margin: 0 auto; }
 
 .monitor-grid {
