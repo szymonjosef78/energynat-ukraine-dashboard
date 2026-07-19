@@ -55,6 +55,8 @@ body {
 .topbar-title { display: flex; align-items: center; gap: 14px; }
 .topbar-title .logo { height: 32px; width: auto; display: block; }
 .topbar-title h1 { font-size: 1.25rem; margin: 0; font-weight: 600; }
+.report-scope { width: 100%; margin-top: 5px; font-size: 1rem; font-weight: 700;
+  color: #F1862D; letter-spacing: .01em; }
 
 .badge {
   padding: 3px 10px;

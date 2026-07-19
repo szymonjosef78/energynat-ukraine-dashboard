@@ -69,6 +69,13 @@ function render(data) {
   variantBadge.textContent = data.variant === "daily" ? "Daily view" : "Weekly view";
   variantBadge.className = "badge " + (data.variant === "daily" ? "variant-daily" : "variant-weekly");
 
+  const scope = data.report_scope || {};
+  const scopeEl = document.getElementById("report-scope");
+  if (scopeEl && scope.text) {
+    const prefix = scope.kind === "weekly" ? "Reporting period" : "Report date";
+    scopeEl.textContent = `${prefix}: ${scope.text}`;
+  }
+
   const cov = data.coverage || {};
   renderTypeStock("panel-stock", data.panel_stock, cov.panels);
   renderTypeStock("deye-stock", data.deye_stock, cov.deye);
