@@ -33,6 +33,8 @@ function renderManagerSales(ms) {
   const benchCell = (m) => weeklyBench
     ? `(last week ${fmtUsd(m.last_week_usd)})`
     : `(avg ${fmtUsd(m.avg_daily_30d)}/day)`;
+  const totalSales = managers.reduce((s, m) => s + (m.sales_usd || 0), 0);
+  const avgPerManager = managers.length ? totalSales / managers.length : 0;
   table.innerHTML = `
     <thead><tr><th>#</th><th>Sales manager</th><th class="col-total">Sales USD</th><th>${benchHeader}</th></tr></thead>
     <tbody>
@@ -41,6 +43,11 @@ function renderManagerSales(ms) {
           <td class="col-total">${fmtUsd(m.sales_usd)}</td>
           <td class="muted">${benchCell(m)}</td></tr>
       `).join("")}
+      <tr class="total-row">
+        <td></td><td>TOTAL — all managers</td>
+        <td class="col-total">${fmtUsd(totalSales)}</td>
+        <td>avg per manager ${fmtUsd(avgPerManager)}</td>
+      </tr>
     </tbody>`;
 }
 
