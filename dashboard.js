@@ -27,13 +27,19 @@ function renderManagerSales(ms) {
     table.innerHTML = `<tbody><tr><td class="muted">No manager sales for this period.</td></tr></tbody>`;
     return;
   }
+  // Weekly view benchmarks against last week's total; daily against 30-day avg daily.
+  const weeklyBench = ms && ms.benchmark && ms.benchmark.field === "last_week_usd";
+  const benchHeader = weeklyBench ? "Last week (Mon–Fri)" : "Avg daily (30d)";
+  const benchCell = (m) => weeklyBench
+    ? `(last week ${fmtUsd(m.last_week_usd)})`
+    : `(avg ${fmtUsd(m.avg_daily_30d)}/day)`;
   table.innerHTML = `
-    <thead><tr><th>#</th><th>Sales manager</th><th class="col-total">Sales USD</th><th>Avg daily (30d)</th></tr></thead>
+    <thead><tr><th>#</th><th>Sales manager</th><th class="col-total">Sales USD</th><th>${benchHeader}</th></tr></thead>
     <tbody>
       ${managers.map((m, i) => `
         <tr><td>${i + 1}</td><td>${m.manager}</td>
           <td class="col-total">${fmtUsd(m.sales_usd)}</td>
-          <td class="muted">(avg ${fmtUsd(m.avg_daily_30d)}/day)</td></tr>
+          <td class="muted">${benchCell(m)}</td></tr>
       `).join("")}
     </tbody>`;
 }
