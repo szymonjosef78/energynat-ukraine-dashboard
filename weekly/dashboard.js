@@ -27,14 +27,18 @@ function renderManagerSales(ms) {
     table.innerHTML = `<tbody><tr><td class="muted">No manager sales for this period.</td></tr></tbody>`;
     return;
   }
-  // Weekly view benchmarks against last week's total; daily against 30-day avg daily.
-  const weeklyBench = ms && ms.benchmark && ms.benchmark.field === "last_week_usd";
-  const benchHeader = weeklyBench ? "Last week (Mon–Fri)" : "Avg daily (30d)";
+  // Weekly view benchmarks against last week's total (header carries its dates);
+  // daily against 30-day avg daily.
+  const bm = (ms && ms.benchmark) || { field: "avg_daily_30d", label: "Avg daily (30d)" };
+  const weeklyBench = bm.field === "last_week_usd";
+  const benchHeader = bm.label || (weeklyBench ? "Last week" : "Avg daily (30d)");
+  const suffix = weeklyBench ? "" : "/day";
   const benchCell = (m) => weeklyBench
-    ? `(last week ${fmtUsd(m.last_week_usd)})`
+    ? `(${fmtUsd(m.last_week_usd)})`
     : `(avg ${fmtUsd(m.avg_daily_30d)}/day)`;
+  const n = managers.length;
   const totalSales = managers.reduce((s, m) => s + (m.sales_usd || 0), 0);
-  const avgPerManager = managers.length ? totalSales / managers.length : 0;
+  const totalBench = managers.reduce((s, m) => s + (m[bm.field] || 0), 0);
   table.innerHTML = `
     <thead><tr><th>#</th><th>Sales manager</th><th class="col-total">Sales USD</th><th>${benchHeader}</th></tr></thead>
     <tbody>
@@ -46,8 +50,11 @@ function renderManagerSales(ms) {
       <tr class="total-row">
         <td></td><td>TOTAL — all managers</td>
         <td class="col-total">${fmtUsd(totalSales)}</td>
-        <td>avg per manager ${fmtUsd(avgPerManager)}</td>
-      </tr>
+        <td>${fmtUsd(totalBench)}${suffix}</td></tr>
+      <tr class="avg-row">
+        <td></td><td>Average per manager</td>
+        <td class="col-total">${fmtUsd(n ? totalSales / n : 0)}</td>
+        <td>${fmtUsd(n ? totalBench / n : 0)}${suffix}</td></tr>
     </tbody>`;
 }
 
