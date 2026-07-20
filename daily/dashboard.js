@@ -27,15 +27,16 @@ function renderManagerSales(ms) {
     table.innerHTML = `<tbody><tr><td class="muted">No manager sales for this period.</td></tr></tbody>`;
     return;
   }
-  // Weekly view benchmarks against last week's total (header carries its dates);
-  // daily against 30-day avg daily.
+  // Benchmark column is generic on bm.field: weekly view -> last week's total,
+  // daily view -> the same weekday last week, both shown as a plain USD figure.
+  // The 30-day average daily is the only one rendered as a per-day rate.
   const bm = (ms && ms.benchmark) || { field: "avg_daily_30d", label: "Avg daily (30d)" };
-  const weeklyBench = bm.field === "last_week_usd";
-  const benchHeader = bm.label || (weeklyBench ? "Last week" : "Avg daily (30d)");
-  const suffix = weeklyBench ? "" : "/day";
-  const benchCell = (m) => weeklyBench
-    ? `(${fmtUsd(m.last_week_usd)})`
-    : `(avg ${fmtUsd(m.avg_daily_30d)}/day)`;
+  const isAvgDaily = bm.field === "avg_daily_30d";
+  const benchHeader = bm.label || "Benchmark";
+  const suffix = isAvgDaily ? "/day" : "";
+  const benchCell = (m) => isAvgDaily
+    ? `(avg ${fmtUsd(m[bm.field] || 0)}/day)`
+    : `(${fmtUsd(m[bm.field] || 0)})`;
   const n = managers.length;
   const totalSales = managers.reduce((s, m) => s + (m.sales_usd || 0), 0);
   const totalBench = managers.reduce((s, m) => s + (m[bm.field] || 0), 0);
