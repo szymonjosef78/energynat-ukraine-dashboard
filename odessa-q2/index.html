@@ -1,0 +1,83 @@
+<title>Energynat Odessa — Monthly Results</title>
+<style>
+  :root {
+    --navy:#162E37; --orange:#F1862D; --ink:#1d2b31; --muted:#68787f;
+    --line:#e2e8ea; --bg:#f5f7f8; --card:#ffffff; --good:#0a7a2f; --bad:#c1121f;
+    --sales:#0FACDF;
+  }
+  * { box-sizing:border-box; }
+  body { margin:0; }
+  .odx { font-family:-apple-system,Segoe UI,Roboto,Arial,sans-serif; color:var(--ink);
+         background:var(--bg); padding:22px; max-width:1100px; margin:0 auto; }
+  .head { display:flex; align-items:baseline; gap:14px; flex-wrap:wrap; margin-bottom:4px; }
+  .head h1 { font-size:24px; margin:0; color:var(--navy); letter-spacing:-.01em; }
+  .head .pill { background:var(--orange); color:#fff; font-size:12px; font-weight:700;
+                padding:3px 10px; border-radius:20px; }
+  .sub { color:var(--muted); font-size:13px; margin:0 0 18px; }
+  .kpis { display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:14px;
+          margin-bottom:22px; }
+  .kpi { background:var(--card); border:1px solid var(--line); border-radius:12px; padding:16px 18px; }
+  .kpi-l { font-size:12px; text-transform:uppercase; letter-spacing:.05em; color:var(--muted); }
+  .kpi-v { font-size:28px; font-weight:800; color:var(--navy); margin:4px 0 2px;
+           font-variant-numeric:tabular-nums; }
+  .kpi-s { font-size:12px; color:var(--muted); }
+  .panel { background:var(--card); border:1px solid var(--line); border-radius:12px;
+           padding:16px 18px; margin-bottom:20px; overflow-x:auto; }
+  .panel h2 { font-size:15px; margin:0 0 12px; color:var(--navy); }
+  table { width:100%; border-collapse:collapse; font-size:13px; }
+  th { text-align:left; font-size:11px; text-transform:uppercase; letter-spacing:.04em;
+       color:var(--muted); font-weight:700; padding:6px 10px; border-bottom:2px solid var(--line); }
+  td { padding:7px 10px; border-bottom:1px solid var(--line); }
+  .num { text-align:right; font-variant-numeric:tabular-nums; white-space:nowrap; }
+  .rank { color:var(--muted); width:26px; }
+  .muted { color:var(--muted); }
+  .neg { color:var(--bad); } .good { color:var(--good); } .bad { color:var(--bad); }
+  .total td { font-weight:800; background:#eef3f4; border-top:2px solid var(--line); }
+  .barcell { width:34%; }
+  .barwrap { background:#eef2f3; border-radius:5px; height:12px; width:100%; }
+  .bar { height:12px; border-radius:5px; }
+  .bar.sales { background:var(--sales); } .bar.pos { background:var(--good); }
+  .bar.neg { background:var(--bad); }
+  @media (prefers-color-scheme: dark) {
+    :root { --ink:#e8eef0; --muted:#93a3aa; --line:#2a3a41; --bg:#10191d; --card:#17242a;
+            --navy:#7fd3ef; }
+  }
+</style>
+<div class="odx">
+  <div class="head"><h1>Energynat Odessa</h1><span class="pill">Monthly results</span></div>
+  <p class="sub">Sales, gross margin and net result (margin less general costs) · April–June 2026 · USD ·
+     live from BAF</p>
+
+  <div class="kpis"><div class="kpi"><div class="kpi-l">Sales (Q2)</div><div class="kpi-v">$468,444</div><div class="kpi-s">Apr–Jun 2026</div></div><div class="kpi"><div class="kpi-l">Gross margin</div><div class="kpi-v">$70,033</div><div class="kpi-s">15.0% of sales</div></div><div class="kpi"><div class="kpi-l">OPEX (Odessa)</div><div class="kpi-v">$46,148</div><div class="kpi-s">BAF actual</div></div><div class="kpi"><div class="kpi-l">Net result</div><div class="kpi-v">$23,885</div><div class="kpi-s">margin − OPEX</div></div></div>
+
+  <div class="panel">
+    <h2>Net result by month &nbsp;<span class="muted" style="font-weight:400">= margin − Odessa OPEX (CAPEX excluded)</span></h2>
+    <table>
+      <thead><tr><th>Month</th><th class="num">Sales</th><th class="num">Margin</th>
+        <th class="num">OPEX</th><th class="num">Net result</th><th>&nbsp;</th></tr></thead>
+      <tbody>
+        <tr><td>April</td><td class="num">$72,627</td><td class="num">$21,249</td><td class="num neg">(18,344)</td><td class="num good"><b>$2,905</b></td><td class="barcell"><div class="barwrap"><div class="bar pos" style="width:13%"></div></div></td></tr><tr><td>May</td><td class="num">$109,469</td><td class="num">$21,745</td><td class="num neg">(23,444)</td><td class="num bad"><b>-$1,699</b></td><td class="barcell"><div class="barwrap"><div class="bar neg" style="width:7%"></div></div></td></tr><tr><td>June</td><td class="num">$286,348</td><td class="num">$27,039</td><td class="num neg">(4,360)</td><td class="num good"><b>$22,679</b></td><td class="barcell"><div class="barwrap"><div class="bar pos" style="width:100%"></div></div></td></tr>
+        <tr class="total"><td>Q2 total</td><td class="num">$468,444</td>
+          <td class="num">$70,033</td><td class="num neg">(46,148)</td>
+          <td class="num good">$23,885</td><td>&nbsp;</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="panel">
+    <h2>Sales &amp; margin by manager <span class="muted" style="font-weight:400">(Apr–Jun, sorted by sales)</span></h2>
+    <table>
+      <thead><tr><th class="rank">#</th><th>Manager</th><th>&nbsp;</th>
+        <th class="num">Sales</th><th class="num">Margin</th><th class="num">Mgn%</th></tr></thead>
+      <tbody><tr><td class="rank">1</td><td>Гончарова Анна</td><td class="barcell"><div class="barwrap"><div class="bar sales" style="width:100%"></div></div></td><td class="num">$157,477</td><td class="num">$15,718</td><td class="num muted">10%</td></tr><tr><td class="rank">2</td><td>Ляур Максим</td><td class="barcell"><div class="barwrap"><div class="bar sales" style="width:56%"></div></div></td><td class="num">$88,972</td><td class="num">$7,698</td><td class="num muted">9%</td></tr><tr><td class="rank">3</td><td>Адамчук Наталія</td><td class="barcell"><div class="barwrap"><div class="bar sales" style="width:41%"></div></div></td><td class="num">$64,779</td><td class="num">$10,435</td><td class="num muted">16%</td></tr><tr><td class="rank">4</td><td>Войтков Денис</td><td class="barcell"><div class="barwrap"><div class="bar sales" style="width:28%"></div></div></td><td class="num">$44,354</td><td class="num">$10,792</td><td class="num muted">24%</td></tr><tr><td class="rank">5</td><td>Будник Денис</td><td class="barcell"><div class="barwrap"><div class="bar sales" style="width:23%"></div></div></td><td class="num">$36,514</td><td class="num">$5,449</td><td class="num muted">15%</td></tr><tr><td class="rank">6</td><td>Граматик Вячеслав Петрович</td><td class="barcell"><div class="barwrap"><div class="bar sales" style="width:21%"></div></div></td><td class="num">$32,549</td><td class="num">$7,803</td><td class="num muted">24%</td></tr><tr><td class="rank">7</td><td>Жулкевська Любов</td><td class="barcell"><div class="barwrap"><div class="bar sales" style="width:9%"></div></div></td><td class="num">$14,716</td><td class="num">$4,120</td><td class="num muted">28%</td></tr><tr><td class="rank">8</td><td>Еллі Марія</td><td class="barcell"><div class="barwrap"><div class="bar sales" style="width:8%"></div></div></td><td class="num">$12,286</td><td class="num">$3,747</td><td class="num muted">30%</td></tr><tr><td class="rank">9</td><td>Лавренюк Єлизавета</td><td class="barcell"><div class="barwrap"><div class="bar sales" style="width:6%"></div></div></td><td class="num">$9,773</td><td class="num">$2,120</td><td class="num muted">22%</td></tr><tr><td class="rank">10</td><td>Партасюк Анастасія</td><td class="barcell"><div class="barwrap"><div class="bar sales" style="width:3%"></div></div></td><td class="num">$4,166</td><td class="num">$1,572</td><td class="num muted">38%</td></tr><tr><td class="rank">11</td><td>Барбелюк Інна</td><td class="barcell"><div class="barwrap"><div class="bar sales" style="width:1%"></div></div></td><td class="num">$1,967</td><td class="num">$476</td><td class="num muted">24%</td></tr><tr><td class="rank">12</td><td>Красний Ігор</td><td class="barcell"><div class="barwrap"><div class="bar sales" style="width:1%"></div></div></td><td class="num">$891</td><td class="num">$102</td><td class="num muted">11%</td></tr></tbody>
+    </table>
+  </div>
+
+  <div class="panel">
+    <h2>Top products by sales</h2>
+    <table>
+      <thead><tr><th>Product</th><th>&nbsp;</th><th class="num">Sales</th></tr></thead>
+      <tbody><tr><td>Jinko 620 N-type Tiger Neo Bifacial Dual Glass Silve</td><td class="barcell"><div class="barwrap"><div class="bar sales" style="width:100%"></div></div></td><td class="num">$124,345</td></tr><tr><td>Jinko 470 N-type Tiger Neo Monofacial Dual Glass Bla</td><td class="barcell"><div class="barwrap"><div class="bar sales" style="width:52%"></div></div></td><td class="num">$65,212</td></tr><tr><td>Jinko 450 N-type Tiger Neo Bifacial Dual Glass JKM45</td><td class="barcell"><div class="barwrap"><div class="bar sales" style="width:52%"></div></div></td><td class="num">$64,969</td></tr><tr><td>Jinko 640N-Type JKM640N-66HL4M-BDV Tiger Neo Bifacia</td><td class="barcell"><div class="barwrap"><div class="bar sales" style="width:49%"></div></div></td><td class="num">$61,379</td></tr><tr><td>Jinko 515 N-Type Tiger Neo Bifacial DualGlass Black </td><td class="barcell"><div class="barwrap"><div class="bar sales" style="width:33%"></div></div></td><td class="num">$41,522</td></tr><tr><td>Jinko 465 N-Type Tiger Neo Monofacial DualGlass Blac</td><td class="barcell"><div class="barwrap"><div class="bar sales" style="width:25%"></div></div></td><td class="num">$31,020</td></tr><tr><td>Astro N5s 420Wp CHSM54N(BF)-HC Monofacial Series(182</td><td class="barcell"><div class="barwrap"><div class="bar sales" style="width:19%"></div></div></td><td class="num">$23,432</td></tr><tr><td>Jinko 485 N-Type Tiger Neo Monofacial Silver Frame E</td><td class="barcell"><div class="barwrap"><div class="bar sales" style="width:17%"></div></div></td><td class="num">$21,626</td></tr></tbody>
+    </table>
+  </div>
+</div>
