@@ -173,6 +173,31 @@ main#app { padding: 24px 28px 60px; max-width: 1440px; margin: 0 auto; }
 
 .monitor-column { min-width: 0; }
 
+.lang-toggle { display: inline-flex; border: 1px solid var(--border, #d4dde0); border-radius: 8px;
+  overflow: hidden; margin-right: 12px; vertical-align: middle; }
+.lang-btn { border: 0; background: transparent; color: var(--muted, #68787f); font-weight: 700;
+  font-size: 12px; padding: 5px 11px; cursor: pointer; }
+.lang-btn + .lang-btn { border-left: 1px solid var(--border, #d4dde0); }
+.lang-btn.active { background: #F1862D; color: #fff; }
+
+.insights-section { margin-bottom: 40px; }
+.insights-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+@media (max-width: 900px) { .insights-grid { grid-template-columns: 1fr; } }
+.insight-card { border: 1px solid var(--border, #e2e8ea); border-radius: 12px; padding: 16px 18px;
+  border-left: 4px solid #F1862D; background: rgba(241,134,45,0.05); }
+.insight-card.people { border-left-color: #0FACDF; background: rgba(15,172,223,0.05); }
+.insight-card h3 { margin: 0 0 6px; font-size: 15px; }
+.insight-card .ins-h { font-size: 12px; text-transform: uppercase; letter-spacing: .04em;
+  color: var(--muted, #68787f); font-weight: 700; margin: 12px 0 4px; }
+.insight-card ul { margin: 0; padding-left: 18px; font-size: 13px; line-height: 1.5; }
+
+/* This-week vs last-week columns in the by-warehouse sales tables */
+.col-current { background: rgba(241,134,45,0.09); }
+td.col-current { font-weight: 700; }
+th.col-current { color: #F1862D; border-bottom: 2px solid #F1862D; }
+th.col-benchmark, td.col-benchmark { color: var(--muted, #68787f); font-weight: 400; }
+.period-range { font-size: 11px; opacity: .8; }
+
 .section { margin-bottom: 40px; }
 .section h2 { font-size: 1.05rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--muted); margin-bottom: 14px; }
 .hidden { display: none; }
@@ -235,6 +260,9 @@ main#app { padding: 24px 28px 60px; max-width: 1440px; margin: 0 auto; }
   min-width: 0;
 }
 .top-seller-card h3 { margin: 0 0 10px; font-size: 0.9rem; color: var(--muted); font-weight: 600; }
+.top-seller-card.current-card { border-top: 3px solid #F1862D; }
+.top-seller-card.current-card h3 { color: #F1862D; }
+.top-seller-card.benchmark-card { opacity: .72; }
 .top-seller-table td:nth-child(2) { text-align: left; color: var(--text); }
 .top-seller-table td:first-child { padding-right: 0; }
 
