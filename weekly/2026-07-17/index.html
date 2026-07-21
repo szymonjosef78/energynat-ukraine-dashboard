@@ -1,0 +1,1061 @@
+<style>
+:root {
+  /* Energynat brand palette (from energynat.pl theme CSS) */
+  --brand-navy: #162E37;
+  --brand-orange: #F1862D;
+  --brand-gold: #F1B714;
+  --brand-blue: #0FACDF;
+
+  --bg: #0d1920;
+  --panel-bg: var(--brand-navy);
+  --panel-border: #24404c;
+  --text: #eef3f3;
+  --muted: #93a8b0;
+  --accent: var(--brand-orange);
+  --accent-2: var(--brand-gold);
+  --good: #6ec36e;
+  --warn: var(--brand-gold);
+  --bad: #e2635f;
+
+  --tier-critical: var(--brand-orange);
+  --tier-critical-bg: rgba(241, 134, 45, 0.18);
+  --tier-high: var(--brand-gold);
+  --tier-high-bg: rgba(241, 183, 20, 0.18);
+  --tier-moderate: var(--brand-blue);
+  --tier-moderate-bg: rgba(15, 172, 223, 0.18);
+  --tier-background: var(--muted);
+  --tier-background-bg: rgba(147, 168, 176, 0.15);
+
+  --stock-accent: var(--brand-orange);
+  --stock-accent-bg: rgba(241, 134, 45, 0.05);
+  --sales-accent: var(--brand-blue);
+  --sales-accent-bg: rgba(15, 172, 223, 0.05);
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: "Segoe UI", system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+}
+
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 28px;
+  background: #0a151b;
+  border-bottom: 1px solid var(--panel-border);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.topbar-title { display: flex; align-items: center; gap: 14px; }
+.topbar-title .logo { height: 32px; width: auto; display: block; }
+.topbar-title h1 { font-size: 1.25rem; margin: 0; font-weight: 600; }
+.report-scope { width: 100%; margin-top: 5px; font-size: 1rem; font-weight: 700;
+  color: #F1862D; letter-spacing: .01em; }
+tr.avg-row td { font-style: italic; color: #68787f; }
+
+.badge {
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  background: #253d47;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.badge.mock { background: rgba(241, 183, 20, 0.18); color: var(--warn); }
+.badge.baf { background: rgba(110, 195, 110, 0.18); color: var(--good); }
+
+.topbar-actions { display: flex; align-items: center; gap: 14px; }
+.muted { color: var(--muted); font-size: 0.85rem; }
+
+.logout-link { color: var(--muted); font-size: 0.85rem; text-decoration: none; }
+.logout-link:hover { color: var(--accent); }
+
+.login-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+.login-card {
+  background: var(--panel-bg);
+  border: 1px solid var(--panel-border);
+  border-radius: 12px;
+  padding: 32px;
+  width: 100%;
+  max-width: 340px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.login-card .logo { height: 32px; width: auto; margin: 0 auto 4px; }
+.login-card h1 { font-size: 1.05rem; font-weight: 600; text-align: center; margin: 0 0 8px; }
+
+.login-card label { font-size: 0.8rem; color: var(--muted); }
+
+.login-card input {
+  background: var(--bg);
+  border: 1px solid var(--panel-border);
+  border-radius: 6px;
+  padding: 8px 10px;
+  color: var(--text);
+  font-size: 0.95rem;
+}
+.login-card input:focus { outline: 1px solid var(--accent); }
+
+.login-card button {
+  background: var(--accent);
+  color: var(--brand-navy);
+  border: none;
+  padding: 10px;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 8px;
+}
+
+.login-error {
+  background: rgba(226, 99, 95, 0.15);
+  color: var(--bad);
+  padding: 8px 10px;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  margin: 0;
+}
+
+button#refresh-btn {
+  background: var(--accent);
+  color: var(--brand-navy);
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+}
+button#refresh-btn:hover { opacity: 0.9; }
+button#refresh-btn:disabled { opacity: 0.5; cursor: wait; }
+
+button#publish-btn {
+  background: transparent;
+  color: var(--brand-blue);
+  border: 1px solid var(--brand-blue);
+  padding: 7px 16px;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+}
+button#publish-btn:hover { background: rgba(15, 172, 223, 0.12); }
+button#publish-btn:disabled { opacity: 0.5; cursor: wait; }
+
+#publish-status { font-size: 0.8rem; }
+
+main#app { padding: 24px 28px 60px; max-width: 1440px; margin: 0 auto; }
+
+.monitor-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
+  align-items: start;
+}
+
+@media (max-width: 1100px) {
+  .monitor-grid { grid-template-columns: 1fr; }
+}
+
+.monitor-column { min-width: 0; }
+
+.lang-toggle { display: inline-flex; border: 1px solid var(--border, #d4dde0); border-radius: 8px;
+  overflow: hidden; margin-right: 12px; vertical-align: middle; }
+.lang-btn { border: 0; background: transparent; color: var(--muted, #68787f); font-weight: 700;
+  font-size: 12px; padding: 5px 11px; cursor: pointer; }
+.lang-btn + .lang-btn { border-left: 1px solid var(--border, #d4dde0); }
+.lang-btn.active { background: #F1862D; color: #fff; }
+
+.insights-section { margin-bottom: 40px; }
+.insights-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+@media (max-width: 900px) { .insights-grid { grid-template-columns: 1fr; } }
+.insight-card { border: 1px solid var(--border, #e2e8ea); border-radius: 12px; padding: 16px 18px;
+  border-left: 4px solid #F1862D; background: rgba(241,134,45,0.05); }
+.insight-card.people { border-left-color: #0FACDF; background: rgba(15,172,223,0.05); }
+.insight-card h3 { margin: 0 0 6px; font-size: 15px; }
+.insight-card .ins-h { font-size: 12px; text-transform: uppercase; letter-spacing: .04em;
+  color: var(--muted, #68787f); font-weight: 700; margin: 12px 0 4px; }
+.insight-card ul { margin: 0; padding-left: 18px; font-size: 13px; line-height: 1.5; }
+
+/* This-week vs last-week columns in the by-warehouse sales tables */
+.col-current { background: rgba(241,134,45,0.09); }
+td.col-current { font-weight: 700; }
+th.col-current { color: #F1862D; border-bottom: 2px solid #F1862D; }
+th.col-benchmark, td.col-benchmark { color: var(--muted, #68787f); font-weight: 400; }
+.period-range { font-size: 11px; opacity: .8; }
+
+.section { margin-bottom: 40px; }
+.section h2 { font-size: 1.05rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--muted); margin-bottom: 14px; }
+.hidden { display: none; }
+
+.dashboard-group {
+  border: 1px solid var(--panel-border);
+  border-radius: 14px;
+  padding: 22px 22px 2px;
+  margin-bottom: 32px;
+}
+.dashboard-group .section:last-child { margin-bottom: 22px; }
+
+.stock-group { border-top: 3px solid var(--stock-accent); background: var(--stock-accent-bg); }
+.sales-group { border-top: 3px solid var(--sales-accent); background: var(--sales-accent-bg); }
+
+.group-header { margin-bottom: 20px; }
+.group-title {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-weight: 700;
+  margin: 0;
+}
+.stock-group .group-title { color: var(--stock-accent); }
+.sales-group .group-title { color: var(--sales-accent); }
+.group-subtitle { font-size: 0.82rem; color: var(--muted); margin: 3px 0 0; }
+
+.cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 14px; margin-bottom: 18px; }
+.card {
+  background: var(--panel-bg);
+  border: 1px solid var(--panel-border);
+  border-radius: 10px;
+  padding: 14px 16px;
+}
+.card .label { font-size: 0.75rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.04em; }
+.card .value { font-size: 1.6rem; font-weight: 700; margin-top: 4px; }
+.card .sub { font-size: 0.8rem; color: var(--muted); margin-top: 2px; }
+
+.panel {
+  background: var(--panel-bg);
+  border: 1px solid var(--panel-border);
+  border-radius: 10px;
+  padding: 16px 18px;
+  margin-bottom: 18px;
+}
+.panel h3 { margin: 0 0 12px; font-size: 0.9rem; color: var(--muted); font-weight: 600; }
+
+.top-sellers-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; margin-bottom: 18px; }
+@media (max-width: 700px) { .top-sellers-grid { grid-template-columns: 1fr; } }
+.top-seller-card {
+  background: var(--panel-bg);
+  border: 1px solid var(--panel-border);
+  border-radius: 10px;
+  padding: 14px 16px;
+  /* A grid item's default min-width is "auto", which lets an intrinsically
+     wide child (a table forced to width: max-content on phones) grow the
+     grid *track* itself instead of just scrolling inside the card -
+     min-width: 0 lets the card stay within its track and scroll its own
+     overflow instead. */
+  min-width: 0;
+}
+.top-seller-card h3 { margin: 0 0 10px; font-size: 0.9rem; color: var(--muted); font-weight: 600; }
+.top-seller-card.current-card { border-top: 3px solid #F1862D; }
+.top-seller-card.current-card h3 { color: #F1862D; }
+.top-seller-card.benchmark-card { opacity: .72; }
+.top-seller-table td:nth-child(2) { text-align: left; color: var(--text); }
+.top-seller-table td:first-child { padding-right: 0; }
+
+.margin-table { font-size: 0.82rem; }
+.margin-table td:nth-child(2), .margin-table th:nth-child(2) { text-align: left; }
+.margin-table td:nth-child(2) { color: var(--text); }
+.margin-table td:first-child { padding-right: 0; }
+.margin-subtotal { font-size: 0.78rem; color: var(--muted); margin: -2px 0 10px; }
+.margin-negative { color: var(--bad); }
+
+.tag-panel { background: rgba(241, 134, 45, 0.18); color: var(--brand-orange); }
+.tag-deye { background: rgba(15, 172, 223, 0.18); color: var(--brand-blue); }
+
+table { width: 100%; border-collapse: collapse; font-size: 0.88rem; }
+table th, table td { text-align: right; padding: 6px 8px; border-bottom: 1px solid var(--panel-border); }
+table th:first-child, table td:first-child { text-align: left; color: var(--muted); }
+table thead th { color: var(--muted); font-weight: 600; font-size: 0.78rem; text-transform: uppercase; }
+table tr.total-row td { font-weight: 700; color: var(--accent); border-top: 2px solid var(--panel-border); }
+th.col-total, td.col-total {
+  background: rgba(241, 134, 45, 0.14);
+  color: var(--accent);
+  font-weight: 700;
+  font-size: 0.95rem;
+  border-left: 2px solid var(--accent);
+  border-right: 2px solid var(--accent);
+}
+td.coverage-low { color: var(--bad); font-weight: 600; }
+td.coverage-mid { color: var(--warn); }
+td.coverage-ok { color: var(--good); }
+td.na { color: var(--muted); }
+.period-range { font-size: 0.72rem; font-weight: 400; margin-top: 2px; }
+
+/* News feed (right column) */
+.badge.tag {
+  display: inline-block;
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 999px;
+  white-space: nowrap;
+  text-transform: none;
+  letter-spacing: normal;
+}
+
+.source-tag { background: rgba(147, 168, 176, 0.15); color: var(--muted); }
+.category-tag { background: rgba(147, 168, 176, 0.15); color: var(--muted); }
+
+.tier-critical { background: var(--tier-critical-bg); color: var(--tier-critical); }
+.tier-high { background: var(--tier-high-bg); color: var(--tier-high); }
+.tier-moderate { background: var(--tier-moderate-bg); color: var(--tier-moderate); }
+.tier-background { background: var(--tier-background-bg); color: var(--tier-background); }
+
+.hero-card {
+  background: var(--panel-bg);
+  border: 1px solid var(--panel-border);
+  border-radius: 12px;
+  padding: 18px 20px;
+  margin-bottom: 20px;
+}
+
+.hero-meta { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; margin-bottom: 8px; }
+
+.hero-title {
+  margin: 0 0 6px 0;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text);
+  text-decoration: none;
+  display: block;
+}
+.hero-title:hover { color: var(--accent); }
+
+.hero-summary { margin: 0; font-size: 0.9rem; color: var(--muted); }
+
+.news-list { display: flex; flex-direction: column; }
+
+.list-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 0;
+  border-top: 1px solid var(--panel-border);
+}
+.list-row:first-child { border-top: none; }
+.list-row .badge.tag { flex-shrink: 0; min-width: 26px; text-align: center; }
+
+.list-title {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--text);
+  text-decoration: none;
+  font-size: 0.88rem;
+}
+.list-title:hover { color: var(--accent); }
+
+.list-source { flex-shrink: 0; font-size: 0.76rem; color: var(--muted); max-width: 140px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+/* Phone layout: single narrow column, smaller type, and wide data tables
+   scroll horizontally within their own card instead of squeezing every
+   column unreadably thin. Scoped to portrait only - landscape phones get
+   the rotate-prompt treatment below instead, so this never fights with it. */
+@media (max-width: 640px) and (orientation: portrait) {
+  .topbar {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 14px 16px;
+  }
+  .topbar-title h1 { font-size: 1.05rem; }
+  .topbar-actions { width: 100%; flex-wrap: wrap; gap: 8px; }
+
+  main#app { padding: 16px 14px 48px; }
+
+  .dashboard-group { padding: 16px 14px 2px; border-radius: 10px; margin-bottom: 24px; }
+  .group-title { font-size: 0.72rem; }
+  .group-subtitle { font-size: 0.76rem; }
+
+  .cards { grid-template-columns: 1fr; }
+  .card .value { font-size: 1.35rem; }
+
+  .top-sellers-grid { grid-template-columns: 1fr; }
+
+  .panel, .top-seller-card, .hero-card { padding: 12px 14px; }
+  .panel, .top-seller-card { overflow-x: auto; }
+  .panel table, .top-seller-card table { width: max-content; min-width: 100%; }
+
+  table { font-size: 0.8rem; }
+  table th, table td { padding: 5px 6px; }
+
+  .hero-title { font-size: 1rem; }
+  .list-source { max-width: 90px; }
+}
+
+/* Phones held upright get a "please rotate" prompt instead of the
+   dashboard itself - there's no reliable, cross-browser way to force
+   landscape programmatically (the Screen Orientation Lock API needs
+   fullscreen and isn't supported in Safari on iOS at all), so asking the
+   user to physically rotate is the standard, robust pattern. Scoped to
+   phone-sized widths only, so a desktop/tablet window that happens to be
+   tall and narrow is never affected. */
+.rotate-prompt { display: none; }
+
+@media (max-width: 640px) and (orientation: portrait) {
+  main#app { display: none; }
+  .rotate-prompt {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    min-height: 70vh;
+    padding: 40px 28px;
+    text-align: center;
+  }
+  .rotate-prompt .rotate-icon { font-size: 44px; line-height: 1; }
+  .rotate-prompt h2 { margin: 0; font-size: 1.1rem; color: var(--text); }
+  .rotate-prompt p { margin: 0; max-width: 280px; color: var(--muted); font-size: 0.9rem; }
+}
+
+/* Once rotated, phones in landscape are still short - trim the sticky
+   topbar so it doesn't eat too much of the limited vertical space. */
+@media (max-height: 500px) and (orientation: landscape) {
+  .topbar { padding: 10px 18px; }
+  .topbar-title .logo { height: 24px; }
+  .topbar-title h1 { font-size: 1rem; }
+  main#app { padding: 14px 18px 40px; }
+}
+
+</style>
+
+<header class="topbar">
+  <div class="topbar-title">
+    <img class="logo" src="data:image/png;base64,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" alt="Energynat">
+    <div>
+      <h1>Energynat Ukraine Monitor</h1>
+      <span id="data-source-badge" class="badge">loading…</span>
+      <span id="variant-badge" class="badge"></span>
+      <div id="report-scope" class="report-scope"></div>
+    </div>
+  </div>
+  <div class="topbar-actions">
+    <div class="lang-toggle" role="group" aria-label="Language">
+      <button type="button" class="lang-btn" data-lang-btn="en">EN</button>
+      <button type="button" class="lang-btn" data-lang-btn="uk">УК</button>
+    </div>
+    <span id="last-refreshed" class="muted">Last refreshed: —</span>
+  </div>
+</header>
+
+<div class="rotate-prompt">
+  <div class="rotate-icon">📱⟳</div>
+  <h2 data-i18n="Rotate your device">Rotate your device</h2>
+  <p data-i18n="This dashboard is easier to read in landscape — please rotate your phone.">This dashboard is easier to read in landscape - please rotate your phone to continue.</p>
+</div>
+
+<main id="app">
+  <p class="muted" id="loading-msg">Loading dashboard…</p>
+
+  <section id="insights-section" class="section hidden insights-section">
+    <div class="group-header">
+      <h2 class="group-title" data-i18n="Weekly action plan — recommendations & issues">Weekly action plan — recommendations &amp; issues</h2>
+      <p class="group-subtitle" data-i18n="For Monday's sales-team & purchasing meeting">For Monday's sales-team &amp; purchasing meeting</p>
+    </div>
+    <div class="insights-grid" id="insights-grid"></div>
+  </section>
+
+  <div class="monitor-grid">
+    <div class="monitor-column">
+      <div class="dashboard-group stock-group">
+        <div class="group-header">
+          <h2 class="group-title" data-i18n="Stock dashboard">Stock dashboard</h2>
+          <p class="group-subtitle" data-i18n="Warehouse inventory levels & coverage">Warehouse inventory levels &amp; coverage</p>
+        </div>
+
+        <section id="panel-stock-section" class="section hidden">
+          <h2 data-i18n="PV panels stock by Warehouse">PV panels stock by Warehouse</h2>
+          <div class="cards" id="panel-stock-cards"></div>
+          <div class="panel">
+            <h3 data-i18n="Stock by warehouse × product">Stock by warehouse &times; product</h3>
+            <table id="panel-stock-table"></table>
+          </div>
+          <div class="panel">
+            <h3 data-i18n="Coverage ratio (months of stock vs week-to-date sales)">Coverage ratio (months of stock vs week-to-date sales)</h3>
+            <table id="panel-stock-coverage-table"></table>
+          </div>
+        </section>
+
+        <section id="deye-stock-section" class="section hidden">
+          <h2 data-i18n="DEYE stock by Warehouse">DEYE stock by Warehouse</h2>
+          <div class="cards" id="deye-stock-cards"></div>
+          <div class="panel">
+            <h3 data-i18n="Stock by warehouse × product">Stock by warehouse &times; product</h3>
+            <table id="deye-stock-table"></table>
+          </div>
+          <div class="panel">
+            <h3 data-i18n="Coverage ratio (months of stock vs week-to-date sales)">Coverage ratio (months of stock vs week-to-date sales)</h3>
+            <table id="deye-stock-coverage-table"></table>
+          </div>
+        </section>
+      </div>
+
+      <div class="dashboard-group sales-group">
+        <div class="group-header">
+          <h2 class="group-title" data-i18n="Sales dashboard">Sales dashboard</h2>
+          <p class="group-subtitle" data-i18n="Sell-through by warehouse & top sellers">Sell-through by warehouse &amp; top sellers</p>
+        </div>
+
+        <section id="manager-sales-section" class="section hidden">
+          <h2><span data-i18n="Sales by manager (USD) —">Sales by manager (USD) &mdash;</span> <span id="manager-period-label"></span></h2>
+          <div class="panel">
+            <table id="manager-sales-table"></table>
+          </div>
+        </section>
+
+        <section id="manager-metrics-section" class="section hidden">
+          <h2 data-i18n="Per-manager metrics — this week">Per-manager metrics &mdash; this week</h2>
+          <div class="panel">
+            <table id="manager-metrics-table"></table>
+          </div>
+        </section>
+
+        <section id="panel-sales-section" class="section hidden">
+          <h2 data-i18n="PV panels sales by warehouse">PV panels sales by warehouse</h2>
+          <div class="panel">
+            <table id="panel-sales-table"></table>
+          </div>
+        </section>
+
+        <section id="deye-sales-section" class="section hidden">
+          <h2 data-i18n="Deye sales by warehouse">Deye sales by warehouse</h2>
+          <div class="panel">
+            <table id="deye-sales-table"></table>
+          </div>
+        </section>
+
+        <section id="sales-top-sellers-section" class="section hidden">
+          <h2 data-i18n="Top sellers">Top sellers</h2>
+          <div class="top-sellers-grid" id="sales-top-sellers-grid"></div>
+        </section>
+
+        <section id="sales-margin-section" class="section hidden">
+          <h2>Margin by product</h2>
+          <div class="top-sellers-grid" id="sales-margin-grid"></div>
+        </section>
+      </div>
+    </div>
+
+    <div class="monitor-column">
+      <section id="news-section" class="section hidden">
+        <h2>Ukraine energy & business news — <span id="news-date-label"></span></h2>
+        <div id="news-hero-card" class="hero-card hidden"></div>
+        <div id="news-list" class="news-list"></div>
+      </section>
+
+      <section id="competitor-section" class="section hidden">
+        <h2>Competitor activity</h2>
+        <div class="panel" id="competitor-panel"></div>
+      </section>
+    </div>
+  </div>
+</main>
+
+
+<script>window.__DASHBOARD_DATA__ = {"variant": "weekly", "margin_shown": true, "report_scope": {"kind": "weekly", "start": "2026-07-13", "end": "2026-07-17", "text": "Week of 13–17 Jul 2026"}, "panel_stock": {"snapshot_date": "2026-07-21", "coverage_period": {"start": "2026-07-13", "end": "2026-07-17", "label": "week to date"}, "products": ["Jinko 620", "Jinko 590", "Tongwei 640", "Jinko 485", "Other"], "by_warehouse": {"Chmielnicki": {"Jinko 620": 3674.0, "Jinko 590": 3061.0, "Tongwei 640": 2367.0, "Jinko 485": 586.0, "Other": 1386.0}, "Kijow": {"Jinko 620": 843.0, "Jinko 590": 1440.0, "Tongwei 640": 0.0, "Jinko 485": 36.0, "Other": 376.0}, "Lwow": {"Jinko 620": 648.0, "Jinko 590": 0.0, "Tongwei 640": 0.0, "Jinko 485": 763.0, "Other": 296.0}, "Odessa": {"Jinko 620": 311.0, "Jinko 590": 709.0, "Tongwei 640": 386.0, "Jinko 485": 505.0, "Other": 1354.0}}, "total_by_warehouse": {"Chmielnicki": 11074.0, "Kijow": 2695.0, "Lwow": 1707.0, "Odessa": 3265.0}, "grand_total": 18741.0, "product_grand_totals": {"Jinko 620": 5476.0, "Jinko 590": 5210.0, "Tongwei 640": 2753.0, "Jinko 485": 1890.0, "Other": 3412.0}, "coverage_total": 1.06, "coverage_by_product": {"Jinko 620": 2.22, "Jinko 590": 3.9, "Tongwei 640": 3.68, "Jinko 485": 5.45, "Other": 0.27}}, "deye_stock": {"snapshot_date": "2026-07-21", "coverage_period": {"start": "2026-07-13", "end": "2026-07-17", "label": "week to date"}, "products": ["DEYE PRO-С SE-F5 5.12kWh", "DEYE 6K SG05LP1", "DEYE 8K SG05LP1", "DEYE BOS-G PRO 5.12kWh", "DEYE BOS-GM 5.1 HV BOS-G (13"], "by_warehouse": {"Chmielnicki": {"DEYE PRO-С SE-F5 5.12kWh": 536.0, "DEYE 6K SG05LP1": 334.0, "DEYE 8K SG05LP1": 125.0, "DEYE BOS-G PRO 5.12kWh": 128.0, "DEYE BOS-GM 5.1 HV BOS-G (13": 33.0}, "Kijow": {"DEYE PRO-С SE-F5 5.12kWh": 9.0, "DEYE 6K SG05LP1": 0.0, "DEYE 8K SG05LP1": 12.0, "DEYE BOS-G PRO 5.12kWh": 0.0, "DEYE BOS-GM 5.1 HV BOS-G (13": 0.0}, "Lwow": {"DEYE PRO-С SE-F5 5.12kWh": 0.0, "DEYE 6K SG05LP1": 0.0, "DEYE 8K SG05LP1": 0.0, "DEYE BOS-G PRO 5.12kWh": 0.0, "DEYE BOS-GM 5.1 HV BOS-G (13": 0.0}, "Odessa": {"DEYE PRO-С SE-F5 5.12kWh": 0.0, "DEYE 6K SG05LP1": 2.0, "DEYE 8K SG05LP1": 0.0, "DEYE BOS-G PRO 5.12kWh": 0.0, "DEYE BOS-GM 5.1 HV BOS-G (13": 0.0}}, "total_by_warehouse": {"Chmielnicki": 1294.0, "Kijow": 21.0, "Lwow": 0.0, "Odessa": 19.0}, "grand_total": 1334.0, "product_grand_totals": {"DEYE PRO-С SE-F5 5.12kWh": 545.0, "DEYE 6K SG05LP1": 336.0, "DEYE 8K SG05LP1": 137.0, "DEYE BOS-G PRO 5.12kWh": 128.0, "DEYE BOS-GM 5.1 HV BOS-G (13": 33.0}, "coverage_total": 1.1, "coverage_by_product": {"DEYE PRO-С SE-F5 5.12kWh": 2.56, "DEYE 6K SG05LP1": 0.56, "DEYE 8K SG05LP1": 7.51, "DEYE BOS-G PRO 5.12kWh": 3.51, "DEYE BOS-GM 5.1 HV BOS-G (13": null}}, "panel_sales": {"warehouses": ["Chmielnicki", "Kijow", "Lwow", "Odessa"], "periods": [{"key": "current_week", "label": "This week (to date)", "start": "2026-07-13", "end": "2026-07-17", "by_warehouse": {"Chmielnicki": 1197.0, "Kijow": 1193.0, "Lwow": 337.0, "Odessa": 168.0}, "total": 2895.0, "days_to_sell_all": 32.4, "muted": false}, {"key": "last_week_to_date", "label": "Last week (benchmark)", "start": "2026-07-06", "end": "2026-07-10", "by_warehouse": {"Chmielnicki": 1662.0, "Kijow": 384.0, "Lwow": 67.0, "Odessa": 1081.0}, "total": 3194.0, "days_to_sell_all": 29.3, "muted": true}]}, "deye_sales": {"warehouses": ["Chmielnicki", "Kijow", "Lwow", "Odessa"], "periods": [{"key": "current_week", "label": "This week (to date)", "start": "2026-07-13", "end": "2026-07-17", "by_warehouse": {"Chmielnicki": 161.0, "Kijow": 32.0, "Lwow": 0.0, "Odessa": 6.0}, "total": 199.0, "days_to_sell_all": 33.5, "muted": false}, {"key": "last_week_to_date", "label": "Last week (benchmark)", "start": "2026-07-06", "end": "2026-07-10", "by_warehouse": {"Chmielnicki": 152.0, "Kijow": 52.0, "Lwow": 0.0, "Odessa": 44.0}, "total": 248.0, "days_to_sell_all": 26.9, "muted": true}]}, "panel_today": {"key": "today", "label": "Today", "start": "2026-07-17", "end": "2026-07-17", "by_warehouse": {"Chmielnicki": 269.0, "Kijow": 72.0, "Lwow": 232.0, "Odessa": 20.0}, "total": 593.0, "days_to_sell_all": 31.6}, "deye_today": {"key": "today", "label": "Today", "start": "2026-07-17", "end": "2026-07-17", "by_warehouse": {"Chmielnicki": 49.0, "Kijow": 0.0, "Lwow": 0.0, "Odessa": 2.0}, "total": 51.0, "days_to_sell_all": 26.2}, "coverage": {"panels": {"label": "Week to date", "start": "2026-07-13", "end": "2026-07-17", "period_units": 2895.0, "days_to_sell_all": 32.4, "coverage_months": 1.1}, "deye": {"label": "Week to date", "start": "2026-07-13", "end": "2026-07-17", "period_units": 199.0, "days_to_sell_all": 33.5, "coverage_months": 1.1}}, "top_sellers": {"today": {"panels": [{"name": "Jinko 620", "qty": 657.0}, {"name": "Jinko 590", "qty": 63.0}, {"name": "Jinko 475", "qty": 6.0}], "deye": [{"name": "DEYE PRO-B SE-G5.1 5.12kWh", "qty": 4.0}]}, "current_week": {"panels": [{"name": "Jinko 620", "qty": 746.0}, {"name": "Jinko 590", "qty": 132.0}, {"name": "Jinko 515", "qty": 130.0}], "deye": [{"name": "DEYE PRO-С SE-F5 5.12kWh", "qty": 42.0}]}, "last_week": {"panels": [{"name": "Jinko 470", "qty": 925.0}, {"name": "Jinko 475", "qty": 485.0}, {"name": "Jinko 620", "qty": 406.0}], "deye": [{"name": "DEYE 6K SG05LP1", "qty": 99.0}]}}, "sales_top_sellers": [{"key": "current_week", "label": "This week (to date)", "start": "2026-07-13", "end": "2026-07-17", "muted": false, "panels": [{"name": "Jinko 470", "qty": 925.0}, {"name": "Jinko 475", "qty": 485.0}, {"name": "Jinko 620", "qty": 406.0}, {"name": "Jinko 465", "qty": 299.0}, {"name": "Jinko 590", "qty": 220.0}, {"name": "Jinko 515", "qty": 184.0}, {"name": "Tongwei 640", "qty": 123.0}], "deye": [{"name": "DEYE 6K SG05LP1", "qty": 99.0}, {"name": "DEYE PRO-B SE-G5.1 5.12kWh", "qty": 51.0}, {"name": "DEYE PRO-С SE-F5 5.12kWh", "qty": 35.0}]}, {"key": "last_week_to_date", "label": "Last week (benchmark)", "start": "2026-07-06", "end": "2026-07-10", "muted": true, "panels": [{"name": "Jinko 620", "qty": 1322.0}, {"name": "Jinko 515", "qty": 615.0}, {"name": "Tongwei 640", "qty": 329.0}, {"name": "Jinko 590", "qty": 292.0}, {"name": "Jinko 475", "qty": 145.0}, {"name": "Jinko 420", "qty": 138.0}, {"name": "s 420", "qty": 100.0}], "deye": [{"name": "DEYE 6K SG05LP1", "qty": 119.0}, {"name": "DEYE PRO-С SE-F5 5.12kWh", "qty": 66.0}, {"name": "DEYE PRO-B SE-G5.1 5.12kWh", "qty": 49.0}]}], "sales_margin": [{"key": "current_week", "label": "Current week", "start": "2026-07-13", "end": "2026-07-17", "panels": [{"name": "Jinko 470", "qty": 925.0, "revenue_usd": 65212.5, "cost_usd": 62202.69, "margin_usd": 3009.81, "margin_pct": 4.6, "unit_margin_usd": 0.0069, "unit_margin_label": "Wp", "fully_matched": true}, {"name": "Jinko 620", "qty": 406.0, "revenue_usd": 41504.04, "cost_usd": 33598.86, "margin_usd": 7905.18, "margin_pct": 19.0, "unit_margin_usd": 0.0314, "unit_margin_label": "Wp", "fully_matched": true}, {"name": "Jinko 475", "qty": 485.0, "revenue_usd": 35378.57, "cost_usd": 32756.71, "margin_usd": 2621.86, "margin_pct": 7.4, "unit_margin_usd": 0.0114, "unit_margin_label": "Wp", "fully_matched": true}, {"name": "Jinko 465", "qty": 299.0, "revenue_usd": 22923.17, "cost_usd": 16541.83, "margin_usd": 6381.34, "margin_pct": 27.8, "unit_margin_usd": 0.0459, "unit_margin_label": "Wp", "fully_matched": true}, {"name": "Jinko 590", "qty": 220.0, "revenue_usd": 21127.31, "cost_usd": 11856.29, "margin_usd": 9271.02, "margin_pct": 43.9, "unit_margin_usd": 0.0714, "unit_margin_label": "Wp", "fully_matched": true}, {"name": "Jinko 515", "qty": 184.0, "revenue_usd": 15658.21, "cost_usd": 11077.31, "margin_usd": 4580.9, "margin_pct": 29.3, "unit_margin_usd": 0.0483, "unit_margin_label": "Wp", "fully_matched": true}, {"name": "Tongwei 640", "qty": 123.0, "revenue_usd": 12048.0, "cost_usd": 10916.73, "margin_usd": 1131.27, "margin_pct": 9.4, "unit_margin_usd": 0.0144, "unit_margin_label": "Wp", "fully_matched": true}, {"name": "Jinko 450", "qty": 92.0, "revenue_usd": 6785.1, "cost_usd": 6048.48, "margin_usd": 736.62, "margin_pct": 10.9, "unit_margin_usd": 0.0178, "unit_margin_label": "Wp", "fully_matched": true}, {"name": "Jinko 485", "qty": 57.0, "revenue_usd": 4485.47, "cost_usd": 3231.68, "margin_usd": 1253.79, "margin_pct": 28.0, "unit_margin_usd": 0.0454, "unit_margin_label": "Wp", "fully_matched": true}, {"name": "Jinko 445", "qty": 62.0, "revenue_usd": 4049.6, "cost_usd": 3527.87, "margin_usd": 521.73, "margin_pct": 12.9, "unit_margin_usd": 0.0189, "unit_margin_label": "Wp", "fully_matched": false}, {"name": "s 420", "qty": 16.0, "revenue_usd": 940.8, "cost_usd": 864.93, "margin_usd": 75.87, "margin_pct": 8.1, "unit_margin_usd": 0.0113, "unit_margin_label": "Wp", "fully_matched": true}, {"name": "Jinko 420", "qty": 12.0, "revenue_usd": 816.48, "cost_usd": 758.56, "margin_usd": 57.92, "margin_pct": 7.1, "unit_margin_usd": 0.0115, "unit_margin_label": "Wp", "fully_matched": true}, {"name": "Jinko 510", "qty": 8.0, "revenue_usd": 616.83, "cost_usd": -1199.0, "margin_usd": 1815.83, "margin_pct": 294.4, "unit_margin_usd": 0.4451, "unit_margin_label": "Wp", "fully_matched": true}, {"name": "SP 440", "qty": 6.0, "revenue_usd": 422.4, "cost_usd": 305.53, "margin_usd": 116.87, "margin_pct": 27.7, "unit_margin_usd": 0.0443, "unit_margin_label": "Wp", "fully_matched": true}], "deye": [{"name": "DEYE 6K SG05LP1", "qty": 99.0, "revenue_usd": 68990.0, "cost_usd": 74728.96, "margin_usd": -5738.96, "margin_pct": -8.3, "unit_margin_usd": -57.9693, "unit_margin_label": "unit", "fully_matched": true}, {"name": "DEYE PRO-B SE-G5.1 5.12kWh", "qty": 51.0, "revenue_usd": 37095.0, "cost_usd": 39375.43, "margin_usd": -2280.43, "margin_pct": -6.1, "unit_margin_usd": -44.7143, "unit_margin_label": "unit", "fully_matched": true}, {"name": "DEYE PRO-С SE-F5 5.12kWh", "qty": 35.0, "revenue_usd": 25550.0, "cost_usd": 28307.91, "margin_usd": -2757.91, "margin_pct": -10.8, "unit_margin_usd": -78.7974, "unit_margin_label": "unit", "fully_matched": true}, {"name": "DEYE BOS-G PRO 5.12kWh", "qty": 6.0, "revenue_usd": 4460.0, "cost_usd": 5620.49, "margin_usd": -1160.49, "margin_pct": -26.0, "unit_margin_usd": -193.415, "unit_margin_label": "unit", "fully_matched": true}, {"name": "DEYE 8K SG05LP1", "qty": 3.0, "revenue_usd": 3600.0, "cost_usd": 3711.39, "margin_usd": -111.39, "margin_pct": -3.1, "unit_margin_usd": -37.13, "unit_margin_label": "unit", "fully_matched": true}, {"name": "DEYE SUN-10K-02LP1-EU-AM3", "qty": 2.0, "revenue_usd": 3100.0, "cost_usd": 2724.29, "margin_usd": 375.71, "margin_pct": 12.1, "unit_margin_usd": 187.855, "unit_margin_label": "unit", "fully_matched": true}, {"name": "DEYE SUN-20K-SG05LP3-EU-SM2", "qty": 1.0, "revenue_usd": 2750.0, "cost_usd": 2549.54, "margin_usd": 200.46, "margin_pct": 7.3, "unit_margin_usd": 200.46, "unit_margin_label": "unit", "fully_matched": true}, {"name": "DEYE SUN-12K-02LP1-EU-AM3", "qty": 1.0, "revenue_usd": 1500.0, "cost_usd": 1476.72, "margin_usd": 23.28, "margin_pct": 1.6, "unit_margin_usd": 23.28, "unit_margin_label": "unit", "fully_matched": true}, {"name": "Deye BOS-G-PDU-2", "qty": 1.0, "revenue_usd": 750.0, "cost_usd": 670.15, "margin_usd": 79.85, "margin_pct": 10.6, "unit_margin_usd": 79.85, "unit_margin_label": "unit", "fully_matched": true}], "panels_total": {"revenue_usd": 231968.48, "cost_usd": 192488.47, "margin_usd": 39480.01, "margin_pct": 17.0}, "deye_total": {"revenue_usd": 147795.0, "cost_usd": 159164.88, "margin_usd": -11369.88, "margin_pct": -7.7}}, {"key": "last_week", "label": "Last full week", "start": "2026-07-06", "end": "2026-07-10", "panels": [{"name": "Jinko 620", "qty": 1322.0, "revenue_usd": 126030.66, "cost_usd": 109985.57, "margin_usd": 16045.09, "margin_pct": 12.7, "unit_margin_usd": 0.0196, "unit_margin_label": "Wp", "fully_matched": true}, {"name": "Jinko 515", "qty": 615.0, "revenue_usd": 49438.49, "cost_usd": 37200.45, "margin_usd": 12238.04, "margin_pct": 24.8, "unit_margin_usd": 0.0386, "unit_margin_label": "Wp", "fully_matched": true}, {"name": "Tongwei 640", "qty": 329.0, "revenue_usd": 32112.0, "cost_usd": 29200.03, "margin_usd": 2911.97, "margin_pct": 9.1, "unit_margin_usd": 0.0138, "unit_margin_label": "Wp", "fully_matched": true}, {"name": "Jinko 590", "qty": 292.0, "revenue_usd": 28213.8, "cost_usd": 10973.56, "margin_usd": 17240.24, "margin_pct": 61.1, "unit_margin_usd": 0.1001, "unit_margin_label": "Wp", "fully_matched": true}, {"name": "Jinko 475", "qty": 145.0, "revenue_usd": 11395.91, "cost_usd": 9955.14, "margin_usd": 1440.77, "margin_pct": 12.6, "unit_margin_usd": 0.0209, "unit_margin_label": "Wp", "fully_matched": true}, {"name": "Jinko 420", "qty": 138.0, "revenue_usd": 9318.12, "cost_usd": 8511.17, "margin_usd": 806.95, "margin_pct": 8.7, "unit_margin_usd": 0.0139, "unit_margin_label": "Wp", "fully_matched": true}, {"name": "Jinko 485", "qty": 99.0, "revenue_usd": 7904.05, "cost_usd": 5612.91, "margin_usd": 2291.14, "margin_pct": 29.0, "unit_margin_usd": 0.0477, "unit_margin_label": "Wp", "fully_matched": true}, {"name": "s 420", "qty": 100.0, "revenue_usd": 5880.0, "cost_usd": 5405.76, "margin_usd": 474.24, "margin_pct": 8.1, "unit_margin_usd": 0.0113, "unit_margin_label": "Wp", "fully_matched": true}, {"name": "Jinko 445", "qty": 72.0, "revenue_usd": 5145.71, "cost_usd": 4456.29, "margin_usd": 689.42, "margin_pct": 13.4, "unit_margin_usd": 0.0215, "unit_margin_label": "Wp", "fully_matched": true}, {"name": "Jinko 450", "qty": 58.0, "revenue_usd": 4306.5, "cost_usd": 3812.35, "margin_usd": 494.15, "margin_pct": 11.5, "unit_margin_usd": 0.0189, "unit_margin_label": "Wp", "fully_matched": true}, {"name": "Jinko 465", "qty": 16.0, "revenue_usd": 1195.06, "cost_usd": 880.63, "margin_usd": 314.43, "margin_pct": 26.3, "unit_margin_usd": 0.0423, "unit_margin_label": "Wp", "fully_matched": true}, {"name": "Jinko 630", "qty": 8.0, "revenue_usd": 801.36, "cost_usd": 701.04, "margin_usd": 100.32, "margin_pct": 12.5, "unit_margin_usd": 0.0199, "unit_margin_label": "Wp", "fully_matched": true}], "deye": [{"name": "DEYE 6K SG05LP1", "qty": 119.0, "revenue_usd": 83730.0, "cost_usd": 99314.42, "margin_usd": -15584.42, "margin_pct": -18.6, "unit_margin_usd": -130.9615, "unit_margin_label": "unit", "fully_matched": true}, {"name": "DEYE PRO-С SE-F5 5.12kWh", "qty": 66.0, "revenue_usd": 48470.0, "cost_usd": 53230.49, "margin_usd": -4760.49, "margin_pct": -9.8, "unit_margin_usd": -72.1286, "unit_margin_label": "unit", "fully_matched": true}, {"name": "DEYE PRO-B SE-G5.1 5.12kWh", "qty": 49.0, "revenue_usd": 35630.71, "cost_usd": 38135.46, "margin_usd": -2504.75, "margin_pct": -7.0, "unit_margin_usd": -51.1173, "unit_margin_label": "unit", "fully_matched": true}, {"name": "DEYE SUN-12K-02LP1-EU-AM3", "qty": 7.0, "revenue_usd": 10500.0, "cost_usd": 10337.03, "margin_usd": 162.97, "margin_pct": 1.6, "unit_margin_usd": 23.2814, "unit_margin_label": "unit", "fully_matched": true}, {"name": "DEYE 12K SG05LP3", "qty": 3.0, "revenue_usd": 5050.0, "cost_usd": 5188.76, "margin_usd": -138.76, "margin_pct": -2.7, "unit_margin_usd": -46.2533, "unit_margin_label": "unit", "fully_matched": true}, {"name": "DEYE 8K SG05LP1", "qty": 3.0, "revenue_usd": 3600.0, "cost_usd": 3711.39, "margin_usd": -111.39, "margin_pct": -3.1, "unit_margin_usd": -37.13, "unit_margin_label": "unit", "fully_matched": true}, {"name": "DEYE SUN-30K-SG02HP3-EU-AM3", "qty": 1.0, "revenue_usd": 2700.0, "cost_usd": 2623.61, "margin_usd": 76.39, "margin_pct": 2.8, "unit_margin_usd": 76.39, "unit_margin_label": "unit", "fully_matched": true}], "panels_total": {"revenue_usd": 281741.66, "cost_usd": 226694.9, "margin_usd": 55046.76, "margin_pct": 19.5}, "deye_total": {"revenue_usd": 189680.71, "cost_usd": 212541.16, "margin_usd": -22860.45, "margin_pct": -12.1}}, {"key": "last_month", "label": "June", "start": "2026-06-01", "end": "2026-06-30", "panels": [{"name": "Jinko 620", "qty": 3525.0, "revenue_usd": 328927.78, "cost_usd": 296468.96, "margin_usd": 32458.82, "margin_pct": 9.9, "unit_margin_usd": 0.0149, "unit_margin_label": "Wp", "fully_matched": true}, {"name": "Jinko 590", "qty": 2419.0, "revenue_usd": 227846.79, "cost_usd": 142913.98, "margin_usd": 84932.81, "margin_pct": 37.3, "unit_margin_usd": 0.0595, "unit_margin_label": "Wp", "fully_matched": true}, {"name": "Jinko 450", "qty": 2744.0, "revenue_usd": 195068.45, "cost_usd": 180425.78, "margin_usd": 14642.67, "margin_pct": 7.5, "unit_margin_usd": 0.0119, "unit_margin_label": "Wp", "fully_matched": true}, {"name": "Jinko 470", "qty": 1850.0, "revenue_usd": 130859.75, "cost_usd": 124405.38, "margin_usd": 6454.37, "margin_pct": 4.9, "unit_margin_usd": 0.0074, "unit_margin_label": "Wp", "fully_matched": true}, {"name": "Jinko 475", "qty": 1596.0, "revenue_usd": 125237.04, "cost_usd": 109668.97, "margin_usd": 15568.07, "margin_pct": 12.4, "unit_margin_usd": 0.0205, "unit_margin_label": "Wp", "fully_matched": true}, {"name": "Jinko 640", "qty": 1158.0, "revenue_usd": 114719.36, "cost_usd": 102066.38, "margin_usd": 12652.98, "margin_pct": 11.0, "unit_margin_usd": 0.0171, "unit_margin_label": "Wp", "fully_matched": true}, {"name": "Jinko 445", "qty": 822.0, "revenue_usd": 60248.47, "cost_usd": 50875.68, "margin_usd": 9372.79, "margin_pct": 15.6, "unit_margin_usd": 0.0256, "unit_margin_label": "Wp", "fully_matched": true}, {"name": "Jinko 515", "qty": 656.0, "revenue_usd": 55877.35, "cost_usd": 41640.24, "margin_usd": 14237.11, "margin_pct": 25.5, "unit_margin_usd": 0.0421, "unit_margin_label": "Wp", "fully_matched": true}, {"name": "Jinko 510", "qty": 597.0, "revenue_usd": 50264.9, "cost_usd": 35588.74, "margin_usd": 14676.16, "margin_pct": 29.2, "unit_margin_usd": 0.0482, "unit_margin_label": "Wp", "fully_matched": true}, {"name": "Jinko 485", "qty": 496.0, "revenue_usd": 39610.09, "cost_usd": 28121.3, "margin_usd": 11488.79, "margin_pct": 29.0, "unit_margin_usd": 0.0478, "unit_margin_label": "Wp", "fully_matched": true}, {"name": "Tongwei 640", "qty": 212.0, "revenue_usd": 20894.72, "cost_usd": 18815.81, "margin_usd": 2078.91, "margin_pct": 9.9, "unit_margin_usd": 0.0153, "unit_margin_label": "Wp", "fully_matched": true}, {"name": "s 420", "qty": 259.0, "revenue_usd": 15275.4, "cost_usd": 14000.93, "margin_usd": 1274.47, "margin_pct": 8.3, "unit_margin_usd": 0.0117, "unit_margin_label": "Wp", "fully_matched": true}, {"name": "Jinko 465", "qty": 189.0, "revenue_usd": 14481.65, "cost_usd": 10595.13, "margin_usd": 3886.52, "margin_pct": 26.8, "unit_margin_usd": 0.0442, "unit_margin_label": "Wp", "fully_matched": true}, {"name": "Jinko 630", "qty": 110.0, "revenue_usd": 11642.4, "cost_usd": 9639.39, "margin_usd": 2003.01, "margin_pct": 17.2, "unit_margin_usd": 0.0289, "unit_margin_label": "Wp", "fully_matched": true}, {"name": "Jinko 420", "qty": 51.0, "revenue_usd": 3526.74, "cost_usd": 3272.23, "margin_usd": 254.51, "margin_pct": 7.2, "unit_margin_usd": 0.0119, "unit_margin_label": "Wp", "fully_matched": true}, {"name": "Jinko 460", "qty": 44.0, "revenue_usd": 3341.9, "cost_usd": 2935.36, "margin_usd": 406.54, "margin_pct": 12.2, "unit_margin_usd": 0.0201, "unit_margin_label": "Wp", "fully_matched": true}, {"name": "LONGI 575", "qty": 33.0, "revenue_usd": 3036.0, "cost_usd": 2732.56, "margin_usd": 303.44, "margin_pct": 10.0, "unit_margin_usd": 0.016, "unit_margin_label": "Wp", "fully_matched": true}, {"name": "Jinko 590", "qty": 26.0, "revenue_usd": 2554.7, "cost_usd": 1566.67, "margin_usd": 988.03, "margin_pct": 38.7, "unit_margin_usd": 0.0644, "unit_margin_label": "Wp", "fully_matched": true}, {"name": "Jinko 620", "qty": 6.0, "revenue_usd": 613.8, "cost_usd": 434.82, "margin_usd": 178.98, "margin_pct": 29.2, "unit_margin_usd": 0.0481, "unit_margin_label": "Wp", "fully_matched": true}, {"name": "SP 475", "qty": 4.0, "revenue_usd": 294.52, "cost_usd": 206.14, "margin_usd": 88.38, "margin_pct": 30.0, "unit_margin_usd": 0.0465, "unit_margin_label": "Wp", "fully_matched": true}, {"name": "SP 460", "qty": 2.0, "revenue_usd": 128.8, "cost_usd": 119.25, "margin_usd": 9.55, "margin_pct": 7.4, "unit_margin_usd": 0.0104, "unit_margin_label": "Wp", "fully_matched": true}, {"name": "SP 580", "qty": 2.0, "revenue_usd": 116.0, "cost_usd": 127.44, "margin_usd": -11.44, "margin_pct": -9.9, "unit_margin_usd": -0.0099, "unit_margin_label": "Wp", "fully_matched": true}], "deye": [{"name": "DEYE PRO-С SE-F5 5.12kWh", "qty": 33.0, "revenue_usd": 24745.0, "cost_usd": 26615.25, "margin_usd": -1870.25, "margin_pct": -7.6, "unit_margin_usd": -56.6742, "unit_margin_label": "unit", "fully_matched": true}, {"name": "DEYE PRO-B SE-G5.1 5.12kWh", "qty": 28.0, "revenue_usd": 21150.0, "cost_usd": 21889.27, "margin_usd": -739.27, "margin_pct": -3.5, "unit_margin_usd": -26.4025, "unit_margin_label": "unit", "fully_matched": true}, {"name": "DEYE 6K SG05LP1", "qty": 23.0, "revenue_usd": 17140.0, "cost_usd": 19195.24, "margin_usd": -2055.24, "margin_pct": -12.0, "unit_margin_usd": -89.3583, "unit_margin_label": "unit", "fully_matched": true}, {"name": "DEYE BOS-G PRO 5.12kWh", "qty": 14.0, "revenue_usd": 10900.0, "cost_usd": 10491.57, "margin_usd": 408.43, "margin_pct": 3.7, "unit_margin_usd": 29.1736, "unit_margin_label": "unit", "fully_matched": true}, {"name": "DEYE 8K SG05LP1", "qty": 8.0, "revenue_usd": 8880.0, "cost_usd": 9897.04, "margin_usd": -1017.04, "margin_pct": -11.5, "unit_margin_usd": -127.13, "unit_margin_label": "unit", "fully_matched": true}, {"name": "DEYE SUN-12K-02LP1-EU-AM3", "qty": 5.0, "revenue_usd": 8296.0, "cost_usd": 7383.6, "margin_usd": 912.4, "margin_pct": 11.0, "unit_margin_usd": 182.48, "unit_margin_label": "unit", "fully_matched": true}], "panels_total": {"revenue_usd": 1404566.61, "cost_usd": 1176621.14, "margin_usd": 227945.47, "margin_pct": 16.2}, "deye_total": {"revenue_usd": 91111.0, "cost_usd": 95471.97, "margin_usd": -4360.97, "margin_pct": -4.8}}, {"key": "month_minus2", "label": "May", "start": "2026-05-01", "end": "2026-05-31", "panels": [{"name": "Jinko 450", "qty": 6184.0, "revenue_usd": 437284.05, "cost_usd": 406162.05, "margin_usd": 31122.0, "margin_pct": 7.1, "unit_margin_usd": 0.0112, "unit_margin_label": "Wp", "fully_matched": true}, {"name": "Jinko 515", "qty": 3462.0, "revenue_usd": 287551.64, "cost_usd": 224115.51, "margin_usd": 63436.13, "margin_pct": 22.1, "unit_margin_usd": 0.0356, "unit_margin_label": "Wp", "fully_matched": true}, {"name": "Jinko 620", "qty": 1730.0, "revenue_usd": 179855.18, "cost_usd": 149199.07, "margin_usd": 30656.11, "margin_pct": 17.0, "unit_margin_usd": 0.0286, "unit_margin_label": "Wp", "fully_matched": true}, {"name": "Jinko 590", "qty": 1063.0, "revenue_usd": 109040.85, "cost_usd": 47356.52, "margin_usd": 61684.33, "margin_pct": 56.6, "unit_margin_usd": 0.0984, "unit_margin_label": "Wp", "fully_matched": true}, {"name": "Jinko 465", "qty": 811.0, "revenue_usd": 62113.17, "cost_usd": 47631.61, "margin_usd": 14481.56, "margin_pct": 23.3, "unit_margin_usd": 0.0384, "unit_margin_label": "Wp", "fully_matched": true}, {"name": "Jinko 630", "qty": 544.0, "revenue_usd": 57443.4, "cost_usd": 47671.28, "margin_usd": 9772.12, "margin_pct": 17.0, "unit_margin_usd": 0.0285, "unit_margin_label": "Wp", "fully_matched": true}, {"name": "Jinko 445", "qty": 756.0, "revenue_usd": 55948.3, "cost_usd": 46790.79, "margin_usd": 9157.51, "margin_pct": 16.4, "unit_margin_usd": 0.0272, "unit_margin_label": "Wp", "fully_matched": true}, {"name": "Jinko 485", "qty": 622.0, "revenue_usd": 50189.91, "cost_usd": 35232.84, "margin_usd": 14957.07, "margin_pct": 29.8, "unit_margin_usd": 0.0496, "unit_margin_label": "Wp", "fully_matched": true}, {"name": "Jinko 590", "qty": 507.0, "revenue_usd": 49595.8, "cost_usd": 30594.83, "margin_usd": 19000.97, "margin_pct": 38.3, "unit_margin_usd": 0.0635, "unit_margin_label": "Wp", "fully_matched": true}, {"name": "Jinko 510", "qty": 560.0, "revenue_usd": 47556.75, "cost_usd": 33382.98, "margin_usd": 14173.77, "margin_pct": 29.8, "unit_margin_usd": 0.0496, "unit_margin_label": "Wp", "fully_matched": true}, {"name": "Jinko 460", "qty": 320.0, "revenue_usd": 24012.0, "cost_usd": 19665.66, "margin_usd": 4346.34, "margin_pct": 18.1, "unit_margin_usd": 0.0295, "unit_margin_label": "Wp", "fully_matched": true}, {"name": "LONGI 575", "qty": 153.0, "revenue_usd": 14757.92, "cost_usd": 12669.18, "margin_usd": 2088.74, "margin_pct": 14.2, "unit_margin_usd": 0.0237, "unit_margin_label": "Wp", "fully_matched": true}, {"name": "Jinko 420", "qty": 126.0, "revenue_usd": 8820.0, "cost_usd": 8084.26, "margin_usd": 735.74, "margin_pct": 8.3, "unit_margin_usd": 0.0139, "unit_margin_label": "Wp", "fully_matched": true}, {"name": "s 420", "qty": 138.0, "revenue_usd": 8156.4, "cost_usd": 7459.96, "margin_usd": 696.44, "margin_pct": 8.5, "unit_margin_usd": 0.012, "unit_margin_label": "Wp", "fully_matched": true}, {"name": "Jinko 620", "qty": 22.0, "revenue_usd": 2269.2, "cost_usd": 1534.54, "margin_usd": 734.66, "margin_pct": 32.4, "unit_margin_usd": 0.0539, "unit_margin_label": "Wp", "fully_matched": true}, {"name": "SP 580", "qty": 24.0, "revenue_usd": 2088.0, "cost_usd": 1529.3, "margin_usd": 558.7, "margin_pct": 26.8, "unit_margin_usd": 0.0401, "unit_margin_label": "Wp", "fully_matched": true}, {"name": "SP 665", "qty": 14.0, "revenue_usd": 1489.6, "cost_usd": 903.77, "margin_usd": 585.83, "margin_pct": 39.3, "unit_margin_usd": 0.0629, "unit_margin_label": "Wp", "fully_matched": true}, {"name": "Jinko 550", "qty": 8.0, "revenue_usd": 748.0, "cost_usd": 464.68, "margin_usd": 283.32, "margin_pct": 37.9, "unit_margin_usd": 0.0644, "unit_margin_label": "Wp", "fully_matched": true}, {"name": "LONGI 435", "qty": 9.0, "revenue_usd": 665.55, "cost_usd": 622.34, "margin_usd": 43.21, "margin_pct": 6.5, "unit_margin_usd": 0.011, "unit_margin_label": "Wp", "fully_matched": true}, {"name": "SP 460", "qty": 8.0, "revenue_usd": 570.4, "cost_usd": 476.99, "margin_usd": 93.41, "margin_pct": 16.4, "unit_margin_usd": 0.0254, "unit_margin_label": "Wp", "fully_matched": true}, {"name": "LONGI 415", "qty": 3.0, "revenue_usd": 205.44, "cost_usd": 139.71, "margin_usd": 65.73, "margin_pct": 32.0, "unit_margin_usd": 0.0528, "unit_margin_label": "Wp", "fully_matched": true}, {"name": "Jetion 410", "qty": 2.0, "revenue_usd": 123.0, "cost_usd": 78.77, "margin_usd": 44.23, "margin_pct": 36.0, "unit_margin_usd": 0.0539, "unit_margin_label": "Wp", "fully_matched": true}], "deye": [{"name": "DEYE BOS-G PRO 5.12kWh", "qty": 83.0, "revenue_usd": 65146.17, "cost_usd": 62200.05, "margin_usd": 2946.12, "margin_pct": 4.5, "unit_margin_usd": 35.4954, "unit_margin_label": "unit", "fully_matched": true}, {"name": "DEYE PRO-B SE-G5.1 5.12kWh", "qty": 34.0, "revenue_usd": 26700.0, "cost_usd": 26591.19, "margin_usd": 108.81, "margin_pct": 0.4, "unit_margin_usd": 3.2003, "unit_margin_label": "unit", "fully_matched": true}, {"name": "DEYE RW-F16 16kWh", "qty": 10.0, "revenue_usd": 19500.0, "cost_usd": 17172.02, "margin_usd": 2327.98, "margin_pct": 11.9, "unit_margin_usd": 232.798, "unit_margin_label": "unit", "fully_matched": true}, {"name": "DEYE PRO-С SE-F5 5.12kWh", "qty": 14.0, "revenue_usd": 11235.0, "cost_usd": 11291.29, "margin_usd": -56.29, "margin_pct": -0.5, "unit_margin_usd": -4.0207, "unit_margin_label": "unit", "fully_matched": true}, {"name": "DEYE 8K SG05LP1", "qty": 6.0, "revenue_usd": 7380.0, "cost_usd": 7422.78, "margin_usd": -42.78, "margin_pct": -0.6, "unit_margin_usd": -7.13, "unit_margin_label": "unit", "fully_matched": true}, {"name": "DEYE 20K SG05LP3", "qty": 2.0, "revenue_usd": 5870.0, "cost_usd": 5161.06, "margin_usd": 708.94, "margin_pct": 12.1, "unit_margin_usd": 354.47, "unit_margin_label": "unit", "fully_matched": true}, {"name": "DEYE 6K SG05LP1", "qty": 6.0, "revenue_usd": 4760.0, "cost_usd": 5007.48, "margin_usd": -247.48, "margin_pct": -5.2, "unit_margin_usd": -41.2467, "unit_margin_label": "unit", "fully_matched": true}, {"name": "Deye BOS-G-PDU-2", "qty": 5.0, "revenue_usd": 4030.0, "cost_usd": 3812.15, "margin_usd": 217.85, "margin_pct": 5.4, "unit_margin_usd": 43.57, "unit_margin_label": "unit", "fully_matched": true}, {"name": "DEYE 12K SG05LP3", "qty": 2.0, "revenue_usd": 3725.0, "cost_usd": 3459.17, "margin_usd": 265.83, "margin_pct": 7.1, "unit_margin_usd": 132.915, "unit_margin_label": "unit", "fully_matched": true}, {"name": "DEYE SUN-30K-SG02HP3-EU-AM3", "qty": 1.0, "revenue_usd": 2974.0, "cost_usd": 2623.61, "margin_usd": 350.39, "margin_pct": 11.8, "unit_margin_usd": 350.39, "unit_margin_label": "unit", "fully_matched": true}, {"name": "DEYE SUN-10K-02LP1-EU-AM3", "qty": 1.0, "revenue_usd": 1580.0, "cost_usd": 1416.54, "margin_usd": 163.46, "margin_pct": 10.3, "unit_margin_usd": 163.46, "unit_margin_label": "unit", "fully_matched": true}, {"name": "DEYE BOS-GM 5.1 HV BOS-G (13", "qty": 1.0, "revenue_usd": 380.0, "cost_usd": 280.07, "margin_usd": 99.93, "margin_pct": 26.3, "unit_margin_usd": 99.93, "unit_margin_label": "unit", "fully_matched": true}], "panels_total": {"revenue_usd": 1400484.56, "cost_usd": 1121766.64, "margin_usd": 278717.92, "margin_pct": 19.9}, "deye_total": {"revenue_usd": 153280.17, "cost_usd": 146437.41, "margin_usd": 6842.76, "margin_pct": 4.5}}], "news": {"fetch_date": "2026-07-21", "articles": [{"source": "pv magazine (Ukraine)", "title": "Norway donates $5.5 million for solar at Ukrainian hospitals, schools", "url": "https://www.pv-magazine.com/2025/03/31/norway-donates-5-5-million-for-solar-at-ukrainian-hospitals-schools/", "summary": "The $5.5 million funding package will see 13 solar installations deployed at hospitals and schools across the city of Kharkiv this year, with a combined capacity of 1.1 MW. The post Norway donates $5.5 million for solar at Ukrainian hospitals, schools appeared first on pv magazine Global .", "published_date": "Mon, 31 Mar 2025 11:25:27 +0000", "relevance_score": 12, "category": "Funding", "tier": "high", "tier_label": "High"}, {"source": "pv magazine (Ukraine)", "title": "Global hydrogen atlas shows potential import countries for Germany", "url": "https://www.pv-magazine.com/2024/12/06/global-hydrogen-atlas-shows-potential-import-countries-for-germany/", "summary": "Researchers from the Fraunhofer Institute for Solar Energy Systems have analyzed the techno-economic potential of importing hydrogen to Germany from Brazil, Morocco, Canada, Ukraine and the United Arab Emirates. The post Global hydrogen atlas shows potential import countries for Germany appeared first on pv magazine Global .", "published_date": "Fri, 06 Dec 2024 14:47:38 +0000", "relevance_score": 10, "category": "PV/BESS distribution", "tier": "high", "tier_label": "High"}, {"source": "pv magazine (Ukraine)", "title": "Solar a beacon of hope as Ukrainians yearn for peace", "url": "https://www.pv-magazine.com/2025/02/19/solar-a-beacon-of-hope-as-ukrainians-yearn-for-peace/", "summary": "Solar energy has been essential for survival in Ukraine during nearly three years of war since the Russian invasion in 2022. As citizens hope for peace, PV will be instrumental in supporting post-war recovery, whenever it comes. The post Solar a beacon of hope as Ukrainians yearn for peace appeared first on pv magazine Global .", "published_date": "Wed, 19 Feb 2025 11:00:12 +0000", "relevance_score": 6, "category": "Renewable", "tier": "moderate", "tier_label": "Moderate"}, {"source": "pv magazine (Ukraine)", "title": "PV-driven solar water pumping system based on supercapacitor buffer", "url": "https://www.pv-magazine.com/2025/02/17/new-pv-driven-solar-water-pumping-system-based-on-supercapacitor-buffer/", "summary": "Scientists have proposed a novel design for standalone solar PV water pumping systems, using an intermediate supercapacitor buffer to temporarily store solar energy and release it in high-power pulses. Daily water productivity has grown by 64%, based on a simulation. An experimental setup was also tested. The post PV-driven solar water pumping system based on supercapacitor buffer appeared first o", "published_date": "Mon, 17 Feb 2025 10:30:45 +0000", "relevance_score": 6, "category": "Renewable", "tier": "moderate", "tier_label": "Moderate"}, {"source": "pv magazine (Ukraine)", "title": "Ukraine adds over 800 MW of solar in 2024", "url": "https://www.pv-magazine.com/2025/01/13/ukraine-adds-over-800-mw-of-solar-in-2024/", "summary": "The Solar Energy Association of Ukraine says the country installed 800 MW to 850 MW of solar capacity in 2024, driven mainly by business and residential installations. The post Ukraine adds over 800 MW of solar in 2024 appeared first on pv magazine Global .", "published_date": "Mon, 13 Jan 2025 13:15:41 +0000", "relevance_score": 6, "category": "Renewable", "tier": "moderate", "tier_label": "Moderate"}, {"source": "pv magazine (Ukraine)", "title": "Assessing floating PV costs across Europe", "url": "https://www.pv-magazine.com/2024/09/03/assessing-floating-pv-costs-across-europe/", "summary": "Researchers have analyzed the viability of floating PV in terms of net present value, internal rate of return, and LCOE. They included 25 European countries in their work, including Germany, the United Kingdom, Spain, and Italy. The post Assessing floating PV costs across Europe appeared first on pv magazine Global .", "published_date": "Tue, 03 Sep 2024 09:13:15 +0000", "relevance_score": 6, "category": "Renewable", "tier": "moderate", "tier_label": "Moderate"}, {"source": "pv magazine (Ukraine)", "title": "Solar-plus-storage systems inaugurated at two Ukrainian hospitals", "url": "https://www.pv-magazine.com/2024/08/02/solar-plus-storage-systems-inaugurated-at-two-ukrainian-hospitals/", "summary": "Two Ukrainian hospitals recently hosted inauguration ceremonies for hybrid solar and storage systems that have been installed through an initiative spearheaded by the RePower Ukraine Charitable Foundation. The post Solar-plus-storage systems inaugurated at two Ukrainian hospitals appeared first on pv magazine Global .", "published_date": "Fri, 02 Aug 2024 12:32:13 +0000", "relevance_score": 6, "category": "Renewable", "tier": "moderate", "tier_label": "Moderate"}, {"source": "pv magazine (Ukraine)", "title": "Carbon battery startup aims to make energy storage circular", "url": "https://www.pv-magazine.com/2025/04/11/carbon-battery-startup-aims-to-make-energy-storage-circular/", "summary": "SorbiForce, a Ukrainian energy storage company now in Arizona, has developed metal-free organic batteries made entirely from agricultural waste. The post Carbon battery startup aims to make energy storage circular appeared first on pv magazine Global .", "published_date": "Fri, 11 Apr 2025 09:54:17 +0000", "relevance_score": 4, "category": "Renewable", "tier": "moderate", "tier_label": "Moderate"}, {"source": "Ekonomichna Pravda", "title": "Spain will help Ukraine modernize its aviation infrastructure", "url": "https://epravda.com.ua/biznes/ispaniya-dopomozhe-ukrajini-modernizuvati-aeronavigaciynu-infrastrukturu-823840/", "summary": "Spain will support the restoration and modernization of air navigation \ninfrastructure of Ukraine: a number of agreements on modernization were signed \nUkrainian air traffic control system in accordance with \nEuropean standards.", "published_date": "2026-07-21T13:24:00+03:00", "relevance_score": 3, "category": "Renewable", "tier": "moderate", "tier_label": "Moderate"}, {"source": "Mind.ua", "title": "Due to Russian strikes and bad weather, consumers in five regions remain without electricity", "url": "https://mind.ua/news/20307829-cherez-udari-rf-i-negodu-bez-svitla-zalishayutsya-spozhivachi-v-pyati-oblastyah", "summary": "Power engineers carry out emergency restoration work where the security situation allows", "published_date": "Tue, 21 Jul 2026 12:10:00 +0300", "relevance_score": 2, "category": "Grid reliability", "tier": "background", "tier_label": "Background"}, {"source": "Mind.ua", "title": "Preparation for the heating season: 26 cities of Ukraine are equipped with modern energy-efficient equipment", "url": "https://mind.ua/news/20307821-pidgotovka-do-opalyuvalnogo-sezonu-26-mist-ukrayini-zabezpecheno-suchasnim-energoefektivnim-obladnannya", "summary": "The Schneider Electric company joined the modernization of heat supply in 26 cities of Ukraine", "published_date": "Tue, 21 Jul 2026 12:00:00 +0300", "relevance_score": 1, "category": "General energy", "tier": "background", "tier_label": "Background"}, {"source": "Interfax-Ukraine (Economics)", "title": "About 1.8 GW of distributed gas generation has been installed in Ukraine - Ministry of Energy", "url": "https://interfax.com.ua/news/economic/1186768.html", "summary": "According to regional data, as of July 21, 2026, about 1.8 GW of distributed gas generation has been installed in Ukraine, the Ministry of Energy of Ukraine reported on Monday.", "published_date": "Tue, 21 Jul 2026 11:44:15 +0300", "relevance_score": 1, "category": "General energy", "tier": "background", "tier_label": "Background"}, {"source": "Interfax-Ukraine (Economics)", "title": "\"Energoatom\" once again urged to increase pressure on the Russian Federation to de-occupy the ZNPP and not to succumb to its information manipulations", "url": "https://interfax.com.ua/news/economic/1185925.html", "summary": "NAEC \"Energoatom\", the operator of Ukrainian nuclear plants, called for increased pressure on the aggressor state of the Russian Federation for the demilitarization and de-occupation of the Zaporizhzhia NPP and the city of Energodar and not to succumb to Russian information manipulations.", "published_date": "Fri, 17 Jul 2026 16:42:46 +0300", "relevance_score": 1, "category": "General energy", "tier": "background", "tier_label": "Background"}, {"source": "Ukrainian Energy (ua-energy.org)", "title": "Svitlana Grynchuk supports the completion of power units of the Khmelnytsky NPP", "url": "https://ua-energy.org/uk/posts/svitlana-hrynchuk-pidtrymuie-dobudovu-enerhoblokiv-khmelnytskoi-aes", "summary": "", "published_date": "", "relevance_score": 1, "category": "General energy", "tier": "background", "tier_label": "Background"}, {"source": "Ukrainian Energy (ua-energy.org)", "title": "The Russians fired at one of the TPPs - Ministry of Energy", "url": "https://ua-energy.org/uk/posts/rosiiany-obstrilialy-odnu-z-tes-minenerho", "summary": "", "published_date": "", "relevance_score": 1, "category": "General energy", "tier": "background", "tier_label": "Background"}]}, "competitor_activity": [{"company": "Solarity", "title": "Powering Tomorrow: The Epic Journey of the 10 MWh Battery Project in Hungary", "url": "https://solarity.eu/blog/powering-tomorrow-the-epic-journey-of-the-10-mwh-battery-project-in-hungary/", "published_date": "Mon, 24 Nov 2025 15:36:35 +0000"}, {"company": "Tadiran Solar", "title": "Growth of Clean Energy Part of Solution, Not a Problem", "url": "https://www.tadiran-solar.com.ua/2024/06/09/growth-of-clean-energy-part-of-solution-not-a-problem/", "published_date": "Sun, 09 Jun 2024 08:24:15 +0000"}], "last_refreshed": "2026-07-21T13:14:24.778625", "data_source": "baf", "manager_sales": {"period_label": "Week to date", "columns": [{"label": "This week (WTD)", "field": "sales_usd", "sub": "13–17 Jul 2026"}, {"label": "Last week", "field": "last_week_usd", "sub": "6–10 Jul 2026", "muted": true}], "managers": [{"manager": "Будник Денис", "sales_usd": 125149.63, "avg_daily_30d": 11464.0, "last_week_usd": 72800.78, "same_day_last_week_usd": 19708.24, "wtd_usd": 125149.63, "wtd_last_usd": 72800.78}, {"manager": "Ляур Максим", "sales_usd": 79664.62, "avg_daily_30d": 18227.79, "last_week_usd": 192309.18, "same_day_last_week_usd": 27700.05, "wtd_usd": 79664.62, "wtd_last_usd": 192309.18}, {"manager": "Жулкевська Любов", "sales_usd": 47047.07, "avg_daily_30d": 5280.96, "last_week_usd": 39500.39, "same_day_last_week_usd": 6525.0, "wtd_usd": 47047.07, "wtd_last_usd": 39500.39}, {"manager": "Адамчук Наталія", "sales_usd": 45122.14, "avg_daily_30d": 7944.86, "last_week_usd": 54303.42, "same_day_last_week_usd": 11404.32, "wtd_usd": 45122.14, "wtd_last_usd": 54303.42}, {"manager": "Войтков Денис", "sales_usd": 27924.69, "avg_daily_30d": 2922.82, "last_week_usd": 32148.74, "same_day_last_week_usd": 7821.54, "wtd_usd": 27924.69, "wtd_last_usd": 32148.74}, {"manager": "Гончарова Анна", "sales_usd": 22893.69, "avg_daily_30d": 4399.32, "last_week_usd": 35117.42, "same_day_last_week_usd": 9783.82, "wtd_usd": 22893.69, "wtd_last_usd": 35117.42}, {"manager": "Барбелюк Інна", "sales_usd": 22784.58, "avg_daily_30d": 1680.46, "last_week_usd": 18503.57, "same_day_last_week_usd": 14552.05, "wtd_usd": 22784.58, "wtd_last_usd": 18503.57}, {"manager": "Гамолов Віктор", "sales_usd": 8075.6, "avg_daily_30d": 269.19, "last_week_usd": 0.0, "same_day_last_week_usd": 0.0, "wtd_usd": 8075.6, "wtd_last_usd": 0.0}, {"manager": "Красний Ігор", "sales_usd": 5090.6, "avg_daily_30d": 1175.26, "last_week_usd": 22964.54, "same_day_last_week_usd": 5933.4, "wtd_usd": 5090.6, "wtd_last_usd": 22964.54}, {"manager": "Лавренюк Єлизавета", "sales_usd": 4152.0, "avg_daily_30d": 560.02, "last_week_usd": 0.0, "same_day_last_week_usd": 0.0, "wtd_usd": 4152.0, "wtd_last_usd": 0.0}, {"manager": "Колосінський Тарас", "sales_usd": 720.0, "avg_daily_30d": 24.0, "last_week_usd": 0.0, "same_day_last_week_usd": 0.0, "wtd_usd": 720.0, "wtd_last_usd": 0.0}, {"manager": "Партасюк Анастасія", "sales_usd": 670.68, "avg_daily_30d": 591.25, "last_week_usd": 13806.61, "same_day_last_week_usd": 3350.64, "wtd_usd": 670.68, "wtd_last_usd": 13806.61}, {"manager": "Шелест Юрій", "sales_usd": 183.33, "avg_daily_30d": 5927.27, "last_week_usd": 0.0, "same_day_last_week_usd": 0.0, "wtd_usd": 183.33, "wtd_last_usd": 0.0}, {"manager": "Граматик Вячеслав Петрович", "sales_usd": 0.0, "avg_daily_30d": 159.67, "last_week_usd": 1869.56, "same_day_last_week_usd": 0.0, "wtd_usd": 0.0, "wtd_last_usd": 1869.56}]}, "weekly_insights": {"restock": [{"name": "DEYE 6K SG05LP1", "sold": 99, "stock": 336, "sales": 68990.0, "coverage": 0.6}, {"name": "Jinko 470 N-type Tiger Neo Monofacial Dual G", "sold": 925, "stock": 0, "sales": 65212.5, "coverage": 0.0}, {"name": "DEYE PRO-B SE-G5.1 5.12kWh", "sold": 51, "stock": 29, "sales": 37095.0, "coverage": 0.1}, {"name": "Jinko 475 JKM475N-48QL6-DV Tiger Neo III Qua", "sold": 485, "stock": 1314, "sales": 35378.56999999999, "coverage": 0.4}, {"name": "Jinko 465 N-Type Tiger Neo Monofacial DualGl", "sold": 299, "stock": 124, "sales": 22923.170000000002, "coverage": 0.1}, {"name": "Jinko 515 N-Type Tiger Neo Bifacial DualGlas", "sold": 184, "stock": 958, "sales": 15658.21, "coverage": 0.9}], "overstock": [{"name": "Jinko 485 N-Type Tiger Neo Monofacial Silver", "sold": 57, "stock": 1890, "sales": 4485.47, "coverage": 5.5}, {"name": "Jinko 420 N-Type Tiger Neo Black Frame ENERG", "sold": 12, "stock": 502, "sales": 816.48, "coverage": 6.9}, {"name": "DEYE 8K SG05LP1", "sold": 3, "stock": 137, "sales": 3600.0, "coverage": 7.5}], "top_managers": [{"name": "Будник Денис", "sales": 125150, "margin_pct": 6}, {"name": "Ляур Максим", "sales": 79668, "margin_pct": 16}, {"name": "Жулкевська Любов", "sales": 47047, "margin_pct": -5}], "margin_concerns": [{"name": "Гончарова Анна", "sales": 22894, "margin_pct": -6}, {"name": "Жулкевська Любов", "sales": 47047, "margin_pct": -5}], "underperformers": [{"name": "Красний Ігор", "sales": 5091, "margin_pct": 3}, {"name": "Лавренюк Єлизавета", "sales": 4152, "margin_pct": -2}, {"name": "Колосінський Тарас", "sales": 720, "margin_pct": -9}, {"name": "Партасюк Анастасія", "sales": 671, "margin_pct": 67}, {"name": "Шелест Юрій", "sales": 183, "margin_pct": 345}], "team_margin_pct": 8}, "manager_metrics": [{"manager": "Будник Денис", "cents_per_wp": 15.2, "panel_units": 1515, "deye_units": 19}, {"manager": "Ляур Максим", "cents_per_wp": 16.3, "panel_units": 631, "deye_units": 32}, {"manager": "Адамчук Наталія", "cents_per_wp": 16.2, "panel_units": 230, "deye_units": 25}, {"manager": "Барбелюк Інна", "cents_per_wp": 16.1, "panel_units": 148, "deye_units": 12}, {"manager": "Войтков Денис", "cents_per_wp": 16.6, "panel_units": 103, "deye_units": 22}, {"manager": "Жулкевська Любов", "cents_per_wp": 16.3, "panel_units": 98, "deye_units": 52}, {"manager": "Гамолов Віктор", "cents_per_wp": 16.5, "panel_units": 72, "deye_units": 1}, {"manager": "Гончарова Анна", "cents_per_wp": 16.1, "panel_units": 54, "deye_units": 27}, {"manager": "Красний Ігор", "cents_per_wp": 16.5, "panel_units": 22, "deye_units": 4}, {"manager": "Лавренюк Єлизавета", "cents_per_wp": 15.0, "panel_units": 12, "deye_units": 4}, {"manager": "Партасюк Анастасія", "cents_per_wp": 16.9, "panel_units": 7, "deye_units": 0}, {"manager": "Шелест Юрій", "cents_per_wp": 12.0, "panel_units": 3, "deye_units": 0}, {"manager": "Колосінський Тарас", "cents_per_wp": null, "panel_units": 0, "deye_units": 1}]};</script>
+<script>
+// ---- bilingual (EN / UK) -------------------------------------------------
+let LANG = "en";
+let CURRENT_DATA = null;   // last payload, for re-render on language switch
+const UK = {
+  "Live: BAF": "Наживо: BAF", "Demo: mock data": "Демо: тестові дані",
+  "Daily view": "Щоденний огляд", "Weekly view": "Тижневий огляд",
+  "Last refreshed": "Оновлено", "never": "ніколи",
+  "Report date": "Дата звіту", "Reporting period": "Звітний період",
+  "Stock dashboard": "Панель складу", "Warehouse inventory levels & coverage": "Складські запаси та покриття",
+  "Sales dashboard": "Панель продажів", "Sell-through by warehouse & top sellers": "Продажі за складами та топ-товари",
+  "PV panels stock by Warehouse": "Запас фотомодулів за складами", "DEYE stock by Warehouse": "Запас DEYE за складами",
+  "Stock by warehouse × product": "Запас: склад × товар",
+  "Coverage ratio (months of stock vs week-to-date sales)": "Покриття (місяців запасу до продажів тижня)",
+  "Sales by manager (USD) —": "Продажі за менеджерами (USD) —",
+  "Per-manager metrics — this week": "Показники менеджерів — цей тиждень",
+  "PV panels sales by warehouse": "Продажі фотомодулів за складами",
+  "Deye sales by warehouse": "Продажі DEYE за складами",
+  "Top sellers": "Топ-продажі", "Margin by product": "Маржа за товарами",
+  "Weekly action plan — recommendations & issues": "Тижневий план дій — рекомендації та проблеми",
+  "For Monday's sales-team & purchasing meeting": "Для понеділкової наради відділу продажів і закупівель",
+  "Warehouse": "Склад", "Total": "Разом", "Sales manager": "Менеджер з продажів",
+  "TOTAL — all managers": "РАЗОМ — усі менеджери", "Average per manager": "Середнє на менеджера",
+  "Days to sell all stock": "Днів до розпродажу запасу", "Coverage": "Покриття",
+  "Avg panel price (¢/Wp)": "Сер. ціна модуля (¢/Вт)", "Panels sold": "Продано модулів",
+  "DEYE units sold": "Продано DEYE (шт)", "Total stock": "Загальний запас",
+  "Today": "Сьогодні", "Same day last week": "Той самий день мин. тижня",
+  "This week (WTD)": "Цей тиждень", "Last week (WTD)": "Мин. тиждень",
+  "This week (to date)": "Цей тиждень", "Last week (benchmark)": "Мин. тиждень (база)",
+  "as of": "станом на", "coverage": "покриття", "sell-through": "розпродаж",
+  "vs week to date sales": "до продажів тижня", "vs last week sales": "до продажів мин. тижня",
+  // insights
+  "💡 What to buy for next week": "💡 Що купити на наступний тиждень",
+  "Restock now — fast sellers running low": "Поповнити зараз — топ-товари закінчуються",
+  "Ease off — overstocked / slow": "Пригальмувати — надлишок / повільні",
+  "👥 Manager performance & issues": "👥 Ефективність менеджерів та проблеми",
+  "Top performers this week": "Найкращі цього тижня", "Margin concerns": "Проблеми з маржею",
+  "Underperforming this week": "Відстають цього тижня", "None": "Немає",
+  "in stock vs": "в запасі проти", "sold this week": "продано цього тижня", "reorder.": "замовити.",
+  "mo cover": "міс. покриття", "in stock": "в запасі", "slow — hold off.": "повільно — почекати.",
+  "margin": "маржа", "sold at only": "продано лише з", "team avg": "сер. по команді",
+  "check pricing/discounts.": "перевірити ціни/знижки.", "this week.": "цього тижня.",
+  "mo": "міс", "n/a": "н/д", "d": "дн", "This week": "Цей тиждень", "Last week": "Мин. тиждень",
+  "Week to date": "З початку тижня", "Sales USD": "Продажі USD",
+  "No manager sales for this period.": "Немає продажів менеджерів за цей період.",
+  "Rotate your device": "Поверніть пристрій",
+  "This dashboard is easier to read in landscape — please rotate your phone.":
+    "Дашборд зручніше читати горизонтально — будь ласка, поверніть телефон.",
+};
+function t(s) { return (LANG === "uk" && UK[s]) ? UK[s] : s; }
+
+function fmtNum(n) {
+  if (n === null || n === undefined) return "—";
+  return Number(n).toLocaleString(LANG === "uk" ? "uk-UA" : "en-US", { maximumFractionDigits: 1 });
+}
+
+function coverageClass(months) {
+  if (months === null || months === undefined) return "na";
+  if (months < 1) return "coverage-low";
+  if (months < 3) return "coverage-mid";
+  return "coverage-ok";
+}
+
+function coverageText(months) {
+  return months === null || months === undefined ? t("n/a") : `${fmtNum(months)} ${t("mo")}`;
+}
+
+function fmtUsd(n) {
+  if (n === null || n === undefined) return "—";
+  return "$" + Number(n).toLocaleString("en-US", { maximumFractionDigits: 0 });
+}
+
+function renderManagerSales(ms) {
+  const table = document.getElementById("manager-sales-table");
+  document.getElementById("manager-period-label").textContent = t((ms && ms.period_label) || "");
+  const managers = (ms && ms.managers) || [];
+  if (!managers.length) {
+    table.innerHTML = `<tbody><tr><td class="muted">${t("No manager sales for this period.")}</td></tr></tbody>`;
+    return;
+  }
+  // Generic columns: current-period columns emphasised, benchmark columns muted.
+  const cols = (ms && ms.columns) || [{ label: "Sales USD", field: "sales_usd" }];
+  const cls = c => c.muted ? "col-benchmark" : "col-current";
+  const n = managers.length;
+  const totals = cols.map(c => managers.reduce((s, m) => s + (m[c.field] || 0), 0));
+  const head = cols.map(c =>
+    `<th class="${cls(c)}">${t(c.label)}${c.sub ? `<div class="period-range">${c.sub}</div>` : ""}</th>`).join("");
+  table.innerHTML = `
+    <thead><tr><th>#</th><th>${t("Sales manager")}</th>${head}</tr></thead>
+    <tbody>
+      ${managers.map((m, i) => `
+        <tr><td>${i + 1}</td><td>${m.manager}</td>
+          ${cols.map(c => `<td class="${cls(c)}">${fmtUsd(m[c.field] || 0)}</td>`).join("")}</tr>
+      `).join("")}
+      <tr class="total-row"><td></td><td>${t("TOTAL — all managers")}</td>
+        ${totals.map((v, j) => `<td class="${cls(cols[j])}">${fmtUsd(v)}</td>`).join("")}</tr>
+      <tr class="avg-row"><td></td><td>${t("Average per manager")}</td>
+        ${totals.map((v, j) => `<td class="${cls(cols[j])}">${fmtUsd(n ? v / n : 0)}</td>`).join("")}</tr>
+    </tbody>`;
+}
+
+function applyStaticI18n() {
+  document.querySelectorAll("[data-i18n]").forEach(el => {
+    el.textContent = t(el.getAttribute("data-i18n"));
+  });
+}
+
+function setLang(l) {
+  LANG = l;
+  document.querySelectorAll("[data-lang-btn]").forEach(b =>
+    b.classList.toggle("active", b.getAttribute("data-lang-btn") === l));
+  if (CURRENT_DATA) render(CURRENT_DATA);
+}
+
+function loadData() {
+  document.querySelectorAll("[data-lang-btn]").forEach(b => {
+    b.classList.toggle("active", b.getAttribute("data-lang-btn") === LANG);
+    b.addEventListener("click", () => setLang(b.getAttribute("data-lang-btn")));
+  });
+  render(window.__DASHBOARD_DATA__);
+}
+
+function render(data) {
+  CURRENT_DATA = data;
+  document.getElementById("loading-msg").classList.add("hidden");
+  applyStaticI18n();
+
+  const badge = document.getElementById("data-source-badge");
+  badge.textContent = data.data_source === "baf" ? t("Live: BAF") : t("Demo: mock data");
+  badge.className = "badge " + (data.data_source === "baf" ? "baf" : "mock");
+
+  document.getElementById("last-refreshed").textContent =
+    t("Last refreshed") + ": " + (data.last_refreshed
+      ? new Date(data.last_refreshed).toLocaleString(LANG === "uk" ? "uk-UA" : "en-US") : t("never"));
+
+  const variantBadge = document.getElementById("variant-badge");
+  variantBadge.textContent = data.variant === "daily" ? t("Daily view") : t("Weekly view");
+  variantBadge.className = "badge " + (data.variant === "daily" ? "variant-daily" : "variant-weekly");
+
+  const scope = data.report_scope || {};
+  const scopeEl = document.getElementById("report-scope");
+  if (scopeEl && scope.text) {
+    const prefix = scope.kind === "weekly" ? t("Reporting period") : t("Report date");
+    scopeEl.textContent = `${prefix}: ${scope.text}`;
+  }
+
+  const cov = data.coverage || {};
+  renderTypeStock("panel-stock", data.panel_stock, cov.panels);
+  renderTypeStock("deye-stock", data.deye_stock, cov.deye);
+  renderManagerSales(data.manager_sales);
+  renderTypeSales("panel-sales", data.panel_sales);
+  renderTypeSales("deye-sales", data.deye_sales);
+  renderSalesTopSellers(data.sales_top_sellers);
+  const isDaily = data.variant === "daily";
+
+  ["panel-stock-section", "deye-stock-section", "manager-sales-section", "panel-sales-section",
+   "deye-sales-section", "sales-top-sellers-section"].forEach(id =>
+     document.getElementById(id).classList.remove("hidden"));
+
+  // Both reports: sales dashboard on the LEFT, stock dashboard on the RIGHT.
+  // News & competitor activity are removed from both dashboards (still carried in
+  // the payload for the email digest).
+  const cols = document.querySelectorAll(".monitor-column");
+  cols[1].insertBefore(document.querySelector(".stock-group"), cols[1].firstChild);
+  document.getElementById("news-section").classList.add("hidden");
+  document.getElementById("competitor-section").classList.add("hidden");
+
+  // Weekly extras: action-plan insights + per-manager metrics (this week).
+  if (!isDaily) {
+    renderInsights(data.weekly_insights);
+    renderManagerMetrics(data.manager_metrics);
+  }
+
+  // Margin-by-product section removed from both reports (per spec).
+  document.getElementById("sales-margin-section").classList.add("hidden");
+}
+
+function renderManagerMetrics(mm) {
+  const sec = document.getElementById("manager-metrics-section");
+  if (!sec || !mm || !mm.length) { if (sec) sec.classList.add("hidden"); return; }
+  document.getElementById("manager-metrics-table").innerHTML = `
+    <thead><tr><th>#</th><th>${t("Sales manager")}</th>
+      <th class="col-current">${t("Avg panel price (¢/Wp)")}</th>
+      <th>${t("Panels sold")}</th><th>${t("DEYE units sold")}</th></tr></thead>
+    <tbody>${mm.map((m, i) => `<tr><td>${i + 1}</td><td>${m.manager}</td>
+      <td class="col-current">${m.cents_per_wp != null ? m.cents_per_wp.toFixed(1) + "¢" : "—"}</td>
+      <td>${fmtNum(m.panel_units)}</td><td>${fmtNum(m.deye_units)}</td></tr>`).join("")}</tbody>`;
+  sec.classList.remove("hidden");
+}
+
+function renderInsights(ins) {
+  const sec = document.getElementById("insights-section");
+  if (!sec || !ins) { if (sec) sec.classList.add("hidden"); return; }
+  const li = (items, fmt) => (items && items.length
+    ? items.map(x => `<li>${fmt(x)}</li>`).join("") : `<li class="muted">${t("None")}</li>`);
+  const buy = li(ins.restock, p =>
+    `<b>${p.name}</b> — ${fmtNum(p.stock)} ${t("in stock vs")} ${fmtNum(p.sold)} ${t("sold this week")} (${p.coverage} ${t("mo cover")}); ${t("reorder.")}`);
+  const over = li(ins.overstock, p =>
+    `<b>${p.name}</b> — ${fmtNum(p.stock)} ${t("in stock")} (${p.coverage} ${t("mo cover")}); ${t("slow — hold off.")}`);
+  const top = li(ins.top_managers, m => `<b>${m.name}</b> — ${fmtUsd(m.sales)} (${m.margin_pct}% ${t("margin")})`);
+  const concern = li(ins.margin_concerns, m =>
+    `<b>${m.name}</b> — ${fmtUsd(m.sales)} ${t("sold at only")} ${m.margin_pct}% ${t("margin")} (${t("team avg")} ${ins.team_margin_pct}%); ${t("check pricing/discounts.")}`);
+  const under = li(ins.underperformers, m => `<b>${m.name}</b> — ${fmtUsd(m.sales)} ${t("this week.")}`);
+  document.getElementById("insights-grid").innerHTML = `
+    <div class="insight-card buy">
+      <h3>${t("💡 What to buy for next week")}</h3>
+      <div class="ins-h">${t("Restock now — fast sellers running low")}</div><ul>${buy}</ul>
+      <div class="ins-h">${t("Ease off — overstocked / slow")}</div><ul>${over}</ul>
+    </div>
+    <div class="insight-card people">
+      <h3>${t("👥 Manager performance & issues")}</h3>
+      <div class="ins-h">${t("Top performers this week")}</div><ul>${top}</ul>
+      <div class="ins-h">${t("Margin concerns")}</div><ul>${concern}</ul>
+      <div class="ins-h">${t("Underperforming this week")}</div><ul>${under}</ul>
+    </div>`;
+  sec.classList.remove("hidden");
+}
+
+function renderTypeStock(idPrefix, stock, cov) {
+  const cardsEl = document.getElementById(`${idPrefix}-cards`);
+  const covMonths = cov ? cov.coverage_months : stock.coverage_total;
+  const covLabel = cov && cov.label ? cov.label.toLowerCase() : "last month";
+  const days = cov ? cov.days_to_sell_all : null;
+  cardsEl.innerHTML = `
+    <div class="card"><div class="label">${t("Total stock")}</div><div class="value">${fmtNum(stock.grand_total)}</div>
+      <div class="sub">${t("as of")} ${stock.snapshot_date || "—"} &middot; ${t("coverage")} ${coverageText(covMonths)}
+        <span class="muted">(${t("vs week to date sales")})</span>${days != null ? ` &middot; ${t("sell-through")} ${daysToSellText(days)}` : ""}</div></div>
+  `;
+
+  const warehouses = Object.keys(stock.by_warehouse);
+  const products = stock.products;
+
+  const table = document.getElementById(`${idPrefix}-table`);
+  table.innerHTML = `
+    <thead><tr><th>${t("Warehouse")}</th><th class="col-total">${t("Total")}</th>${products.map(p => `<th>${p}</th>`).join("")}</tr></thead>
+    <tbody>
+      ${warehouses.map(wh => `
+        <tr><td>${wh}</td><td class="col-total">${fmtNum(stock.total_by_warehouse[wh])}</td>
+          ${products.map(p => `<td>${fmtNum(stock.by_warehouse[wh][p])}</td>`).join("")}</tr>
+      `).join("")}
+      <tr class="total-row"><td>${t("Total")}</td><td class="col-total">${fmtNum(stock.grand_total)}</td>
+        ${products.map(p => `<td>${fmtNum(stock.product_grand_totals[p])}</td>`).join("")}</tr>
+    </tbody>
+  `;
+
+  const covTable = document.getElementById(`${idPrefix}-coverage-table`);
+  covTable.innerHTML = `
+    <thead><tr><th></th><th class="col-total">${t("Total")}</th>${products.map(p => `<th>${p}</th>`).join("")}</tr></thead>
+    <tbody>
+      <tr><td>${t("Coverage")}</td><td class="col-total ${coverageClass(stock.coverage_total)}">${coverageText(stock.coverage_total)}</td>
+        ${products.map(p => {
+          const c = stock.coverage_by_product[p];
+          return `<td class="${coverageClass(c)}">${coverageText(c)}</td>`;
+        }).join("")}</tr>
+    </tbody>
+  `;
+}
+
+function daysCoverageClass(days) {
+  if (days === null || days === undefined) return "na";
+  // Same tiers as coverageClass (months), converted to days (~30/mo).
+  if (days < 30) return "coverage-low";
+  if (days < 90) return "coverage-mid";
+  return "coverage-ok";
+}
+
+function daysToSellText(days) {
+  return days === null || days === undefined ? "—" : `${Math.round(days)} ${t("d")}`;
+}
+
+function renderTypeSales(idPrefix, sales) {
+  const warehouses = sales.warehouses;
+  const periods = sales.periods;
+  // current-period columns emphasised; benchmark columns muted
+  const cls = p => (p.muted ? "col-benchmark" : "col-current");
+  const table = document.getElementById(`${idPrefix}-table`);
+  table.innerHTML = `
+    <thead><tr><th>${t("Warehouse")}</th>${periods.map(p => `
+      <th class="${cls(p)}">${t(p.label)}<div class="period-range">${p.start} to ${p.end}</div></th>
+    `).join("")}</tr></thead>
+    <tbody>
+      <tr class="total-row"><td>${t("Total")}</td>${periods.map(p => `<td class="${cls(p)}">${fmtNum(p.total)}</td>`).join("")}</tr>
+      ${warehouses.map(wh => `
+        <tr><td>${wh}</td>${periods.map(p => `<td class="${cls(p)}">${fmtNum(p.by_warehouse[wh])}</td>`).join("")}</tr>
+      `).join("")}
+      <tr><td>${t("Days to sell all stock")}</td>${periods.map(p =>
+        `<td class="${cls(p)} ${daysCoverageClass(p.days_to_sell_all)}">${daysToSellText(p.days_to_sell_all)}</td>`
+      ).join("")}</tr>
+    </tbody>
+  `;
+}
+
+function topSellerRows(items, tagClass, tagLabel) {
+  return items.map(s => `
+    <tr><td><span class="badge tag ${tagClass}">${tagLabel}</span></td><td>${s.name}</td><td>${fmtNum(s.qty)}</td></tr>
+  `).join("");
+}
+
+function renderSalesTopSellers(periods) {
+  const grid = document.getElementById("sales-top-sellers-grid");
+  grid.innerHTML = periods.map(p => `
+    <div class="top-seller-card ${p.muted ? "benchmark-card" : "current-card"}">
+      <h3>${t(p.label)}<div class="period-range">${p.start} to ${p.end}</div></h3>
+      <table class="top-seller-table">
+        <tbody>
+          ${topSellerRows(p.panels, "tag-panel", "PANEL")}
+          ${topSellerRows(p.deye, "tag-deye", "DEYE")}
+        </tbody>
+      </table>
+    </div>
+  `).join("");
+}
+
+function unitMarginText(item) {
+  if (item.unit_margin_usd === null || item.unit_margin_usd === undefined) return "—";
+  const digits = item.unit_margin_label === "Wp" ? 3 : 2;
+  return `$${item.unit_margin_usd.toFixed(digits)}/${item.unit_margin_label}`;
+}
+
+function marginRows(items, tagClass, tagLabel) {
+  return items.map(item => {
+    const negative = (item.unit_margin_usd !== null && item.unit_margin_usd < 0) ? "margin-negative" : "";
+    const flag = item.fully_matched ? "" : "*";
+    return `
+    <tr>
+      <td><span class="badge tag ${tagClass}">${tagLabel}</span></td>
+      <td>${item.name}${flag}</td>
+      <td>${fmtNum(item.qty)}</td>
+      <td class="${negative}">$${fmtNum(item.margin_usd)}</td>
+      <td class="${negative}">${unitMarginText(item)}</td>
+    </tr>`;
+  }).join("");
+}
+
+function marginSubtotalText(label, totals) {
+  const pct = totals.margin_pct === null ? "—" : `${totals.margin_pct}%`;
+  return `${label}: revenue $${fmtNum(totals.revenue_usd)} &middot; cost $${fmtNum(totals.cost_usd)} &middot; margin $${fmtNum(totals.margin_usd)} (${pct})`;
+}
+
+function renderSalesMargin(periods) {
+  const grid = document.getElementById("sales-margin-grid");
+  grid.innerHTML = periods.map(p => `
+    <div class="top-seller-card">
+      <h3>${p.label}<div class="muted period-range">${p.start} to ${p.end}</div></h3>
+      <div class="margin-subtotal">${marginSubtotalText("Panels", p.panels_total)}</div>
+      <div class="margin-subtotal">${marginSubtotalText("DEYE", p.deye_total)}</div>
+      <table class="margin-table">
+        <thead><tr><th></th><th>Product</th><th>Qty</th><th>Margin</th><th>Unit margin</th></tr></thead>
+        <tbody>
+          ${marginRows(p.panels, "tag-panel", "PANEL")}
+          ${marginRows(p.deye, "tag-deye", "DEYE")}
+        </tbody>
+      </table>
+    </div>
+  `).join("");
+}
+
+function newsScoreBadge(article) {
+  const span = document.createElement("span");
+  span.className = `badge tag tier-${article.tier}`;
+  span.textContent = article.relevance_score;
+  return span;
+}
+
+function renderNewsHero(article) {
+  const hero = document.getElementById("news-hero-card");
+  hero.innerHTML = "";
+  hero.classList.remove("hidden");
+
+  const meta = document.createElement("div");
+  meta.className = "hero-meta";
+
+  const tierBadge = document.createElement("span");
+  tierBadge.className = `badge tag tier-${article.tier}`;
+  tierBadge.textContent = `${article.tier_label} · ${article.relevance_score}`;
+  meta.appendChild(tierBadge);
+
+  const categoryBadge = document.createElement("span");
+  categoryBadge.className = "badge tag category-tag";
+  categoryBadge.textContent = article.category;
+  meta.appendChild(categoryBadge);
+
+  const sourceBadge = document.createElement("span");
+  sourceBadge.className = "badge tag source-tag";
+  sourceBadge.textContent = article.source;
+  meta.appendChild(sourceBadge);
+
+  hero.appendChild(meta);
+
+  const link = document.createElement("a");
+  link.href = article.url;
+  link.target = "_blank";
+  link.rel = "noopener";
+  link.className = "hero-title";
+  link.textContent = article.title;
+  hero.appendChild(link);
+
+  if (article.summary) {
+    const p = document.createElement("p");
+    p.className = "hero-summary";
+    p.textContent = article.summary;
+    hero.appendChild(p);
+  }
+}
+
+function renderNewsList(articles) {
+  const list = document.getElementById("news-list");
+  list.innerHTML = "";
+
+  for (const a of articles) {
+    const row = document.createElement("div");
+    row.className = "list-row";
+
+    row.appendChild(newsScoreBadge(a));
+
+    const link = document.createElement("a");
+    link.href = a.url;
+    link.target = "_blank";
+    link.rel = "noopener";
+    link.className = "list-title";
+    link.textContent = a.title;
+    row.appendChild(link);
+
+    const source = document.createElement("span");
+    source.className = "list-source";
+    source.textContent = a.source;
+    row.appendChild(source);
+
+    list.appendChild(row);
+  }
+}
+
+function renderNews(news) {
+  document.getElementById("news-date-label").textContent = news.fetch_date || "no data yet";
+
+  const heroCard = document.getElementById("news-hero-card");
+  const list = document.getElementById("news-list");
+
+  if (!news.articles.length) {
+    heroCard.classList.add("hidden");
+    list.innerHTML = "";
+    const p = document.createElement("p");
+    p.className = "muted";
+    p.textContent = "No relevant stories today.";
+    list.appendChild(p);
+    return;
+  }
+
+  renderNewsHero(news.articles[0]);
+  renderNewsList(news.articles.slice(1));
+}
+
+function renderCompetitorActivity(posts) {
+  const panel = document.getElementById("competitor-panel");
+  panel.innerHTML = "";
+
+  if (!posts.length) {
+    const p = document.createElement("p");
+    p.className = "muted";
+    p.textContent = "No competitor activity available.";
+    panel.appendChild(p);
+    return;
+  }
+
+  for (const post of posts) {
+    const row = document.createElement("div");
+    row.className = "list-row";
+
+    const company = document.createElement("span");
+    company.className = "badge tag source-tag";
+    company.textContent = post.company;
+    row.appendChild(company);
+
+    const link = document.createElement("a");
+    link.href = post.url;
+    link.target = "_blank";
+    link.rel = "noopener";
+    link.className = "list-title";
+    link.textContent = post.title || post.url;
+    row.appendChild(link);
+
+    panel.appendChild(row);
+  }
+}
+
+loadData();
+
+</script>
