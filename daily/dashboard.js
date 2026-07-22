@@ -37,6 +37,10 @@ const UK = {
   "Underperforming this week": "Відстають цього тижня", "None": "Немає",
   "in stock vs": "в запасі проти", "sold this week": "продано цього тижня", "reorder.": "замовити.",
   "mo cover": "міс. покриття", "in stock": "в запасі", "slow — hold off.": "повільно — почекати.",
+  "sold at a loss at historical prices": "продано зі збитком за історичними цінами",
+  "restock only if we can buy effectively below historical cost.": "поповнювати лише якщо зможемо купити дешевше історичної собівартості.",
+  "slim margin at historical prices": "низька маржа за історичними цінами",
+  "restock only if purchase cost improves.": "поповнювати лише якщо покращиться закупівельна ціна.",
   "margin": "маржа", "sold at only": "продано лише з", "team avg": "сер. по команді",
   "check pricing/discounts.": "перевірити ціни/знижки.", "this week.": "цього тижня.",
   "mo": "міс", "n/a": "н/д", "d": "дн", "This week": "Цей тиждень", "Last week": "Мин. тиждень",
@@ -192,8 +196,16 @@ function renderInsights(ins) {
   if (!sec || !ins) { if (sec) sec.classList.add("hidden"); return; }
   const li = (items, fmt) => (items && items.length
     ? items.map(x => `<li>${fmt(x)}</li>`).join("") : `<li class="muted">${t("None")}</li>`);
+  // Same margin-aware wording as the email digest, kept consistent. Uses only
+  // the server-computed band (loss/slim/ok) - the exact margin is never present.
+  const restockNote = p =>
+    p.margin_band === "loss"
+      ? `<b>${t("sold at a loss at historical prices")}</b> — ${t("restock only if we can buy effectively below historical cost.")}`
+      : p.margin_band === "slim"
+        ? `${t("slim margin at historical prices")} — ${t("restock only if purchase cost improves.")}`
+        : t("reorder.");
   const buy = li(ins.restock, p =>
-    `<b>${p.name}</b> — ${fmtNum(p.stock)} ${t("in stock vs")} ${fmtNum(p.sold)} ${t("sold this week")} (${p.coverage} ${t("mo cover")}); ${t("reorder.")}`);
+    `<b>${p.name}</b> — ${fmtNum(p.stock)} ${t("in stock vs")} ${fmtNum(p.sold)} ${t("sold this week")} (${p.coverage} ${t("mo cover")}); ${restockNote(p)}`);
   const over = li(ins.overstock, p =>
     `<b>${p.name}</b> — ${fmtNum(p.stock)} ${t("in stock")} (${p.coverage} ${t("mo cover")}); ${t("slow — hold off.")}`);
   const top = li(ins.top_managers, m => `<b>${m.name}</b> — ${fmtUsd(m.sales)} (${m.margin_pct}% ${t("margin")})`);
