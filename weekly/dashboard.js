@@ -48,6 +48,12 @@ const UK = {
   "stuck in": "застрягло на складі",
   "sells in": "продається на",
   "move it there to rotate faster.": "перемістіть туди для швидшого обороту.",
+  "no sale ~": "без продажів ~",
+  "wks": "тиж",
+  "Loss-making — fix the source or drop": "Збиткові — знайти дешевше джерело або зняти з продажу",
+  "sold at a loss;": "продано зі збитком;",
+  "sells in volume — secure a cheaper source.": "продається обсягом — знайдіть дешевше джерело.",
+  "low volume — consider cutting it from the offer.": "малий обсяг — розгляньте зняття з асортименту.",
   "margin": "маржа", "sold at only": "продано лише з", "team avg": "сер. по команді",
   "check pricing/discounts.": "перевірити ціни/знижки.", "this week.": "цього тижня.",
   "mo": "міс", "n/a": "н/д", "d": "дн", "This week": "Цей тиждень", "Last week": "Мин. тиждень",
@@ -223,19 +229,23 @@ function renderInsights(ins) {
   const cutprice = li(ins.price_reduce, p =>
     `<b>${p.name}</b> — ${fmtNum(p.stock)} ${t("in stock")} (${p.coverage} ${t("mo cover")}); ${t("slow but bought cheaply — cut the price to speed rotation.")}`);
   const reloc = li(ins.relocate, p =>
-    `<b>${p.name}</b> — ${fmtNum(p.stock_here)} ${t("stuck in")} <b>${p.from_wh}</b>; ${t("sells in")} <b>${p.to_wh}</b> (${fmtNum(p.sold_there)}) — ${t("move it there to rotate faster.")}`);
+    `<b>${p.name}</b> — ${fmtNum(p.stock_here)} @ <b>${p.from_wh}</b>, ${t("no sale ~")}${p.weeks_cold} ${t("wks")}; ${t("sells in")} <b>${p.to_wh}</b> — ${t("move it there to rotate faster.")}`);
+  const marginact = li(ins.margin_action, p =>
+    `<b>${p.name}</b> — ${fmtNum(p.sold)} ${t("sold at a loss;")} ${p.high_volume ? t("sells in volume — secure a cheaper source.") : t("low volume — consider cutting it from the offer.")}`);
   const cutSection = (ins.price_reduce && ins.price_reduce.length)
     ? `<div class="ins-h">${t("Slow movers with margin headroom — cut price to rotate")}</div><ul>${cutprice}</ul>`
       + `<div class="ins-note" style="font-size:.82rem;color:var(--muted);margin:2px 0 6px;">${t("Push these via the Telegram promo tool to the customer base — a marketing-push table with reduced prices.")}</div>`
     : "";
   const relocSection = (ins.relocate && ins.relocate.length)
     ? `<div class="ins-h">${t("Relocate — move stuck stock to where it sells")}</div><ul>${reloc}</ul>` : "";
+  const marginSection = (ins.margin_action && ins.margin_action.length)
+    ? `<div class="ins-h">${t("Loss-making — fix the source or drop")}</div><ul>${marginact}</ul>` : "";
   document.getElementById("insights-grid").innerHTML = `
     <div class="insight-card buy">
       <h3>${t("💡 What to buy for next week")}</h3>
       <div class="ins-h">${t("Restock now — fast sellers running low")}</div><ul>${buy}</ul>
       <div class="ins-h">${t("Ease off — overstocked / slow")}</div><ul>${over}</ul>
-      ${cutSection}${relocSection}
+      ${cutSection}${relocSection}${marginSection}
     </div>
     <div class="insight-card people">
       <h3>${t("👥 Manager performance & issues")}</h3>
