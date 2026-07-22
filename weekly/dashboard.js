@@ -41,6 +41,13 @@ const UK = {
   "restock only if we can buy effectively below historical cost.": "поповнювати лише якщо зможемо купити дешевше історичної собівартості.",
   "slim margin at historical prices": "низька маржа за історичними цінами",
   "restock only if purchase cost improves.": "поповнювати лише якщо покращиться закупівельна ціна.",
+  "Slow movers with margin headroom — cut price to rotate": "Повільні позиції із запасом маржі — знизити ціну для обороту",
+  "slow but bought cheaply — cut the price to speed rotation.": "повільно продається, але куплено дешево — знизьте ціну для пришвидшення обороту.",
+  "Push these via the Telegram promo tool to the customer base — a marketing-push table with reduced prices.": "Просувайте через Telegram-інструмент акцій по базі клієнтів — маркетингова таблиця зі зниженими цінами.",
+  "Relocate — move stuck stock to where it sells": "Перемістити — застряглий товар туди, де він продається",
+  "stuck in": "застрягло на складі",
+  "sells in": "продається на",
+  "move it there to rotate faster.": "перемістіть туди для швидшого обороту.",
   "margin": "маржа", "sold at only": "продано лише з", "team avg": "сер. по команді",
   "check pricing/discounts.": "перевірити ціни/знижки.", "this week.": "цього тижня.",
   "mo": "міс", "n/a": "н/д", "d": "дн", "This week": "Цей тиждень", "Last week": "Мин. тиждень",
@@ -212,11 +219,23 @@ function renderInsights(ins) {
   const concern = li(ins.margin_concerns, m =>
     `<b>${m.name}</b> — ${fmtUsd(m.sales)} ${t("sold at only")} ${m.margin_pct}% ${t("margin")} (${t("team avg")} ${ins.team_margin_pct}%); ${t("check pricing/discounts.")}`);
   const under = li(ins.underperformers, m => `<b>${m.name}</b> — ${fmtUsd(m.sales)} ${t("this week.")}`);
+  // Rotation actions (same as the weekly email). Margin stays qualitative.
+  const cutprice = li(ins.price_reduce, p =>
+    `<b>${p.name}</b> — ${fmtNum(p.stock)} ${t("in stock")} (${p.coverage} ${t("mo cover")}); ${t("slow but bought cheaply — cut the price to speed rotation.")}`);
+  const reloc = li(ins.relocate, p =>
+    `<b>${p.name}</b> — ${fmtNum(p.stock_here)} ${t("stuck in")} <b>${p.from_wh}</b>; ${t("sells in")} <b>${p.to_wh}</b> (${fmtNum(p.sold_there)}) — ${t("move it there to rotate faster.")}`);
+  const cutSection = (ins.price_reduce && ins.price_reduce.length)
+    ? `<div class="ins-h">${t("Slow movers with margin headroom — cut price to rotate")}</div><ul>${cutprice}</ul>`
+      + `<div class="ins-note" style="font-size:.82rem;color:var(--muted);margin:2px 0 6px;">${t("Push these via the Telegram promo tool to the customer base — a marketing-push table with reduced prices.")}</div>`
+    : "";
+  const relocSection = (ins.relocate && ins.relocate.length)
+    ? `<div class="ins-h">${t("Relocate — move stuck stock to where it sells")}</div><ul>${reloc}</ul>` : "";
   document.getElementById("insights-grid").innerHTML = `
     <div class="insight-card buy">
       <h3>${t("💡 What to buy for next week")}</h3>
       <div class="ins-h">${t("Restock now — fast sellers running low")}</div><ul>${buy}</ul>
       <div class="ins-h">${t("Ease off — overstocked / slow")}</div><ul>${over}</ul>
+      ${cutSection}${relocSection}
     </div>
     <div class="insight-card people">
       <h3>${t("👥 Manager performance & issues")}</h3>
