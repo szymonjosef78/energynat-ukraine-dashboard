@@ -23,6 +23,8 @@ const UK = {
   "Days to sell all stock": "Днів до розпродажу запасу", "Coverage": "Покриття",
   "Avg panel price (¢/Wp)": "Сер. ціна модуля (¢/Вт)", "Panels sold": "Продано модулів",
   "DEYE units sold": "Продано DEYE (шт)", "Total stock": "Загальний запас",
+  "Power sold (WTD)": "Продана потужність (тиждень)", "sum of power of all panels sold": "сума потужності всіх проданих панелей",
+  "Stock value at cost": "Вартість запасу (собівартість)", "current stock × avg unit cost": "поточний запас × сер. собівартість од.",
   "Today": "Сьогодні", "Same day last week": "Той самий день мин. тижня",
   "This week (WTD)": "Цей тиждень", "Last week (WTD)": "Мин. тиждень",
   "This week (to date)": "Цей тиждень", "Last week (benchmark)": "Мин. тиждень (база)",
@@ -261,10 +263,22 @@ function renderTypeStock(idPrefix, stock, cov) {
   const covMonths = cov ? cov.coverage_months : stock.coverage_total;
   const covLabel = cov && cov.label ? cov.label.toLowerCase() : "last month";
   const days = cov ? cov.days_to_sell_all : null;
+  const powerCard = (cov && cov.power_sold_kwp != null)
+    ? `<div class="card"><div class="label">${t("Power sold (WTD)")}</div>
+         <div class="value">${fmtNum(cov.power_sold_kwp)} <span class="unit">kWp</span></div>
+         <div class="sub">${t("sum of power of all panels sold")}</div></div>`
+    : "";
+  const valueCard = (cov && cov.stock_cost_usd != null)
+    ? `<div class="card"><div class="label">${t("Stock value at cost")}</div>
+         <div class="value">${fmtUsd(cov.stock_cost_usd)}</div>
+         <div class="sub">${t("current stock × avg unit cost")}</div></div>`
+    : "";
   cardsEl.innerHTML = `
     <div class="card"><div class="label">${t("Total stock")}</div><div class="value">${fmtNum(stock.grand_total)}</div>
       <div class="sub">${t("as of")} ${stock.snapshot_date || "—"} &middot; ${t("coverage")} ${coverageText(covMonths)}
         <span class="muted">(${t("vs week to date sales")})</span>${days != null ? ` &middot; ${t("sell-through")} ${daysToSellText(days)}` : ""}</div></div>
+    ${powerCard}
+    ${valueCard}
   `;
 
   const warehouses = Object.keys(stock.by_warehouse);
