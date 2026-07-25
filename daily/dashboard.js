@@ -16,6 +16,9 @@ const UK = {
   "PV panels sales by warehouse": "Продажі фотомодулів за складами",
   "Deye sales by warehouse": "Продажі DEYE за складами",
   "Top sellers": "Топ-продажі", "Margin by product": "Маржа за товарами", "left": "в запасі",
+  "Panels — sales by manager": "Панелі — продажі за менеджерами", "DEYE — sales by manager": "DEYE — продажі за менеджерами",
+  "This week": "Цей тиждень", "Last week": "Мин. тиждень", "Avg weekly": "Сер. за тиждень",
+  "last 8 wk": "останні 8 тиж.", "8 wk, excl. this": "8 тиж., крім цього",
   "Weekly action plan — recommendations & issues": "Тижневий план дій — рекомендації та проблеми",
   "For Monday's sales-team & purchasing meeting": "Для понеділкової наради відділу продажів і закупівель",
   "Warehouse": "Склад", "Total": "Разом", "Sales manager": "Менеджер з продажів",
@@ -164,6 +167,17 @@ function render(data) {
   const cov = data.coverage || {};
   renderTypeStock("panel-stock", data.panel_stock, cov.panels);
   renderTypeStock("deye-stock", data.deye_stock, cov.deye);
+  // Weekly: add an "Avg weekly" column (8-wk avg per manager, excl. this week).
+  if (data.variant !== "daily" && data.weekly_manager_breakdown && data.manager_sales) {
+    const avg = {};
+    data.weekly_manager_breakdown.forEach(b => { avg[b.manager] = b.total.avg; });
+    (data.manager_sales.managers || []).forEach(m => { m.avg_weekly = avg[m.manager] || 0; });
+    const cols = data.manager_sales.columns || [];
+    if (!cols.some(c => c.field === "avg_weekly")) {
+      cols.push({ label: "Avg weekly", field: "avg_weekly", sub: t("8 wk, excl. this") });
+      data.manager_sales.columns = cols;
+    }
+  }
   renderManagerSales(data.manager_sales);
   renderTypeSales("panel-sales", data.panel_sales);
   renderTypeSales("deye-sales", data.deye_sales);
@@ -182,26 +196,52 @@ function render(data) {
   document.getElementById("news-section").classList.add("hidden");
   document.getElementById("competitor-section").classList.add("hidden");
 
-  // Weekly extras: action-plan insights + per-manager metrics (this week).
+  // Weekly extras: action-plan insights + Panels/DEYE by-manager tables.
   if (!isDaily) {
     renderInsights(data.weekly_insights);
-    renderManagerMetrics(data.manager_metrics);
+    renderManagerBreakdown(data.weekly_manager_breakdown);
   }
 
   // Margin-by-product section removed from both reports (per spec).
   document.getElementById("sales-margin-section").classList.add("hidden");
 }
 
-function renderManagerMetrics(mm) {
+function breakdownTable(bd, kind) {
+  const items = bd
+    .filter(b => (b[kind].tw_usd || b[kind].lw_usd || b[kind].avg_usd))
+    .sort((a, b) => b[kind].tw_usd - a[kind].tw_usd).slice(0, 12);
+  const brk = (d, per) => kind === "panels"
+    ? (d[per + "_price"] != null ? ` <span class="ts-stock">(${d[per + "_price"].toFixed(3)}/Wp)</span>` : "")
+    : ` <span class="ts-stock">(${fmtNum(d[per + "_vol"])} pcs)</span>`;
+  const cell = (b, per, cls = "") =>
+    `<td class="${cls}">${fmtUsd(b[kind][per + "_usd"])}${brk(b[kind], per)}</td>`;
+  const totCell = per => {
+    const u = bd.reduce((s, b) => s + b[kind][per + "_usd"], 0);
+    const extra = kind === "deye" ? ` (${fmtNum(bd.reduce((s, b) => s + b[kind][per + "_vol"], 0))})` : "";
+    return `<td>${fmtUsd(u)}${extra}</td>`;
+  };
+  return `
+    <table>
+      <thead><tr><th>${t("Sales manager")}</th>
+        <th class="col-current">${t("This week")}</th>
+        <th class="col-benchmark">${t("Last week")}</th>
+        <th>${t("Avg weekly")}<div class="period-range">${t("last 8 wk")}</div></th></tr></thead>
+      <tbody>
+        <tr class="total-row"><td>${t("TOTAL — all managers")}</td>${totCell("tw")}${totCell("lw")}${totCell("avg")}</tr>
+        ${items.map(b => `<tr><td>${b.manager}</td>${cell(b, "tw", "col-current")}${cell(b, "lw", "col-benchmark")}${cell(b, "avg")}</tr>`).join("")}
+      </tbody>
+    </table>`;
+}
+
+function renderManagerBreakdown(bd) {
   const sec = document.getElementById("manager-metrics-section");
-  if (!sec || !mm || !mm.length) { if (sec) sec.classList.add("hidden"); return; }
-  document.getElementById("manager-metrics-table").innerHTML = `
-    <thead><tr><th>#</th><th>${t("Sales manager")}</th>
-      <th class="col-current">${t("Avg panel price (¢/Wp)")}</th>
-      <th>${t("Panels sold")}</th><th>${t("DEYE units sold")}</th></tr></thead>
-    <tbody>${mm.map((m, i) => `<tr><td>${i + 1}</td><td>${m.manager}</td>
-      <td class="col-current">${m.cents_per_wp != null ? m.cents_per_wp.toFixed(1) + "¢" : "—"}</td>
-      <td>${fmtNum(m.panel_units)}</td><td>${fmtNum(m.deye_units)}</td></tr>`).join("")}</tbody>`;
+  const host = document.getElementById("manager-breakdown");
+  if (!sec || !host || !bd || !bd.length) { if (sec) sec.classList.add("hidden"); return; }
+  host.innerHTML = `
+    <h2>${t("Panels — sales by manager")}</h2>
+    <div class="panel">${breakdownTable(bd, "panels")}</div>
+    <h2 style="margin-top:18px">${t("DEYE — sales by manager")}</h2>
+    <div class="panel">${breakdownTable(bd, "deye")}</div>`;
   sec.classList.remove("hidden");
 }
 
