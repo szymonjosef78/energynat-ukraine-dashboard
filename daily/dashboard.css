@@ -290,9 +290,9 @@ th.col-total, td.col-total {
   border-left: 2px solid var(--accent);
   border-right: 2px solid var(--accent);
 }
-td.coverage-low { color: var(--bad); font-weight: 600; }
-td.coverage-mid { color: var(--warn); }
-td.coverage-ok { color: var(--good); }
+.coverage-low { color: var(--bad); font-weight: 700; }
+.coverage-mid { color: var(--warn); }
+.coverage-ok { color: var(--good); font-weight: 600; }
 td.na { color: var(--muted); }
 .period-range { font-size: 0.72rem; font-weight: 400; margin-top: 2px; }
 

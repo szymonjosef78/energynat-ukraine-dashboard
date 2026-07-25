@@ -73,10 +73,9 @@ function fmtNum(n) {
 }
 
 function coverageClass(months) {
+  // Binary: red when under 1 month of stock (restock risk), green otherwise.
   if (months === null || months === undefined) return "na";
-  if (months < 1) return "coverage-low";
-  if (months < 3) return "coverage-mid";
-  return "coverage-ok";
+  return months < 1 ? "coverage-low" : "coverage-ok";
 }
 
 function coverageText(months) {
@@ -263,11 +262,8 @@ function renderTypeStock(idPrefix, stock, cov) {
   const covMonths = cov ? cov.coverage_months : stock.coverage_total;
   const covLabel = cov && cov.label ? cov.label.toLowerCase() : "last month";
   const days = cov ? cov.days_to_sell_all : null;
-  const powerCard = (cov && cov.power_sold_kwp != null)
-    ? `<div class="card"><div class="label">${t("Power sold (WTD)")}</div>
-         <div class="value">${fmtNum(cov.power_sold_kwp)} <span class="unit">kWp</span></div>
-         <div class="sub">${t("sum of power of all panels sold")}</div></div>`
-    : "";
+  // Right column = stock STATUS (a point-in-time snapshot), so no sales-flow
+  // metrics here. Coverage < 1 mo and sell-through < 30 d are highlighted red.
   const valueCard = (cov && cov.stock_cost_usd != null)
     ? `<div class="card"><div class="label">${t("Stock value at cost")}</div>
          <div class="value">${fmtUsd(cov.stock_cost_usd)}</div>
@@ -275,9 +271,8 @@ function renderTypeStock(idPrefix, stock, cov) {
     : "";
   cardsEl.innerHTML = `
     <div class="card"><div class="label">${t("Total stock")}</div><div class="value">${fmtNum(stock.grand_total)}</div>
-      <div class="sub">${t("as of")} ${stock.snapshot_date || "—"} &middot; ${t("coverage")} ${coverageText(covMonths)}
-        <span class="muted">(${t("vs week to date sales")})</span>${days != null ? ` &middot; ${t("sell-through")} ${daysToSellText(days)}` : ""}</div></div>
-    ${powerCard}
+      <div class="sub">${t("as of")} ${stock.snapshot_date || "—"} &middot; ${t("coverage")} <span class="${coverageClass(covMonths)}">${coverageText(covMonths)}</span>
+        <span class="muted">(${t("vs week to date sales")})</span>${days != null ? ` &middot; ${t("sell-through")} <span class="${daysCoverageClass(days)}">${daysToSellText(days)}</span>` : ""}</div></div>
     ${valueCard}
   `;
 
@@ -311,11 +306,9 @@ function renderTypeStock(idPrefix, stock, cov) {
 }
 
 function daysCoverageClass(days) {
+  // Binary: red when stock sells out in under 30 days, green otherwise.
   if (days === null || days === undefined) return "na";
-  // Same tiers as coverageClass (months), converted to days (~30/mo).
-  if (days < 30) return "coverage-low";
-  if (days < 90) return "coverage-mid";
-  return "coverage-ok";
+  return days < 30 ? "coverage-low" : "coverage-ok";
 }
 
 function daysToSellText(days) {
