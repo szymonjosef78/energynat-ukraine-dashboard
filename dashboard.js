@@ -15,7 +15,7 @@ const UK = {
   "Per-manager metrics — this week": "Показники менеджерів — цей тиждень",
   "PV panels sales by warehouse": "Продажі фотомодулів за складами",
   "Deye sales by warehouse": "Продажі DEYE за складами",
-  "Top sellers": "Топ-продажі", "Margin by product": "Маржа за товарами",
+  "Top sellers": "Топ-продажі", "Margin by product": "Маржа за товарами", "left": "в запасі",
   "Weekly action plan — recommendations & issues": "Тижневий план дій — рекомендації та проблеми",
   "For Monday's sales-team & purchasing meeting": "Для понеділкової наради відділу продажів і закупівель",
   "Warehouse": "Склад", "Total": "Разом", "Sales manager": "Менеджер з продажів",
@@ -337,25 +337,33 @@ function renderTypeSales(idPrefix, sales) {
   `;
 }
 
-function topSellerRows(items, tagClass, tagLabel) {
-  return items.map(s => `
-    <tr><td><span class="badge tag ${tagClass}">${tagLabel}</span></td><td>${s.name}</td><td>${fmtNum(s.qty)}</td></tr>
-  `).join("");
+function topSellerRows(items, tagClass, tagLabel, showStock) {
+  return items.map(s => {
+    const left = (showStock && s.stock != null)
+      ? ` <span class="ts-stock">(${fmtNum(s.stock)} ${t("left")})</span>` : "";
+    return `<tr><td><span class="badge tag ${tagClass}">${tagLabel}</span></td><td>${s.name}</td><td>${fmtNum(s.qty)}${left}</td></tr>`;
+  }).join("");
 }
 
 function renderSalesTopSellers(periods) {
   const grid = document.getElementById("sales-top-sellers-grid");
-  grid.innerHTML = periods.map(p => `
+  // Show stock-left only in the first current (non-benchmark) card = "Today".
+  let stockShown = false;
+  grid.innerHTML = periods.map(p => {
+    const showStock = !p.muted && !stockShown;
+    if (showStock) stockShown = true;
+    return `
     <div class="top-seller-card ${p.muted ? "benchmark-card" : "current-card"}">
       <h3>${t(p.label)}<div class="period-range">${p.start} to ${p.end}</div></h3>
       <table class="top-seller-table">
         <tbody>
-          ${topSellerRows(p.panels, "tag-panel", "PANEL")}
-          ${topSellerRows(p.deye, "tag-deye", "DEYE")}
+          ${topSellerRows(p.panels, "tag-panel", "PANEL", showStock)}
+          ${topSellerRows(p.deye, "tag-deye", "DEYE", showStock)}
         </tbody>
       </table>
     </div>
-  `).join("");
+  `;
+  }).join("");
 }
 
 function unitMarginText(item) {

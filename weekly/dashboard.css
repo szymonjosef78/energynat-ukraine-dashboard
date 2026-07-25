@@ -266,6 +266,7 @@ th.col-benchmark, td.col-benchmark { color: var(--muted, #68787f); font-weight: 
 .top-seller-card.benchmark-card { opacity: .72; }
 .top-seller-table td:nth-child(2) { text-align: left; color: var(--text); }
 .top-seller-table td:first-child { padding-right: 0; }
+.ts-stock { color: var(--muted); font-weight: 400; font-size: 0.82em; }
 
 .margin-table { font-size: 0.82rem; }
 .margin-table td:nth-child(2), .margin-table th:nth-child(2) { text-align: left; }
