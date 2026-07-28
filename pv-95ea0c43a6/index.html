@@ -1,0 +1,279 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PV Cost & Price — Energynat Ukraine</title>
+<style>
+  :root{
+    --bg:#FBFAF7; --panel:#ffffff; --panel-2:#F3F1EB; --ink:#1a1d21; --ink-soft:#5f656e;
+    --line:#E6E2D9; --line-strong:#d5d0c4;
+    --accent:#E0871F; --accent-ink:#8a5310; --accent-on:#ffffff;
+    --sp:#2E6FB0; --sp-bg:#E9F1FB; --rv:#C0552A; --rv-bg:#FBEBE2;
+    --good:#2f7d4f;
+    --shadow:0 1px 2px rgba(30,25,15,.05),0 8px 22px rgba(30,25,15,.07); --r:14px;
+  }
+  @media (prefers-color-scheme:dark){:root{
+    --bg:#121417; --panel:#1b1e22; --panel-2:#23272c; --ink:#e9eaec; --ink-soft:#9aa0a8;
+    --line:#2b3037; --line-strong:#3a4048; --accent:#F0A23E; --accent-ink:#F0A23E; --accent-on:#1a1205;
+    --sp:#67A8E6; --sp-bg:#16232f; --rv:#E4855C; --rv-bg:#2b1c14; --good:#5ec185;
+    --shadow:0 1px 2px rgba(0,0,0,.3),0 10px 26px rgba(0,0,0,.4);}}
+  :root[data-theme="light"]{--bg:#FBFAF7;--panel:#fff;--panel-2:#F3F1EB;--ink:#1a1d21;--ink-soft:#5f656e;--line:#E6E2D9;--line-strong:#d5d0c4;--accent:#E0871F;--accent-ink:#8a5310;--accent-on:#fff;--sp:#2E6FB0;--sp-bg:#E9F1FB;--rv:#C0552A;--rv-bg:#FBEBE2;--good:#2f7d4f;}
+  :root[data-theme="dark"]{--bg:#121417;--panel:#1b1e22;--panel-2:#23272c;--ink:#e9eaec;--ink-soft:#9aa0a8;--line:#2b3037;--line-strong:#3a4048;--accent:#F0A23E;--accent-ink:#F0A23E;--accent-on:#1a1205;--sp:#67A8E6;--sp-bg:#16232f;--rv:#E4855C;--rv-bg:#2b1c14;--good:#5ec185;}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:ui-sans-serif,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;font-size:15px;line-height:1.45;-webkit-font-smoothing:antialiased;-webkit-text-size-adjust:100%;padding:14px}
+  .wrap{max-width:460px;margin:0 auto}
+  header{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;margin-bottom:14px}
+  .brand{font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--accent-ink)}
+  h1{font-size:18px;margin:1px 0 0;font-weight:750;letter-spacing:-.01em}
+  .hctl{display:flex;flex-direction:column;align-items:flex-end;gap:6px;flex:none}
+  .lang{display:flex;gap:3px;background:var(--panel-2);border:1px solid var(--line);border-radius:99px;padding:3px}
+  .lang button{font:inherit;font-size:11px;font-weight:800;letter-spacing:.03em;color:var(--ink-soft);background:none;border:0;border-radius:99px;padding:5px 10px;cursor:pointer}
+  .lang button.on{background:var(--accent);color:var(--accent-on)}
+  .themebtn{border:1px solid var(--line-strong);background:var(--panel);color:var(--ink-soft);border-radius:99px;padding:5px 9px;font-size:15px;line-height:1;cursor:pointer}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow)}
+  .sec-t{display:flex;align-items:center;gap:8px;font-size:11px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-soft);margin:0 4px 8px}
+  .sec-t b{color:var(--accent);font-size:11px}
+  section{margin-bottom:16px}
+  .hero{padding:15px 15px 14px}
+  .bigfield label{display:block;font-size:11px;font-weight:700;letter-spacing:.03em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:6px}
+  .pricebox{display:flex;align-items:center;background:var(--panel-2);border:2px solid var(--accent);border-radius:12px;padding:6px 14px;gap:6px}
+  .pricebox .cur{font-size:22px;font-weight:700;color:var(--ink-soft)}
+  .pricebox input{flex:1;min-width:0;font:inherit;font-size:32px;font-weight:800;letter-spacing:-.02em;color:var(--ink);background:none;border:0;padding:4px 0;width:100%;font-variant-numeric:tabular-nums}
+  .pricebox input:focus{outline:none}
+  .pricebox .suf{font-size:14px;font-weight:700;color:var(--ink-soft);white-space:nowrap}
+  .cents{font-size:11px;color:var(--ink-soft);margin:5px 2px 0}
+  .lbl2{display:block;font-size:11px;font-weight:700;letter-spacing:.03em;text-transform:uppercase;color:var(--ink-soft);margin:14px 0 6px}
+  .seg{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;gap:6px;background:var(--panel-2);border:1px solid var(--line);border-radius:11px;padding:4px}
+  .seg button{font:inherit;font-size:13px;font-weight:700;color:var(--ink-soft);background:none;border:0;border-radius:8px;padding:11px 4px;cursor:pointer;transition:.12s}
+  .seg button.on{background:var(--accent);color:var(--accent-on);box-shadow:0 1px 3px rgba(0,0,0,.15)}
+  .seg .sub{display:block;font-size:9px;font-weight:600;opacity:.8;margin-top:1px;text-transform:none;letter-spacing:0}
+  .more{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:14px}
+  .mini{display:flex;flex-direction:column;gap:3px}
+  .mini label{font-size:10px;font-weight:600;color:var(--ink-soft);letter-spacing:.02em}
+  .mini input,.mini select{font:inherit;font-size:14px;font-weight:650;color:var(--ink);background:var(--panel-2);border:1px solid var(--line-strong);border-radius:9px;padding:8px 9px;width:100%;font-variant-numeric:tabular-nums}
+  .mini input:focus,.mini select:focus{outline:none;border-color:var(--accent)}
+  .calcbtn{width:100%;margin-top:14px;border:0;border-radius:12px;background:var(--accent);color:var(--accent-on);font:inherit;font-size:16px;font-weight:800;padding:15px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:.14s;box-shadow:0 2px 8px color-mix(in srgb,var(--accent) 40%,transparent)}
+  .calcbtn:active{transform:translateY(1px)}
+  .calcbtn.dirty{animation:pulse 1.6s ease-in-out infinite}
+  @keyframes pulse{0%,100%{box-shadow:0 2px 8px color-mix(in srgb,var(--accent) 40%,transparent)}50%{box-shadow:0 2px 18px color-mix(in srgb,var(--accent) 75%,transparent)}}
+  .calchint{text-align:center;font-size:10.5px;color:var(--accent-ink);margin:7px 0 0;height:13px;font-weight:600}
+  .rhead{padding:13px 14px 2px}
+  .chan{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;gap:5px;background:var(--panel-2);border:1px solid var(--line);border-radius:11px;padding:4px}
+  .chan button{font:inherit;font-size:13px;font-weight:800;color:var(--ink-soft);background:none;border:0;border-radius:8px;padding:9px 4px;cursor:pointer;transition:.12s}
+  .chan button.on[data-c="sp"]{background:var(--sp);color:#fff}
+  .chan button.on[data-c="rv"]{background:var(--rv);color:#fff}
+  .rt{width:100%;border-collapse:collapse}
+  .rt thead th{font-size:9.5px;font-weight:800;text-transform:uppercase;letter-spacing:.04em;color:var(--ink-soft);padding:10px 14px 8px;text-align:right;vertical-align:bottom;line-height:1.25}
+  .rt thead th:first-child{text-align:left}
+  .rt tbody td{padding:12px 14px;border-top:1px solid var(--line);text-align:right;font-variant-numeric:tabular-nums}
+  .rt tbody td.city{text-align:left;font-weight:750;font-size:14px}
+  .rt td.cost{font-size:16px;font-weight:800}
+  .rt td.profit{font-size:15px;font-weight:750;color:var(--good)}
+  .rfoot{display:flex;justify-content:space-between;align-items:center;padding:10px 16px 14px;font-size:11px;color:var(--ink-soft)}
+  .rfoot b{color:var(--ink);font-variant-numeric:tabular-nums}
+  .chanpill{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.04em;padding:3px 8px;border-radius:99px}
+  .chanpill.sp{background:var(--sp-bg);color:var(--sp)} .chanpill.rv{background:var(--rv-bg);color:var(--rv)}
+  details{border:1px solid var(--line);border-radius:var(--r);background:var(--panel);box-shadow:var(--shadow);overflow:hidden}
+  summary{cursor:pointer;padding:13px 15px;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-soft);list-style:none;display:flex;justify-content:space-between;align-items:center}
+  summary::-webkit-details-marker{display:none}
+  summary .chev{transition:transform .2s}
+  details[open] summary .chev{transform:rotate(180deg)}
+  .agroup{border-top:1px solid var(--line);padding:4px 0 10px}
+  .agroup h4{margin:11px 15px 4px;font-size:10px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-soft)}
+  .agroup.sp h4{color:var(--sp)} .agroup.rv h4{color:var(--rv)}
+  .arow{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:5px 15px}
+  .arow label{font-size:12.5px;color:var(--ink)}
+  .arow .u{font-size:10px;color:var(--ink-soft);margin-left:3px}
+  .arow input{font:inherit;font-size:13px;font-weight:650;width:78px;text-align:right;background:var(--panel-2);border:1px solid var(--line-strong);border-radius:8px;padding:6px 8px;color:var(--ink);font-variant-numeric:tabular-nums}
+  .arow input:focus{outline:none;border-color:var(--accent)}
+  .arow .cf{font-size:9px;color:var(--rv);font-weight:800}
+  footer{margin-top:14px;padding:0 4px;color:var(--ink-soft);font-size:10.5px;line-height:1.55}
+  footer b{color:var(--ink)}
+  @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <header>
+    <div><div class="brand" data-i18n="brand">Energynat Ukraine</div><h1 data-i18n="title">PV Cost &amp; Price</h1></div>
+    <div class="hctl">
+      <div class="lang" id="langseg"><button type="button" data-l="en" class="on">EN</button><button type="button" data-l="ua">UA</button></div>
+      <button class="themebtn" id="themebtn" type="button" aria-label="Theme">◐</button>
+    </div>
+  </header>
+
+  <!-- SECTION 1 -->
+  <section>
+    <div class="sec-t"><b>1</b> <span data-i18n="s1">What are you buying</span></div>
+    <div class="card hero">
+      <div class="bigfield">
+        <label for="price" data-i18n="l_price">Purchase price</label>
+        <div class="pricebox"><span class="cur">€</span><input id="price" type="number" step="0.001" value="0.091" inputmode="decimal"><span class="suf">/ Wp</span></div>
+        <div class="cents" id="cents"></div>
+      </div>
+      <span class="lbl2" data-i18n="l_inc">Incoterm — purchase point</span>
+      <div class="seg" id="incseg">
+        <button type="button" data-v="WAW" class="on">DDP WAW<span class="sub" data-i18n="inc_waw">in Warsaw</span></button>
+        <button type="button" data-v="GDA">GDA<span class="sub" data-i18n="inc_gda">Gdańsk port</span></button>
+        <button type="button" data-v="RTD">RTD<span class="sub" data-i18n="inc_rtd">Rotterdam</span></button>
+      </div>
+      <div class="more">
+        <div class="mini"><label for="brand" data-i18n="l_brand">Brand (floor)</label>
+          <select id="brand"><option value="JINKO" selected>Jinko</option><option value="TONGWEI">Tongwei</option><option value="SUNTECH">Suntech</option><option value="OTHER" data-i18n="opt_other">Other</option></select></div>
+        <div class="mini"><label for="margin" data-i18n="l_margin">Margin add ($/Wp)</label><input id="margin" type="number" step="0.005" value="0.01" inputmode="decimal"></div>
+        <div class="mini"><label for="power" data-i18n="l_power">Power (Wp)</label><input id="power" type="number" step="5" value="620" inputmode="numeric"></div>
+        <div class="mini"><label for="modules" data-i18n="l_modules">Modules / cont.</label><input id="modules" type="number" step="1" value="648" inputmode="numeric"></div>
+      </div>
+      <button class="calcbtn" id="calc" type="button">⚡ <span data-i18n="btn_calc">Calculate Cost &amp; Price</span></button>
+      <p class="calchint" id="calchint"></p>
+    </div>
+  </section>
+
+  <!-- SECTION 2 -->
+  <section>
+    <div class="sec-t"><b>2</b> <span data-i18n="s2">Cost at destination &amp; profit</span></div>
+    <div class="card">
+      <div class="rhead">
+        <div class="chan" id="chanseg"><button type="button" data-c="sp" class="on">San Paver</button><button type="button" data-c="rv">ROLV</button></div>
+      </div>
+      <table class="rt">
+        <thead><tr>
+          <th data-i18n="col_city">City</th>
+          <th data-i18n="col_cost">Cost / Wp</th>
+          <th data-i18n="col_profit">Profit / container</th>
+        </tr></thead>
+        <tbody id="rbody"></tbody>
+      </table>
+      <div class="rfoot"><span id="foottx"></span><span class="chanpill sp" id="chanpill">San Paver</span></div>
+    </div>
+  </section>
+
+  <!-- SECTION 3 -->
+  <section>
+    <div class="sec-t"><b>3</b> <span data-i18n="s3">Implied assumptions</span></div>
+    <details id="assum">
+      <summary><span data-i18n="sum_adj">Adjust rates — applied on Calculate</span> <span class="chev">⌄</span></summary>
+      <div class="agroup">
+        <h4 data-i18n="g_shared">Shared</h4>
+        <div class="arow"><label><span data-i18n="a_fx">FX</span> <span class="u">USD/€</span></label><input id="fx" type="number" step="0.01" value="1.16"></div>
+        <div class="arow"><label><span data-i18n="a_gda">Port→Warsaw · GDA</span> <span class="u">€/car</span></label><input id="gda" type="number" step="10" value="450"></div>
+        <div class="arow"><label><span data-i18n="a_rtd">Port→Warsaw · RTD</span> <span class="u">€/car</span></label><input id="rtd" type="number" step="10" value="1800"></div>
+        <div class="arow"><label><span data-i18n="a_chm">Transport · Chmielnicki</span> <span class="u">€/car</span></label><input id="chm" type="number" step="10" value="2450"></div>
+        <div class="arow"><label><span data-i18n="a_kie">Transport · Kiev</span> <span class="u">€/car</span></label><input id="kie" type="number" step="10" value="2550"></div>
+        <div class="arow"><label><span data-i18n="a_ode">Transport · Odessa</span> <span class="u">€/car</span></label><input id="ode" type="number" step="10" value="3300"></div>
+        <div class="arow"><label><span data-i18n="a_lvi">Transport · Lviv</span> <span class="u">€/car</span> <span class="cf" data-i18n="cf">confirm</span></label><input id="lvi" type="number" step="10" value="2500"></div>
+        <div class="arow"><label><span data-i18n="fl_j">Floor · Jinko</span> <span class="u">$/Wp</span></label><input id="fl_JINKO" type="number" step="0.005" value="0.14"></div>
+        <div class="arow"><label><span data-i18n="fl_t">Floor · Tongwei</span> <span class="u">$/Wp</span></label><input id="fl_TONGWEI" type="number" step="0.005" value="0.13"></div>
+        <div class="arow"><label><span data-i18n="fl_s">Floor · Suntech</span> <span class="u">$/Wp</span></label><input id="fl_SUNTECH" type="number" step="0.005" value="0.125"></div>
+        <div class="arow"><label><span data-i18n="fl_o">Floor · Other</span> <span class="u">$/Wp</span></label><input id="fl_OTHER" type="number" step="0.005" value="0.125"></div>
+      </div>
+      <div class="agroup sp">
+        <h4><span data-i18n="g_sp">San Paver fees</span></h4>
+        <div class="arow"><label><span data-i18n="sp_transfer">Transfer Fee</span> <span class="u">%</span></label><input id="up1_sp" type="number" step="0.05" value="1.95"></div>
+        <div class="arow"><label><span data-i18n="sp_sales">Sales Fee</span> <span class="u">%</span></label><input id="fin_sp" type="number" step="0.05" value="0.70"></div>
+      </div>
+      <div class="agroup rv">
+        <h4><span data-i18n="g_rv">ROLV fees</span></h4>
+        <div class="arow"><label><span data-i18n="rv_operating">Operating Fee</span> <span class="u">%</span></label><input id="up1_rv" type="number" step="0.05" value="1.00"></div>
+        <div class="arow"><label><span data-i18n="rv_transfer">Transfer Fee</span> <span class="u">%</span></label><input id="up2_rv" type="number" step="0.05" value="1.50"></div>
+        <div class="arow"><label><span data-i18n="rv_sales">Sales Fee</span> <span class="u">%</span></label><input id="fin_rv" type="number" step="0.05" value="0.70"></div>
+        <div class="arow"><label><span data-i18n="rv_custom">Custom Declaration</span> <span class="u">€/car</span></label><input id="sur_rv" type="number" step="10" value="150"></div>
+      </div>
+    </details>
+  </section>
+
+  <footer><span id="foot"></span></footer>
+</div>
+
+<script>
+(function(){
+  var $=function(id){return document.getElementById(id)};
+  var val=function(id,def){var e=$(id);return e?(parseFloat(e.value)||0):(def||0)};
+  var CITIES=["chm","kie","ode","lvi"];
+  var T={
+    en:{brand:"Energynat Ukraine",title:"PV Cost & Price",s1:"What are you buying",s2:"Cost at destination & profit",s3:"Implied assumptions",
+      l_price:"Purchase price",l_inc:"Incoterm — purchase point",inc_waw:"in Warsaw",inc_gda:"Gdańsk port",inc_rtd:"Rotterdam",
+      l_brand:"Brand (floor)",opt_other:"Other",l_margin:"Margin add ($/Wp)",l_power:"Power (Wp)",l_modules:"Modules / cont.",
+      btn_calc:"Calculate Cost & Price",col_city:"City",col_cost:"Cost / Wp",col_profit:"Profit / container",
+      sum_adj:"Adjust rates — applied on Calculate",g_shared:"Shared",a_fx:"FX",a_gda:"Port→Warsaw · GDA",a_rtd:"Port→Warsaw · RTD",
+      a_chm:"Transport · Chmielnicki",a_kie:"Transport · Kiev",a_ode:"Transport · Odessa",a_lvi:"Transport · Lviv",cf:"confirm",
+      fl_j:"Floor · Jinko",fl_t:"Floor · Tongwei",fl_s:"Floor · Suntech",fl_o:"Floor · Other",
+      g_sp:"San Paver fees",g_rv:"ROLV fees",sp_transfer:"Transfer Fee",sp_sales:"Sales Fee",
+      rv_operating:"Operating Fee",rv_transfer:"Transfer Fee",rv_sales:"Sales Fee",rv_custom:"Custom Declaration",
+      cents:"€-cents/Wp",dirty:"Inputs changed — tap Calculate to update",
+      cities:{chm:"Chmielnicki",kie:"Kiev",ode:"Odessa",lvi:"Lviv"},cont:"Container",kwp:"kWp",pcs:"pcs",
+      foot:"cost $/Wp = price × FX × ((1+Operating)(1+Transfer) + Sales) + (portLeg + cityLeg + Custom) × FX ÷ (power × modules). Profit/container = (max(floor, cost + margin add) − cost) × power × modules."},
+    ua:{brand:"Energynat Україна",title:"Собівартість і ціна PV",s1:"Що ви купуєте",s2:"Собівартість та прибуток",s3:"Ставки та припущення",
+      l_price:"Ціна закупівлі",l_inc:"Інкотермс — пункт закупівлі",inc_waw:"у Варшаві",inc_gda:"порт Гданськ",inc_rtd:"Роттердам",
+      l_brand:"Бренд (мін.)",opt_other:"Інше",l_margin:"Мін. націнка ($/Wp)",l_power:"Потужність (Wp)",l_modules:"Модулів / конт.",
+      btn_calc:"Розрахувати",col_city:"Місто",col_cost:"Собівартість / Wp",col_profit:"Прибуток / конт.",
+      sum_adj:"Ставки — застосовуються при розрахунку",g_shared:"Спільні",a_fx:"Курс",a_gda:"Порт→Варшава · GDA",a_rtd:"Порт→Варшава · RTD",
+      a_chm:"Транспорт · Хмельницький",a_kie:"Транспорт · Київ",a_ode:"Транспорт · Одеса",a_lvi:"Транспорт · Львів",cf:"уточнити",
+      fl_j:"Мін. · Jinko",fl_t:"Мін. · Tongwei",fl_s:"Мін. · Suntech",fl_o:"Мін. · Інше",
+      g_sp:"San Paver — комісії",g_rv:"ROLV — комісії",sp_transfer:"Комісія за переказ",sp_sales:"Комісія з продажу",
+      rv_operating:"Операційна комісія",rv_transfer:"Комісія за переказ",rv_sales:"Комісія з продажу",rv_custom:"Митна декларація",
+      cents:"€-центів/Wp",dirty:"Дані змінено — натисніть «Розрахувати»",
+      cities:{chm:"Хмельницький",kie:"Київ",ode:"Одеса",lvi:"Львів"},cont:"Контейнер",kwp:"кВтп",pcs:"шт",
+      foot:"собівартість $/Wp = ціна × курс × ((1+Операційна)(1+Переказ) + Продаж) + (порт + місто + Митна) × курс ÷ (потужність × модулі). Прибуток/конт. = (max(мін, собівартість + націнка) − собівартість) × потужність × модулі."}
+  };
+  var lang="en", incoterm="WAW", channel="sp", results=null;
+  var watch=["price","brand","margin","power","modules","fx","gda","rtd","chm","kie","ode","lvi",
+    "fl_JINKO","fl_TONGWEI","fl_SUNTECH","fl_OTHER","up1_sp","fin_sp","up1_rv","up2_rv","fin_rv","sur_rv"];
+  function portLeg(){return incoterm==="WAW"?0:(incoterm==="GDA"?val("gda"):val("rtd"))}
+  function costOf(sc,cityKey){
+    var price=val("price"),fx=val("fx"),W=val("power"),mod=val("modules"),wp=W*mod; if(wp<=0)return 0;
+    var up1=val("up1_"+sc)/100, up2=val("up2_"+sc,0)/100, fin=val("fin_"+sc)/100, sur=val("sur_"+sc,0), city=val(cityKey);
+    return price*fx*((1+up1)*(1+up2)+fin)+(portLeg()+city+sur)*fx/wp;
+  }
+  function money(v){return "$"+Math.round(v).toLocaleString("en-US")}
+  function compute(){
+    var floor=val("fl_"+$("brand").value),add=val("margin"),W=val("power"),mod=val("modules");
+    var out={sp:{},rv:{}};
+    ["sp","rv"].forEach(function(sc){CITIES.forEach(function(k){
+      var cost=costOf(sc,k),price=Math.max(floor,cost+add);
+      out[sc][k]={cost:cost,profit:(price-cost)*W*mod};});});
+    out.kw=(W*mod)/1000; out.pcs=mod; return out;
+  }
+  function renderResults(){
+    if(!results)return; var t=T[lang];
+    var col=channel==="sp"?"var(--sp)":"var(--rv)", html="";
+    CITIES.forEach(function(k){var d=results[channel][k];
+      html+='<tr><td class="city">'+t.cities[k]+'</td>'+
+        '<td class="cost" style="color:'+col+'">$'+d.cost.toFixed(4)+'</td>'+
+        '<td class="profit">'+money(d.profit)+'</td></tr>';});
+    $("rbody").innerHTML=html;
+    $("foottx").innerHTML=t.cont+' <b>'+results.kw.toFixed(1)+'</b> '+t.kwp+' · <b>'+results.pcs+'</b> '+t.pcs;
+    var pill=$("chanpill"); pill.textContent=channel==="sp"?"San Paver":"ROLV"; pill.className="chanpill "+channel;
+  }
+  function applyLang(){
+    var t=T[lang];
+    document.querySelectorAll("[data-i18n]").forEach(function(el){var k=el.getAttribute("data-i18n"); if(t[k]!=null)el.textContent=t[k];});
+    $("cents").textContent="= "+(val("price")*100).toFixed(1)+" "+t.cents;
+    $("foot").textContent=t.foot;
+    if($("calc").classList.contains("dirty"))$("calchint").textContent=t.dirty;
+    renderResults();
+  }
+  function calc(){results=compute(); setDirty(false); renderResults();}
+  function setDirty(d){$("calc").classList.toggle("dirty",d); $("calchint").textContent=d?T[lang].dirty:"";}
+  watch.forEach(function(id){var e=$(id); if(e)e.addEventListener("input",function(){
+    if(id==="price")$("cents").textContent="= "+(val("price")*100).toFixed(1)+" "+T[lang].cents;
+    setDirty(true);});});
+  $("incseg").addEventListener("click",function(e){var b=e.target.closest("button");if(!b)return;
+    [].forEach.call(this.children,function(x){x.classList.remove("on")}); b.classList.add("on"); incoterm=b.dataset.v; setDirty(true);});
+  $("chanseg").addEventListener("click",function(e){var b=e.target.closest("button");if(!b)return;
+    [].forEach.call(this.children,function(x){x.classList.remove("on")}); b.classList.add("on"); channel=b.dataset.c; renderResults();});
+  $("langseg").addEventListener("click",function(e){var b=e.target.closest("button");if(!b)return;
+    [].forEach.call(this.children,function(x){x.classList.remove("on")}); b.classList.add("on"); lang=b.dataset.l; applyLang();});
+  $("calc").addEventListener("click",calc);
+  var root=document.documentElement;
+  function sysDark(){return window.matchMedia&&window.matchMedia("(prefers-color-scheme:dark)").matches}
+  function setTheme(x){root.setAttribute("data-theme",x);$("themebtn").textContent=(x==="dark")?"☾":"☀";}
+  $("themebtn").addEventListener("click",function(){var c=root.getAttribute("data-theme")||(sysDark()?"dark":"light");setTheme(c==="dark"?"light":"dark");});
+  setTheme(sysDark()?"dark":"light");
+  applyLang(); calc();
+})();
+</script>
+</body>
+</html>
