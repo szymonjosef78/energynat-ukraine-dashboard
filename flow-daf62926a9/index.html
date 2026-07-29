@@ -1,0 +1,298 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Container Flow — Energynat Ukraine</title>
+<style>
+  :root{
+    --bg:#FBFAF7; --panel:#ffffff; --panel-2:#F3F1EB; --ink:#1a1d21; --ink-soft:#5f656e; --ink-mute:#8b9098;
+    --line:#E6E2D9; --line-strong:#d5d0c4;
+    --accent:#E0871F; --accent-ink:#8a5310; --accent-on:#fff; --accent-soft:#F6E4C9;
+    --jinko:#2E6FB0; --jinko-bg:#E9F1FB; --tongwei:#C0552A; --tongwei-bg:#FBEBE2;
+    --good:#2f7d4f;
+    --grid:#ECE8DF; --area:#E0871F;
+    --shadow:0 1px 2px rgba(30,25,15,.05),0 8px 22px rgba(30,25,15,.07); --r:14px;
+  }
+  @media (prefers-color-scheme:dark){:root{
+    --bg:#121417; --panel:#1b1e22; --panel-2:#23272c; --ink:#e9eaec; --ink-soft:#9aa0a8; --ink-mute:#727880;
+    --line:#2b3037; --line-strong:#3a4048; --accent:#F0A23E; --accent-ink:#F0A23E; --accent-on:#1a1205; --accent-soft:#33291a;
+    --jinko:#63A6E4; --jinko-bg:#16232f; --tongwei:#E4855C; --tongwei-bg:#2b1c14; --good:#5ec185;
+    --grid:#262b31; --area:#F0A23E;
+    --shadow:0 1px 2px rgba(0,0,0,.3),0 10px 26px rgba(0,0,0,.4);}}
+  :root[data-theme="light"]{--bg:#FBFAF7;--panel:#fff;--panel-2:#F3F1EB;--ink:#1a1d21;--ink-soft:#5f656e;--ink-mute:#8b9098;--line:#E6E2D9;--line-strong:#d5d0c4;--accent:#E0871F;--accent-ink:#8a5310;--accent-on:#fff;--accent-soft:#F6E4C9;--jinko:#2E6FB0;--jinko-bg:#E9F1FB;--tongwei:#C0552A;--tongwei-bg:#FBEBE2;--good:#2f7d4f;--grid:#ECE8DF;--area:#E0871F;}
+  :root[data-theme="dark"]{--bg:#121417;--panel:#1b1e22;--panel-2:#23272c;--ink:#e9eaec;--ink-soft:#9aa0a8;--ink-mute:#727880;--line:#2b3037;--line-strong:#3a4048;--accent:#F0A23E;--accent-ink:#F0A23E;--accent-on:#1a1205;--accent-soft:#33291a;--jinko:#63A6E4;--jinko-bg:#16232f;--tongwei:#E4855C;--tongwei-bg:#2b1c14;--good:#5ec185;--grid:#262b31;--area:#F0A23E;}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:ui-sans-serif,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;font-size:15px;line-height:1.45;-webkit-font-smoothing:antialiased;-webkit-text-size-adjust:100%;padding:clamp(12px,2.5vw,26px)}
+  .wrap{max-width:960px;margin:0 auto}
+  .tnum{font-variant-numeric:tabular-nums}
+  header{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:16px}
+  .brand{font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--accent-ink)}
+  h1{font-size:clamp(19px,3vw,24px);margin:2px 0 0;font-weight:750;letter-spacing:-.01em}
+  .sub{font-size:12.5px;color:var(--ink-soft);margin:2px 0 0}
+  .themebtn{flex:none;border:1px solid var(--line-strong);background:var(--panel);color:var(--ink-soft);border-radius:99px;padding:6px 10px;font-size:15px;line-height:1;cursor:pointer}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow)}
+
+  .tiles{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px}
+  @media(max-width:640px){.tiles{grid-template-columns:repeat(2,1fr)}}
+  .tile{padding:13px 14px}
+  .tile .k{font-size:10px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-soft)}
+  .tile .v{font-size:23px;font-weight:800;letter-spacing:-.01em;margin-top:3px;font-variant-numeric:tabular-nums}
+  .tile .u{font-size:11px;color:var(--ink-mute);font-weight:600}
+  .tile.cost .v{color:var(--accent-ink)}
+
+  .barhead{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin:0 2px 9px}
+  .sec-t{font-size:11px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-soft)}
+  .seg{display:inline-flex;gap:3px;background:var(--panel-2);border:1px solid var(--line);border-radius:10px;padding:3px}
+  .seg button{font:inherit;font-size:12px;font-weight:700;color:var(--ink-soft);background:none;border:0;border-radius:7px;padding:7px 12px;cursor:pointer;transition:.12s}
+  .seg button.on{background:var(--accent);color:var(--accent-on)}
+
+  .chartwrap{padding:12px 10px 6px}
+  svg.flow{width:100%;height:auto;display:block;overflow:visible}
+  .axislbl{fill:var(--ink-mute);font-size:11px;font-weight:600}
+  .gridline{stroke:var(--grid);stroke-width:1}
+  .axisline{stroke:var(--line-strong);stroke-width:1}
+  .arealine{fill:none;stroke:var(--area);stroke-width:2.5;stroke-linejoin:round;stroke-linecap:round}
+  .marker{fill:var(--area);stroke:var(--panel);stroke-width:2;pointer-events:none}
+  .arealine{pointer-events:none}
+  .dlabel{fill:var(--ink);font-size:11px;font-weight:800;font-variant-numeric:tabular-nums;pointer-events:none}
+  .dlabel.sub{fill:var(--ink-mute);font-size:9.5px;font-weight:600}
+  .hitband{fill:transparent;cursor:pointer}
+  .hitband:hover~.marker{}
+  .tip{position:fixed;pointer-events:none;z-index:9;background:var(--panel);border:1px solid var(--line-strong);box-shadow:var(--shadow);border-radius:10px;padding:9px 11px;font-size:12px;opacity:0;transition:opacity .1s;max-width:220px}
+  .tip .d{font-weight:800;margin-bottom:4px}
+  .tip .row{display:flex;justify-content:space-between;gap:14px;color:var(--ink-soft)}
+  .tip .row b{color:var(--ink);font-variant-numeric:tabular-nums}
+
+  .legend{display:flex;flex-wrap:wrap;gap:14px;padding:8px 14px 12px;font-size:11.5px;color:var(--ink-soft)}
+  .dot{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:5px;vertical-align:-1px}
+  .dot.j{background:var(--jinko)} .dot.t{background:var(--tongwei)}
+  .swatch.avail{display:inline-block;width:11px;height:11px;border-radius:3px;border:2px solid var(--ink-mute);margin-right:5px;vertical-align:-2px}
+  .swatch.inc{display:inline-block;width:11px;height:11px;border-radius:3px;border:2px dashed var(--ink-mute);margin-right:5px;vertical-align:-2px}
+
+  /* arrival strip */
+  .strip{display:flex;gap:10px;overflow-x:auto;padding:4px 12px 14px;scroll-snap-type:x proximity}
+  .acol{flex:0 0 auto;min-width:150px;scroll-snap-align:start;border:1px solid var(--line);border-radius:12px;padding:10px;background:var(--panel-2)}
+  .acol.now{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent) inset}
+  .acol .date{font-size:13px;font-weight:800}
+  .acol .rel{font-size:10px;color:var(--ink-mute);font-weight:600;text-transform:uppercase;letter-spacing:.03em}
+  .chips{display:flex;flex-wrap:wrap;gap:5px;margin:9px 0}
+  .chip{font-size:10.5px;font-weight:700;color:#fff;border-radius:6px;padding:3px 6px;line-height:1.25;white-space:nowrap}
+  .chip.j{background:var(--jinko)} .chip.t{background:var(--tongwei)}
+  .chip.inc{background:transparent;border:1.5px dashed;padding:2px 5px}
+  .chip.inc.j{color:var(--jinko);border-color:var(--jinko)} .chip.inc.t{color:var(--tongwei);border-color:var(--tongwei)}
+  .acol .tot{display:flex;justify-content:space-between;font-size:11px;border-top:1px dashed var(--line-strong);padding-top:7px;margin-top:4px;color:var(--ink-soft)}
+  .acol .tot b{color:var(--ink);font-variant-numeric:tabular-nums}
+  .acol .tot .c{color:var(--accent-ink)}
+
+  /* params */
+  details{margin-top:14px;border:1px solid var(--line);border-radius:var(--r);background:var(--panel);box-shadow:var(--shadow);overflow:hidden}
+  summary{cursor:pointer;padding:13px 15px;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-soft);list-style:none;display:flex;justify-content:space-between;align-items:center}
+  summary::-webkit-details-marker{display:none}
+  summary .chev{transition:transform .2s} details[open] summary .chev{transform:rotate(180deg)}
+  .pgrid{border-top:1px solid var(--line);padding:12px 14px;display:grid;grid-template-columns:repeat(3,1fr);gap:12px 16px}
+  @media(max-width:640px){.pgrid{grid-template-columns:repeat(2,1fr)}}
+  .pf{display:flex;flex-direction:column;gap:4px}
+  .pf label{font-size:10.5px;font-weight:600;color:var(--ink-soft)}
+  .pf input{font:inherit;font-size:14px;font-weight:700;color:var(--ink);background:var(--panel-2);border:1.5px solid var(--line-strong);border-radius:9px;padding:8px 10px;font-variant-numeric:tabular-nums}
+  .pf input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px color-mix(in srgb,var(--accent) 20%,transparent)}
+  .preset{display:flex;gap:8px;align-items:center;padding:0 14px 14px}
+  .preset button{font:inherit;font-size:11.5px;font-weight:700;color:var(--ink-soft);background:var(--panel-2);border:1px solid var(--line-strong);border-radius:8px;padding:7px 11px;cursor:pointer}
+  .preset button:hover{border-color:var(--accent);color:var(--accent-ink)}
+  .note{font-size:10.5px;color:var(--ink-mute);margin-left:auto}
+  footer{margin-top:14px;padding:0 4px;color:var(--ink-mute);font-size:10.5px;line-height:1.55}
+  footer b{color:var(--ink-soft)}
+  @media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <header>
+    <div>
+      <div class="brand">Energynat Ukraine · warehouse inflow</div>
+      <h1>Container Flow — next 30 days</h1>
+      <p class="sub" id="sub">Stock arriving into Ukraine, valued at Chmielnicki landed cost.</p>
+    </div>
+    <button class="themebtn" id="themebtn" type="button" aria-label="Theme">◐</button>
+  </header>
+
+  <div class="tiles">
+    <div class="card tile"><div class="k">Containers</div><div class="v tnum" id="t_ct">–</div><div class="u">in the window</div></div>
+    <div class="card tile"><div class="k">Capacity</div><div class="v tnum" id="t_mw">–</div><div class="u">MWp total</div></div>
+    <div class="card tile cost"><div class="k">Chmielnicki cost</div><div class="v tnum" id="t_cost">–</div><div class="u" id="t_cost_u">base value, USD</div></div>
+    <div class="card tile"><div class="k">Arrivals</div><div class="v tnum" id="t_ev">–</div><div class="u" id="t_win">dates</div></div>
+  </div>
+
+  <section class="card">
+    <div class="chartwrap">
+      <div class="barhead">
+        <span class="sec-t">Cumulative stock over time</span>
+        <div class="seg" id="metricseg">
+          <button type="button" data-m="kwp" class="on">Capacity</button>
+          <button type="button" data-m="ct">Containers</button>
+          <button type="button" data-m="cost">Chmielnicki $</button>
+        </div>
+      </div>
+      <div id="chart"></div>
+    </div>
+    <div class="legend">
+      <span><span class="dot j"></span>Jinko</span>
+      <span><span class="dot t"></span>Tongwei</span>
+      <span><span class="swatch avail"></span>Available now</span>
+      <span><span class="swatch inc"></span>Incoming</span>
+    </div>
+    <div class="strip" id="strip"></div>
+  </section>
+
+  <details id="params" open>
+    <summary>Adjustable parameters — cost drivers for Chmielnicki base cost <span class="chev">⌄</span></summary>
+    <div class="pgrid">
+      <div class="pf"><label for="p_fx">FX (USD per €)</label><input id="p_fx" type="number" step="0.01" value="1.14"></div>
+      <div class="pf"><label for="p_tchm">Transport → Chmielnicki (€/car)</label><input id="p_tchm" type="number" step="10" value="2450"></div>
+      <div class="pf"><label for="p_gda">GDA → Warsaw leg (€/car)</label><input id="p_gda" type="number" step="10" value="450"></div>
+      <div class="pf"><label for="p_upl">Uplift — customs/clearance (%)</label><input id="p_upl" type="number" step="0.05" value="1.95"></div>
+      <div class="pf"><label for="p_fin">Financing / insurance (%)</label><input id="p_fin" type="number" step="0.05" value="0.70"></div>
+      <div class="pf"><label for="p_rtd">RTD → Warsaw leg (€/car)</label><input id="p_rtd" type="number" step="10" value="1800"></div>
+    </div>
+    <div class="preset">
+      <button type="button" id="reset">Reset to source</button>
+      <span class="note">Purchase price is baked into each container and not shown — only Chmielnicki landed cost is used as the base.</span>
+    </div>
+  </details>
+
+  <footer id="foot"></footer>
+</div>
+<div class="tip" id="tip"></div>
+
+<script>
+const DATA=[{"lp":1,"brand":"Tongwei","power":640,"mod":576,"inc":"WAW","K":9.1,"eta":"available","code":"TWMND-78HD-640","frame":"silver"},{"lp":2,"brand":"Tongwei","power":640,"mod":576,"inc":"WAW","K":9.1,"eta":"available","code":"TWMND-78HD-640","frame":"silver"},{"lp":3,"brand":"Tongwei","power":640,"mod":576,"inc":"WAW","K":9.1,"eta":"available","code":"TWMND-78HD-640","frame":"silver"},{"lp":4,"brand":"JINKO","power":620,"mod":648,"inc":"GDA","K":9.6,"eta":"available","code":"JKM620N-66HL4M-BDV","frame":"silver"},{"lp":5,"brand":"JINKO","power":620,"mod":648,"inc":"GDA","K":9.6,"eta":"available","code":"JKM620N-66HL4M-BDV","frame":"silver"},{"lp":6,"brand":"JINKO","power":620,"mod":648,"inc":"GDA","K":9.6,"eta":"available","code":"JKM620N-66HL4M-BDV","frame":"silver"},{"lp":7,"brand":"JINKO","power":620,"mod":648,"inc":"GDA","K":9.6,"eta":"available","code":"JKM620N-66HL4M-BDV","frame":"silver"},{"lp":8,"brand":"JINKO","power":620,"mod":648,"inc":"GDA","K":9.6,"eta":"available","code":"JKM620N-66HL4M-BDV","frame":"silver"},{"lp":9,"brand":"JINKO","power":620,"mod":648,"inc":"GDA","K":9.6,"eta":"available","code":"JKM620N-66HL4M-BDV","frame":"silver"},{"lp":10,"brand":"JINKO","power":510,"mod":888,"inc":"WAW","K":11.5,"eta":"August 3","code":"JKM510N-54HL4M-BDV","frame":"black"},{"lp":11,"brand":"JINKO","power":515,"mod":888,"inc":"WAW","K":11.5,"eta":"August 3","code":"JKM515N-54HL4M-BDV","frame":"black"},{"lp":12,"brand":"JINKO","power":515,"mod":888,"inc":"WAW","K":11.5,"eta":"August 10","code":"JKM515N-54HL4M-BDV","frame":"black"},{"lp":13,"brand":"JINKO","power":515,"mod":888,"inc":"WAW","K":11.5,"eta":"August 10","code":"JKM515N-54HL4M-BDV","frame":"black"},{"lp":14,"brand":"JINKO","power":515,"mod":888,"inc":"WAW","K":11.5,"eta":"August 10","code":"JKM515N-54HL4M-BDV","frame":"black"},{"lp":15,"brand":"JINKO","power":510,"mod":888,"inc":"WAW","K":11.5,"eta":"August 15","code":"JKM510N-54HL4M-BDV","frame":"black"},{"lp":16,"brand":"JINKO","power":510,"mod":888,"inc":"WAW","K":11.5,"eta":"August 15","code":"JKM510N-54HL4M-BDV","frame":"black"},{"lp":17,"brand":"JINKO","power":510,"mod":888,"inc":"WAW","K":11.5,"eta":"August 15","code":"JKM510N-54HL4M-BDV","frame":"black"},{"lp":18,"brand":"JINKO","power":510,"mod":888,"inc":"WAW","K":11.5,"eta":"August 15","code":"JKM510N-54HL4M-BDV","frame":"black"},{"lp":19,"brand":"JINKO","power":510,"mod":888,"inc":"WAW","K":11.5,"eta":"August 15","code":"JKM510N-54HL4M-BDV","frame":"black"},{"lp":20,"brand":"JINKO","power":510,"mod":888,"inc":"WAW","K":11.5,"eta":"August 15","code":"JKM510N-54HL4M-BDV","frame":"black"},{"lp":21,"brand":"JINKO","power":510,"mod":888,"inc":"GDA","K":11.7,"eta":"August 21","code":"JKM510N-54HL4M-BDV","frame":"black"},{"lp":22,"brand":"JINKO","power":510,"mod":888,"inc":"GDA","K":11.7,"eta":"August 21","code":"JKM510N-54HL4M-BDV","frame":"black"},{"lp":23,"brand":"JINKO","power":510,"mod":888,"inc":"GDA","K":11.7,"eta":"August 21","code":"JKM510N-54HL4M-BDV","frame":"black"},{"lp":24,"brand":"JINKO","power":475,"mod":925,"inc":"GDA","K":11.2,"eta":"August 21","code":"JKM475N-48QL6-DV","frame":"black"},{"lp":25,"brand":"JINKO","power":475,"mod":925,"inc":"GDA","K":11.2,"eta":"August 21","code":"JKM475N-48QL6-DV","frame":"black"},{"lp":26,"brand":"JINKO","power":475,"mod":925,"inc":"GDA","K":11.2,"eta":"August 21","code":"JKM475N-48QL6-DV","frame":"black"},{"lp":27,"brand":"JINKO","power":590,"mod":720,"inc":"GDA","K":10.8,"eta":"August 21","code":"JKM590N-72HL4-BDV","frame":"silver"},{"lp":28,"brand":"JINKO","power":590,"mod":720,"inc":"GDA","K":10.8,"eta":"August 21","code":"JKM590N-72HL4-BDV","frame":"silver"},{"lp":29,"brand":"JINKO","power":590,"mod":720,"inc":"GDA","K":10.8,"eta":"August 21","code":"JKM590N-72HL4-BDV","frame":"silver"},{"lp":30,"brand":"JINKO","power":590,"mod":720,"inc":"GDA","K":10.8,"eta":"August 21","code":"JKM590N-72HL4-BDV","frame":"silver"},{"lp":31,"brand":"JINKO","power":590,"mod":720,"inc":"GDA","K":10.8,"eta":"August 21","code":"JKM590N-72HL4-BDV","frame":"silver"},{"lp":32,"brand":"JINKO","power":590,"mod":720,"inc":"GDA","K":10.8,"eta":"August 21","code":"JKM590N-72HL4-BDV","frame":"silver"},{"lp":33,"brand":"JINKO","power":590,"mod":720,"inc":"GDA","K":10.8,"eta":"August 21","code":"JKM590N-72HL4-BDV","frame":"silver"}];
+const TODAY=new Date(2026,6,29);           // 2026-07-29 (source date)
+const MONTHS={january:0,february:1,march:2,april:3,may:4,june:5,july:6,august:7,september:8,october:9,november:10,december:11};
+function etaDate(e){
+  if(!e||/available/i.test(e)) return new Date(TODAY);
+  const m=e.trim().split(/\s+/); const mo=MONTHS[m[0].toLowerCase()];
+  if(mo==null) return new Date(TODAY);
+  return new Date(2026,mo,parseInt(m[1],10));
+}
+const $=id=>document.getElementById(id);
+let metric="kwp", P={};
+function readP(){P={fx:+$("p_fx").value||0,tchm:+$("p_tchm").value||0,gda:+$("p_gda").value||0,rtd:+$("p_rtd").value||0,upl:+$("p_upl").value||0,fin:+$("p_fin").value||0};}
+function leg(inc){return inc==="GDA"?P.gda:(inc==="RTD"?P.rtd:0);}
+function costPerWp(c){return c.K*P.fx/100*(1+P.upl/100)+(P.tchm+leg(c.inc))*P.fx/(c.power*c.mod)+c.K*P.fx/100*(P.fin/100);}
+function contCost(c){return costPerWp(c)*c.power*c.mod;}
+function mval(c){return metric==="kwp"?c.power*c.mod/1000 : metric==="ct"?1 : contCost(c);}
+const fmtInt=v=>Math.round(v).toLocaleString("en-US");
+const fmtMoney=v=>"$"+Math.round(v).toLocaleString("en-US");
+function metricFmt(v){return metric==="cost"?fmtMoney(v):metric==="kwp"?fmtInt(v)+" kWp":fmtInt(v)+" cont.";}
+const DFMT=new Intl.DateTimeFormat("en-GB",{day:"numeric",month:"short"});
+function relDay(d){const dd=Math.round((d-TODAY)/864e5);return dd<=0?"now":"+"+dd+"d";}
+
+// group by ETA date
+function groups(){
+  const g={};
+  DATA.forEach(c=>{const d=etaDate(c.eta);const k=d.getTime();(g[k]=g[k]||{date:d,items:[]}).items.push(c);});
+  return Object.values(g).sort((a,b)=>a.date-b.date);
+}
+function agg(items){let ct=0,kwp=0,cost=0;items.forEach(c=>{ct++;kwp+=c.power*c.mod/1000;cost+=contCost(c);});return{ct,kwp,cost,val:items.reduce((s,c)=>s+mval(c),0)};}
+
+function renderTiles(G){
+  let ct=0,kwp=0,cost=0;DATA.forEach(c=>{ct++;kwp+=c.power*c.mod/1000;cost+=contCost(c);});
+  $("t_ct").textContent=ct;
+  $("t_mw").innerHTML=(kwp/1000).toFixed(1)+' <span class="u">MWp</span>';
+  $("t_cost").textContent=fmtMoney(cost);
+  $("t_ev").textContent=G.length;
+  const last=G[G.length-1].date;
+  $("t_win").textContent=DFMT.format(TODAY)+" – "+DFMT.format(last);
+}
+
+function niceMax(v){const p=Math.pow(10,Math.floor(Math.log10(v)));const n=v/p;const s=n<=1?1:n<=2?2:n<=5?5:10;return s*p;}
+
+function renderChart(G){
+  const W=900,H=340,padL=54,padR=16,padT=26,padB=34,plotW=W-padL-padR,plotH=H-padT-padB;
+  const start=TODAY, endMax=G[G.length-1].date; const end=new Date(Math.max(endMax.getTime(), start.getTime()+28*864e5)+3*864e5);
+  const span=end-start;
+  const x=d=>padL+(d-start)/span*plotW;
+  let cum=0; const pts=G.map(g=>{const a=agg(g.items);cum+=a.val;return{date:g.date,x:x(g.date),cum,a,items:g.items};});
+  const maxY=niceMax(cum||1); const y=v=>padT+plotH-(v/maxY)*plotH;
+  // gridlines Y
+  let g='';
+  const yt=5;for(let i=0;i<=yt;i++){const v=maxY*i/yt,yy=y(v);g+=`<line class="gridline" x1="${padL}" y1="${yy}" x2="${W-padR}" y2="${yy}"/>`;
+    g+=`<text class="axislbl" x="${padL-8}" y="${yy+4}" text-anchor="end">${metric==="cost"?"$"+fmtInt(v):fmtInt(v)}</text>`;}
+  // x ticks weekly
+  for(let t=0;t<=span;t+=7*864e5){const d=new Date(start.getTime()+t);const xx=x(d);
+    g+=`<line class="axisline" x1="${xx}" y1="${padT+plotH}" x2="${xx}" y2="${padT+plotH+5}"/>`;
+    g+=`<text class="axislbl" x="${xx}" y="${padT+plotH+18}" text-anchor="middle">${DFMT.format(d)}</text>`;}
+  // area + step line
+  const base=y(0); let line=`M ${padL} ${y(pts[0].cum)}`; // available already at start
+  let area=`M ${padL} ${base} L ${padL} ${y(pts[0].cum)}`;
+  for(let i=0;i<pts.length;i++){const p=pts[i];
+    if(i>0){line+=` L ${p.x} ${y(pts[i-1].cum)} L ${p.x} ${y(p.cum)}`;area+=` L ${p.x} ${y(pts[i-1].cum)} L ${p.x} ${y(p.cum)}`;}
+    else {line+=` L ${p.x} ${y(p.cum)}`;area+=` L ${p.x} ${y(p.cum)}`;}
+  }
+  line+=` L ${W-padR} ${y(pts[pts.length-1].cum)}`; area+=` L ${W-padR} ${y(pts[pts.length-1].cum)} L ${W-padR} ${base} Z`;
+  g+=`<path d="${area}" fill="var(--area)" fill-opacity="0.13"/>`;
+  g+=`<path class="arealine" d="${line}"/>`;
+  // markers + direct labels + hit bands
+  pts.forEach((p,i)=>{
+    const nextX=i<pts.length-1?pts[i+1].x:(W-padR);const prevMid=i===0?padL:(pts[i-1].x+p.x)/2;const nextMid=(p.x+nextX)/2;
+    g+=`<rect class="hitband" data-i="${i}" x="${prevMid}" y="${padT}" width="${Math.max(2,nextMid-prevMid)}" height="${plotH}"/>`;
+  });
+  pts.forEach((p,i)=>{
+    g+=`<circle class="marker" cx="${p.x}" cy="${y(p.cum)}" r="5"/>`;
+    const above=y(p.cum)-12>padT+8;const ly=above?y(p.cum)-11:y(p.cum)+18;
+    g+=`<text class="dlabel" x="${p.x}" y="${ly}" text-anchor="${i===pts.length-1?'end':'middle'}">+${p.a.ct}</text>`;
+  });
+  const svg=`<svg class="flow" viewBox="0 0 ${W} ${H}" role="img" aria-label="Cumulative stock over time">${g}</svg>`;
+  $("chart").innerHTML=svg;
+  // hover
+  const tip=$("tip");
+  $("chart").querySelectorAll(".hitband").forEach(r=>{
+    r.addEventListener("mouseenter",e=>{const p=pts[+r.dataset.i];
+      tip.innerHTML=`<div class="d">${DFMT.format(p.date)} · ${relDay(p.date)}</div>`+
+        `<div class="row"><span>Containers</span><b>+${p.a.ct}</b></div>`+
+        `<div class="row"><span>Capacity</span><b>${p.a.kwp.toFixed(1)} kWp</b></div>`+
+        `<div class="row"><span>Chmielnicki cost</span><b>${fmtMoney(p.a.cost)}</b></div>`+
+        `<div class="row"><span>Cumulative</span><b>${metricFmt(p.cum)}</b></div>`;
+      tip.style.opacity=1;});
+    r.addEventListener("mousemove",e=>{const t=$("tip");let X=e.clientX+14,Y=e.clientY+14;
+      if(X+230>innerWidth)X=e.clientX-230;t.style.left=X+"px";t.style.top=Y+"px";});
+    r.addEventListener("mouseleave",()=>{tip.style.opacity=0;});
+  });
+}
+
+function renderStrip(G){
+  let h="";
+  G.forEach(g=>{
+    const a=agg(g.items);const isNow=Math.round((g.date-TODAY)/864e5)<=0;
+    // group items by brand+power for compact chips
+    const map={};g.items.forEach(c=>{const key=c.brand+"|"+c.power;(map[key]=map[key]||{brand:c.brand,power:c.power,n:0,inc:c.inc}).n++;});
+    let chips="";Object.values(map).forEach(m=>{const bc=m.brand==="Tongwei"?"t":"j";const inc=isNow?"":" inc";
+      chips+=`<span class="chip ${bc}${inc}">${m.n}× ${m.power}W</span>`;});
+    h+=`<div class="acol ${isNow?'now':''}"><div class="date">${DFMT.format(g.date)}</div><div class="rel">${isNow?'Available now':relDay(g.date)+' · incoming'}</div>`+
+       `<div class="chips">${chips}</div>`+
+       `<div class="tot"><span>${a.ct} cont · ${a.kwp.toFixed(0)} kWp</span><b class="c">${fmtMoney(a.cost)}</b></div></div>`;
+  });
+  $("strip").innerHTML=h;
+}
+
+function render(){
+  readP();const G=groups();
+  renderTiles(G);renderChart(G);renderStrip(G);
+  $("t_cost_u").textContent=metric==="cost"?"base value, USD (shown)":"base value, USD";
+  $("foot").innerHTML='Chmielnicki cost $/Wp = price × FX × (1 + uplift%) + (transport→Chmielnicki + incoterm leg) × FX ÷ (power × modules) + price × FX × financing%. '+
+    'Base cost per container = that × power × modules. Source: <b>Stock_flow_EN_July_29</b> (FX '+P.fx.toFixed(2)+', 33 containers). ETA "available" = in stock today; dated ETAs are August arrivals.';
+}
+
+$("metricseg").addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;
+  [...b.parentNode.children].forEach(x=>x.classList.remove("on"));b.classList.add("on");metric=b.dataset.m;render();});
+["p_fx","p_tchm","p_gda","p_rtd","p_upl","p_fin"].forEach(id=>$(id).addEventListener("input",render));
+$("reset").addEventListener("click",()=>{$("p_fx").value=1.14;$("p_tchm").value=2450;$("p_gda").value=450;$("p_rtd").value=1800;$("p_upl").value=1.95;$("p_fin").value=0.70;render();});
+const root=document.documentElement;
+function sysDark(){return matchMedia&&matchMedia("(prefers-color-scheme:dark)").matches}
+function setTheme(t){root.setAttribute("data-theme",t);$("themebtn").textContent=t==="dark"?"☾":"☀";render();}
+$("themebtn").addEventListener("click",()=>setTheme((root.getAttribute("data-theme")||(sysDark()?"dark":"light"))==="dark"?"light":"dark"));
+setTheme(sysDark()?"dark":"light");
+</script>
+</body>
+</html>
