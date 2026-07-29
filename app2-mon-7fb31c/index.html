@@ -1,0 +1,236 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PAWEŁ UA — Incoming Stock (live from Monday)</title>
+<style>
+  :root{--bg:#FBFAF7;--panel:#fff;--panel-2:#F3F1EB;--ink:#1a1d21;--ink-soft:#5f656e;--ink-mute:#8b9098;--line:#E6E2D9;--line-strong:#d5d0c4;--accent:#E0871F;--accent-ink:#8a5310;--accent-on:#fff;--accent-soft:#F7E6CC;--avail:#2E9E5B;--avail-ink:#1c6b3c;--inc:#2E6FB0;--inc-ink:#1d4e80;--load:#E0871F;--load-ink:#8a5310;--grid:#ECE8DF;--shadow:0 1px 2px rgba(30,25,15,.05),0 8px 22px rgba(30,25,15,.07);--r:14px}
+  @media (prefers-color-scheme:dark){:root{--bg:#121417;--panel:#1b1e22;--panel-2:#23272c;--ink:#e9eaec;--ink-soft:#9aa0a8;--ink-mute:#727880;--line:#2b3037;--line-strong:#3a4048;--accent:#F0A23E;--accent-ink:#F0A23E;--accent-on:#1a1205;--accent-soft:#3a2c17;--avail:#46B873;--avail-ink:#8ad9a8;--inc:#63A6E4;--inc-ink:#a9cef0;--load:#F0A23E;--load-ink:#F0A23E;--grid:#262b31;--shadow:0 1px 2px rgba(0,0,0,.3),0 10px 26px rgba(0,0,0,.4)}}
+  :root[data-theme="light"]{--bg:#FBFAF7;--panel:#fff;--panel-2:#F3F1EB;--ink:#1a1d21;--ink-soft:#5f656e;--ink-mute:#8b9098;--line:#E6E2D9;--line-strong:#d5d0c4;--accent:#E0871F;--accent-ink:#8a5310;--accent-on:#fff;--accent-soft:#F7E6CC;--avail:#2E9E5B;--avail-ink:#1c6b3c;--inc:#2E6FB0;--inc-ink:#1d4e80;--load:#E0871F;--load-ink:#8a5310;--grid:#ECE8DF}
+  :root[data-theme="dark"]{--bg:#121417;--panel:#1b1e22;--panel-2:#23272c;--ink:#e9eaec;--ink-soft:#9aa0a8;--ink-mute:#727880;--line:#2b3037;--line-strong:#3a4048;--accent:#F0A23E;--accent-ink:#F0A23E;--accent-on:#1a1205;--accent-soft:#3a2c17;--avail:#46B873;--avail-ink:#8ad9a8;--inc:#63A6E4;--inc-ink:#a9cef0;--load:#F0A23E;--load-ink:#F0A23E;--grid:#262b31}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:ui-sans-serif,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;font-size:15px;line-height:1.45;-webkit-font-smoothing:antialiased;-webkit-text-size-adjust:100%;padding:clamp(12px,2.5vw,24px)}
+  .wrap{max-width:1000px;margin:0 auto}
+  header{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:12px}
+  .brand{font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--accent-ink)}
+  h1{font-size:clamp(19px,3vw,25px);margin:2px 0 0;font-weight:800;letter-spacing:-.015em}
+  .sub{font-size:13px;color:var(--ink-soft);margin:3px 0 0;max-width:66ch}
+  .hctl{display:flex;flex-direction:column;align-items:flex-end;gap:6px;flex:none}
+  .lang{display:flex;gap:3px;background:var(--panel-2);border:1px solid var(--line);border-radius:99px;padding:3px}
+  .lang button{font:inherit;font-size:11px;font-weight:800;letter-spacing:.03em;color:var(--ink-soft);background:none;border:0;border-radius:99px;padding:5px 10px;cursor:pointer}
+  .lang button.on{background:var(--accent);color:var(--accent-on)}
+  .themebtn{border:1px solid var(--line-strong);background:var(--panel);color:var(--ink-soft);border-radius:99px;padding:5px 9px;font-size:15px;line-height:1;cursor:pointer}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow)}
+  .tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px}
+  .tile{padding:12px 14px}.tile .k{font-size:10px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-soft)}
+  .tile .v{font-size:22px;font-weight:800;margin-top:3px;font-variant-numeric:tabular-nums}
+  .tile.a .v{color:var(--avail-ink)} .tile.i .v{color:var(--inc-ink)} .tile.l .v{color:var(--load-ink)}
+  .toolrow{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;padding:12px 14px 4px}
+  .legend{display:flex;flex-wrap:wrap;gap:7px 16px;font-size:11.5px;color:var(--ink-soft);align-items:center}
+  .lg{display:inline-flex;align-items:center;gap:6px}.dotc{display:inline-block;width:12px;height:12px;border-radius:50%;border:2px solid}
+  .dotc.a{background:color-mix(in srgb,var(--avail) 80%,transparent);border-color:var(--avail-ink)}
+  .dotc.i{background:color-mix(in srgb,var(--inc) 80%,transparent);border-color:var(--inc-ink)}
+  .dotc.l{background:color-mix(in srgb,var(--load) 80%,transparent);border-color:var(--load-ink)}
+  .chartwrap{padding:4px 8px 12px}
+  svg.flow{width:100%;height:auto;display:block;overflow:visible}
+  .axislbl{fill:var(--ink-mute);font-size:11px;font-weight:600}
+  .axistitle{fill:var(--ink-soft);font-size:11px;font-weight:800;letter-spacing:.04em;text-transform:uppercase}
+  .gridline{stroke:var(--grid);stroke-width:1}.axisline{stroke:var(--line-strong);stroke-width:1}
+  .nowband{fill:var(--avail);opacity:.06}
+  .nowlbl{fill:var(--avail-ink);font-size:10px;font-weight:800;letter-spacing:.04em;text-transform:uppercase}
+  .bubble{stroke-width:1.5;cursor:pointer;transition:filter .1s}.bubble:hover{filter:brightness(1.06)}
+  .bublab{font-weight:800;fill:#fff;text-anchor:middle;pointer-events:none;font-variant-numeric:tabular-nums}
+  .bubcnt{font-weight:800;fill:var(--ink);text-anchor:middle;pointer-events:none;font-size:11px}
+  .tip{position:fixed;pointer-events:none;z-index:9;background:var(--panel);border:1px solid var(--line-strong);box-shadow:var(--shadow);border-radius:10px;padding:9px 11px;font-size:12px;opacity:0;transition:opacity .1s;max-width:250px}
+  .tip .d{font-weight:800;margin-bottom:5px}.tip .row{display:flex;justify-content:space-between;gap:16px;color:var(--ink-soft)}.tip .row b{color:var(--ink)}
+  .tablecard{margin-bottom:8px}
+  .thead{padding:12px 14px 2px;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-soft)}
+  .thead .cnt{color:var(--ink-mute);font-weight:600;text-transform:none;letter-spacing:0;margin-left:6px}
+  .tscroll{overflow-x:auto;padding:2px 6px 8px}
+  .ctbl{width:100%;border-collapse:collapse;font-size:12.5px}
+  .ctbl th{position:sticky;top:0;text-align:left;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.03em;color:var(--ink-soft);padding:8px 10px;border-bottom:1px solid var(--line);cursor:pointer;white-space:nowrap;user-select:none;background:var(--panel)}
+  .ctbl th.r{text-align:right}.ctbl th:hover{color:var(--accent-ink)}
+  .ctbl th.sort{color:var(--accent-ink)} .ctbl th.sort::after{content:" \2193"} .ctbl th.sort.asc::after{content:" \2191"}
+  .ctbl td{padding:8px 10px;border-bottom:1px solid var(--line);white-space:nowrap;font-variant-numeric:tabular-nums}
+  .ctbl td.r{text-align:right}.ctbl tbody tr:hover td{background:var(--panel-2)}
+  .ctbl .pw{font-weight:800;font-size:13.5px;color:var(--accent-ink);background:var(--accent-soft);padding:2px 8px;border-radius:6px}
+  .ctbl .fr{color:var(--ink-soft);font-size:11.5px}
+  .pill{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.03em;padding:2px 8px;border-radius:99px;white-space:nowrap}
+  .pill.a{background:color-mix(in srgb,var(--avail) 16%,transparent);color:var(--avail-ink)}
+  .pill.i{background:color-mix(in srgb,var(--inc) 16%,transparent);color:var(--inc-ink)}
+  .pill.l{background:color-mix(in srgb,var(--load) 18%,transparent);color:var(--load-ink)}
+  .ctbl tfoot td{font-weight:800;border-top:2px solid var(--line-strong);border-bottom:none;padding-top:9px;color:var(--ink)}
+  footer{margin-top:14px;padding:0 4px;color:var(--ink-mute);font-size:10.5px;line-height:1.55}
+  @media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div>
+      <div class="brand" data-i18n="eyebrow">Energynat Ukraine · live from Monday</div>
+      <h1 data-i18n="title">What's coming for UA — live stock board</h1>
+      <p class="sub" data-i18n="sub">Every circle is a container flagged "PAWEŁ UA" in Monday. Left to right = when it arrives; higher = more powerful panel; a taller stack = more containers. Green = in our warehouse now, blue = still incoming.</p>
+    </div>
+    <div class="hctl">
+      <div class="lang" id="langseg"><button type="button" data-l="en" class="on">EN</button><button type="button" data-l="ua">UA</button></div>
+      <button class="themebtn" id="themebtn" type="button" aria-label="Theme">◐</button>
+    </div>
+  </header>
+
+  <div class="tiles">
+    <div class="card tile a"><div class="k" data-i18n="t_avail">In warehouse now</div><div class="v" id="t_a">–</div></div>
+    <div class="card tile i"><div class="k" data-i18n="t_inc">Incoming</div><div class="v" id="t_i">–</div></div>
+    <div class="card tile l"><div class="k" data-i18n="t_load">Loading to UA tomorrow</div><div class="v" id="t_l">–</div></div>
+  </div>
+
+  <section class="card">
+    <div class="toolrow">
+      <div class="legend">
+        <span class="lg"><span class="dotc a"></span><span data-i18n="lg_a">in warehouse now</span></span>
+        <span class="lg"><span class="dotc i"></span><span data-i18n="lg_i">incoming</span></span>
+        <span class="lg"><span class="dotc l"></span><span data-i18n="lg_l">loading tomorrow</span></span>
+        <span class="lg" data-i18n="lg_each">each circle = 1 container</span>
+      </div>
+    </div>
+    <div class="chartwrap"><div id="chart"></div></div>
+  </section>
+
+  <section class="card tablecard">
+    <div class="thead"><span data-i18n="tbl">Container detail</span> <span class="cnt" id="tblcount"></span></div>
+    <div class="tscroll">
+      <table class="ctbl">
+        <thead><tr>
+          <th data-k="lp" data-i18n="c_num">#</th>
+          <th data-k="cat" data-i18n="c_status">Status</th>
+          <th data-k="date" data-i18n="c_arr">Arrives</th>
+          <th data-k="power" data-i18n="c_panel">Panel</th>
+          <th data-k="brand" data-i18n="c_brand">Brand</th>
+          <th class="r" data-k="mod" data-i18n="c_mod">Modules</th>
+          <th data-k="inc" data-i18n="c_inc">Incoterm</th>
+          <th data-k="frame" data-i18n="c_frame">Frame</th>
+          <th data-k="mag" data-i18n="c_wh">Warehouse</th>
+        </tr></thead>
+        <tbody id="tbody"></tbody>
+        <tfoot id="tfoot"></tfoot>
+      </table>
+    </div>
+  </section>
+
+  <footer id="foot"></footer>
+</div>
+<div class="tip" id="tip"></div>
+
+<script>
+const DATA=[{"name":"JKM620N-66HL4M-BDV","brand":"JINKO","power":620,"mod":720,"eta":"2026-06-09","inc":"CIF GDAŃSK","frame":"silver","status":"13a - palety - oczekuje na WZ","mag":"MG GDAŃSK","cat":"available","lp":1},{"name":"JKM640N-66HL4M-BDV","brand":"JINKO","power":640,"mod":720,"eta":"2026-05-07","inc":"FCA","frame":"silver","status":"16a - dostarczone na magazyn","mag":"MWAW WARSZAWA","cat":"available","lp":2},{"name":"JKM620N-66HL4M-BDV","brand":"JINKO","power":620,"mod":720,"eta":"2026-05-21","inc":"FCA","frame":"silver","status":"13 - oczekuje na WZ - przyjęto na magazyn - gotowe do odbioru","mag":"MH - klient","cat":"available","lp":3},{"name":"JKM620N-66HL4M-BDV","brand":"JINKO","power":620,"mod":720,"eta":"2026-05-21","inc":"FCA","frame":"silver","status":"13 - oczekuje na WZ - przyjęto na magazyn - gotowe do odbioru","mag":"MG GDAŃSK","cat":"available","lp":4},{"name":"JKM590N-72HL4-BDV","brand":"JINKO","power":590,"mod":720,"eta":"2026-06-16","inc":"CIF GDAŃSK","frame":"silver","status":"14 - wystawiono WZ - gotowe do transportu do klienta","mag":"MG GDAŃSK","cat":"available","lp":5},{"name":"JKM590N-72HL4-BDV","brand":"JINKO","power":590,"mod":720,"eta":"2026-06-16","inc":"CIF GDAŃSK","frame":"silver","status":"14 - wystawiono WZ - gotowe do transportu do klienta","mag":"MG GDAŃSK","cat":"available","lp":6},{"name":"JKM590N-72HL4-BDV","brand":"JINKO","power":590,"mod":720,"eta":"2026-06-16","inc":"CIF GDAŃSK","frame":"silver","status":"14 - wystawiono WZ - gotowe do transportu do klienta","mag":"MG GDAŃSK","cat":"available","lp":7},{"name":"JKM590N-72HL4-BDV","brand":"JINKO","power":590,"mod":720,"eta":"2026-06-16","inc":"CIF GDAŃSK","frame":"silver","status":"14 - wystawiono WZ - gotowe do transportu do klienta","mag":"MG GDAŃSK","cat":"available","lp":8},{"name":"JKM590N-72HL4-BDV","brand":"JINKO","power":590,"mod":720,"eta":"2026-06-16","inc":"CIF GDAŃSK","frame":"silver","status":"14 - wystawiono WZ - gotowe do transportu do klienta","mag":"MG GDAŃSK","cat":"available","lp":9},{"name":"JKM590N-72HL4-BDV","brand":"JINKO","power":590,"mod":720,"eta":"2026-06-16","inc":"CIF GDAŃSK","frame":"silver","status":"14 - wystawiono WZ - gotowe do transportu do klienta","mag":"MG GDAŃSK","cat":"available","lp":10},{"name":"JKM620N-66HL4M-BDV","brand":"JINKO","power":620,"mod":720,"eta":"2026-06-29","inc":"CIF GDAŃSK","frame":"silver","status":"14 - wystawiono WZ - gotowe do transportu do klienta","mag":"MWAW WARSZAWA","cat":"available","lp":11},{"name":"JKM620N-66HL4M-BDV","brand":"JINKO","power":620,"mod":720,"eta":"2026-06-29","inc":"CIF GDAŃSK","frame":"silver","status":"14 - wystawiono WZ - gotowe do transportu do klienta","mag":"MWAW WARSZAWA","cat":"available","lp":12},{"name":"JKM620N-66HL4M-BDV","brand":"JINKO","power":620,"mod":720,"eta":"2026-06-29","inc":"CIF GDAŃSK","frame":"silver","status":"14 - wystawiono WZ - gotowe do transportu do klienta","mag":"MG GDAŃSK","cat":"available","lp":13},{"name":"JKM620N-66HL4M-BDV","brand":"JINKO","power":620,"mod":720,"eta":"2026-06-29","inc":"CIF GDAŃSK","frame":"silver","status":"14 - wystawiono WZ - gotowe do transportu do klienta","mag":"MG GDAŃSK","cat":"available","lp":14},{"name":"JKM620N-66HL4M-BDV","brand":"JINKO","power":620,"mod":720,"eta":"2026-06-29","inc":"CIF GDAŃSK","frame":"silver","status":"14 - wystawiono WZ - gotowe do transportu do klienta","mag":"MG GDAŃSK","cat":"available","lp":15},{"name":"JKM620N-66HL4M-BDV","brand":"JINKO","power":620,"mod":720,"eta":"2026-06-29","inc":"CIF GDAŃSK","frame":"silver","status":"14 - wystawiono WZ - gotowe do transportu do klienta","mag":"MG GDAŃSK","cat":"available","lp":16},{"name":"JKM620N-66HL4M-BDV","brand":"JINKO","power":620,"mod":720,"eta":"2026-06-29","inc":"CIF GDAŃSK","frame":"silver","status":"13 - oczekuje na WZ - przyjęto na magazyn - gotowe do odbioru","mag":"MG GDAŃSK","cat":"available","lp":17},{"name":"JKM620N-66HL4M-BDV","brand":"JINKO","power":620,"mod":720,"eta":"2026-06-29","inc":"CIF GDAŃSK","frame":"silver","status":"13 - oczekuje na WZ - przyjęto na magazyn - gotowe do odbioru","mag":"MG GDAŃSK","cat":"available","lp":18},{"name":"JKM620N-66HL4M-BDV","brand":"JINKO","power":620,"mod":720,"eta":"2026-06-29","inc":"CIF GDAŃSK","frame":"silver","status":"13 - oczekuje na WZ - przyjęto na magazyn - gotowe do odbioru","mag":"MG GDAŃSK","cat":"available","lp":19},{"name":"JKM620N-66HL4M-BDV","brand":"JINKO","power":620,"mod":720,"eta":"2026-07-14","inc":"FCA","frame":"silver","status":"13b - ENS oczekuje na WZ","mag":"MWAW WARSZAWA","cat":"available","lp":20},{"name":"JKM630N-66HL4M-BDV","brand":"JINKO","power":630,"mod":180,"eta":"2026-05-07","inc":"FCA","frame":"silver","status":"13 - oczekuje na WZ - przyjęto na magazyn - gotowe do odbioru","mag":"","cat":"available","lp":21},{"name":"TWMND-78HD-640W","brand":"SPOT","power":640,"mod":576,"eta":"2026-07-10","inc":"EXW","frame":"","status":"10 - czeka na płatność","mag":"MWAW WARSZAWA","cat":"incoming","lp":22},{"name":"TWMND-78HD-640W","brand":"SPOT","power":640,"mod":576,"eta":"2026-07-10","inc":"EXW","frame":"","status":"10 - czeka na płatność","mag":"MWAW WARSZAWA","cat":"incoming","lp":23},{"name":"TWMND-78HD-640W","brand":"SPOT","power":640,"mod":576,"eta":"2026-07-10","inc":"EXW","frame":"","status":"10 - czeka na płatność","mag":"MWAW WARSZAWA","cat":"incoming","lp":24},{"name":"JKM515N-54HL4M-BDV","brand":"JINKO","power":515,"mod":888,"eta":"2026-07-27","inc":"DDP","frame":"","status":"12b - zwolnione","mag":"","cat":"available","lp":25},{"name":"JKM510N-54HL4M-BDV","brand":"JINKO","power":510,"mod":888,"eta":"2026-07-27","inc":"DDP","frame":"","status":"12b - zwolnione","mag":"","cat":"available","lp":26},{"name":"JKM515N-54HL4M-BDV","brand":"JINKO","power":515,"mod":888,"eta":"2026-07-31","inc":"DDP","frame":"black","status":"7a - BL - płynie na 100%","mag":"","cat":"incoming","lp":27},{"name":"JKM515N-54HL4M-BDV","brand":"JINKO","power":515,"mod":888,"eta":"2026-07-31","inc":"DDP","frame":"black","status":"7a - BL - płynie na 100%","mag":"","cat":"incoming","lp":28},{"name":"JKM515N-54HL4M-BDV","brand":"JINKO","power":515,"mod":888,"eta":"2026-07-31","inc":"DDP","frame":"black","status":"7a - BL - płynie na 100%","mag":"","cat":"incoming","lp":29},{"name":"JKM510N-54HL4M-BDV","brand":"JINKO","power":510,"mod":888,"eta":"2026-08-05","inc":"DDP","frame":"black","status":"7a - BL - płynie na 100%","mag":"","cat":"incoming","lp":30},{"name":"JKM510N-54HL4M-BDV","brand":"JINKO","power":510,"mod":888,"eta":"2026-08-05","inc":"DDP","frame":"black","status":"7a - BL - płynie na 100%","mag":"","cat":"incoming","lp":31},{"name":"JKM510N-54HL4M-BDV","brand":"JINKO","power":510,"mod":888,"eta":"2026-08-05","inc":"DDP","frame":"black","status":"7a - BL - płynie na 100%","mag":"","cat":"incoming","lp":32},{"name":"JKM510N-54HL4M-BDV","brand":"JINKO","power":510,"mod":888,"eta":"2026-08-05","inc":"DDP","frame":"black","status":"7a - BL - płynie na 100%","mag":"","cat":"incoming","lp":33},{"name":"JKM510N-54HL4M-BDV","brand":"JINKO","power":510,"mod":888,"eta":"2026-08-05","inc":"DDP","frame":"black","status":"7a - BL - płynie na 100%","mag":"","cat":"incoming","lp":34},{"name":"JKM510N-54HL4M-BDV","brand":"JINKO","power":510,"mod":888,"eta":"2026-08-05","inc":"DDP","frame":"black","status":"7a - BL - płynie na 100%","mag":"","cat":"incoming","lp":35},{"name":"JKM510N-54HL4M-BDV","brand":"JINKO","power":510,"mod":888,"eta":"2026-08-17","inc":"CIF GDAŃSK","frame":"","status":"7a - BL - płynie na 100%","mag":"","cat":"incoming","lp":36},{"name":"JKM510N-54HL4M-BDV","brand":"JINKO","power":510,"mod":888,"eta":"2026-08-17","inc":"CIF GDAŃSK","frame":"","status":"7a - BL - płynie na 100%","mag":"","cat":"incoming","lp":37},{"name":"JKM510N-54HL4M-BDV","brand":"JINKO","power":510,"mod":888,"eta":"2026-08-17","inc":"CIF GDAŃSK","frame":"","status":"7a - BL - płynie na 100%","mag":"","cat":"incoming","lp":38},{"name":"JKM475N-48QL6-DV","brand":"JINKO","power":475,"mod":962,"eta":"2026-08-17","inc":"CIF GDAŃSK","frame":"black","status":"7a - BL - płynie na 100%","mag":"","cat":"incoming","lp":39},{"name":"JKM475N-48QL6-DV","brand":"JINKO","power":475,"mod":962,"eta":"2026-08-17","inc":"CIF GDAŃSK","frame":"black","status":"7a - BL - płynie na 100%","mag":"","cat":"incoming","lp":40},{"name":"JKM475N-48QL6-DV","brand":"JINKO","power":475,"mod":962,"eta":"2026-08-17","inc":"CIF GDAŃSK","frame":"black","status":"7a - BL - płynie na 100%","mag":"","cat":"incoming","lp":41},{"name":"JKM590N-72HL4-BDV","brand":"JINKO","power":590,"mod":720,"eta":"2026-08-17","inc":"CIF GDAŃSK","frame":"silver","status":"7a - BL - płynie na 100%","mag":"","cat":"incoming","lp":42},{"name":"JKM590N-72HL4-BDV","brand":"JINKO","power":590,"mod":720,"eta":"2026-08-17","inc":"CIF GDAŃSK","frame":"silver","status":"7a - BL - płynie na 100%","mag":"","cat":"incoming","lp":43},{"name":"JKM590N-72HL4-BDV","brand":"JINKO","power":590,"mod":720,"eta":"2026-08-17","inc":"CIF GDAŃSK","frame":"silver","status":"7a - BL - płynie na 100%","mag":"","cat":"incoming","lp":44},{"name":"JKM590N-72HL4-BDV","brand":"JINKO","power":590,"mod":720,"eta":"2026-08-17","inc":"CIF GDAŃSK","frame":"silver","status":"7a - BL - płynie na 100%","mag":"","cat":"incoming","lp":45},{"name":"JKM590N-72HL4-BDV","brand":"JINKO","power":590,"mod":720,"eta":"2026-08-17","inc":"CIF GDAŃSK","frame":"silver","status":"7a - BL - płynie na 100%","mag":"","cat":"incoming","lp":46},{"name":"JKM590N-72HL4-BDV","brand":"JINKO","power":590,"mod":720,"eta":"2026-08-17","inc":"CIF GDAŃSK","frame":"silver","status":"7a - BL - płynie na 100%","mag":"","cat":"incoming","lp":47},{"name":"JKM590N-72HL4-BDV","brand":"JINKO","power":590,"mod":720,"eta":"2026-08-17","inc":"CIF GDAŃSK","frame":"silver","status":"7a - BL - płynie na 100%","mag":"","cat":"incoming","lp":48},{"name":"JKM510N-54HL4M-BDV","brand":"JINKO","power":510,"mod":888,"eta":"2026-09-01","inc":"CIF GDAŃSK","frame":"black","status":"7a - BL - płynie na 100%","mag":"","cat":"incoming","lp":49},{"name":"JKM510N-54HL4M-BDV","brand":"JINKO","power":510,"mod":888,"eta":"2026-09-01","inc":"CIF GDAŃSK","frame":"black","status":"7a - BL - płynie na 100%","mag":"","cat":"incoming","lp":50},{"name":"JKM510N-54HL4M-BDV","brand":"JINKO","power":510,"mod":888,"eta":"2026-09-01","inc":"CIF GDAŃSK","frame":"black","status":"7a - BL - płynie na 100%","mag":"","cat":"incoming","lp":51},{"name":"JKM515N-54HL4M-BDV","brand":"JINKO","power":515,"mod":888,"eta":"2026-09-01","inc":"CIF GDAŃSK","frame":"black","status":"7a - BL - płynie na 100%","mag":"","cat":"incoming","lp":52},{"name":"JKM470N-48QL6-DB","brand":"JINKO","power":470,"mod":962,"eta":"2026-09-13","inc":"CIF GDAŃSK","frame":"black","status":"7a - BL - płynie na 100%","mag":"","cat":"incoming","lp":53},{"name":"JKM470N-48QL6-DB","brand":"JINKO","power":470,"mod":962,"eta":"2026-09-13","inc":"CIF GDAŃSK","frame":"black","status":"7a - BL - płynie na 100%","mag":"","cat":"incoming","lp":54},{"name":"JKM470N-48QL6-DB","brand":"JINKO","power":470,"mod":962,"eta":"2026-09-13","inc":"CIF GDAŃSK","frame":"black","status":"7a - BL - płynie na 100%","mag":"","cat":"incoming","lp":55},{"name":"JKM590N-72HL4-BDV","brand":"JINKO","power":590,"mod":720,"eta":"2026-09-19","inc":"CIF GDAŃSK","frame":"silver","status":"7 - płynie z CN","mag":"","cat":"incoming","lp":56},{"name":"JKM590N-72HL4-BDV","brand":"JINKO","power":590,"mod":720,"eta":"2026-09-19","inc":"CIF GDAŃSK","frame":"silver","status":"7 - płynie z CN","mag":"","cat":"incoming","lp":57},{"name":"JKM590N-72HL4-BDV","brand":"JINKO","power":590,"mod":720,"eta":"2026-09-19","inc":"CIF GDAŃSK","frame":"silver","status":"7 - płynie z CN","mag":"","cat":"incoming","lp":58},{"name":"JKM590N-72HL4-BDV","brand":"JINKO","power":590,"mod":720,"eta":"2026-09-19","inc":"CIF GDAŃSK","frame":"silver","status":"7 - płynie z CN","mag":"","cat":"incoming","lp":59},{"name":"JKM590N-72HL4-BDV","brand":"JINKO","power":590,"mod":720,"eta":"2026-09-19","inc":"CIF GDAŃSK","frame":"silver","status":"7 - płynie z CN","mag":"","cat":"incoming","lp":60},{"name":"JKM590N-72HL4-BDV","brand":"JINKO","power":590,"mod":720,"eta":"2026-09-19","inc":"CIF GDAŃSK","frame":"silver","status":"7 - płynie z CN","mag":"","cat":"incoming","lp":61},{"name":"JKM590N-72HL4-BDV","brand":"JINKO","power":590,"mod":720,"eta":"2026-09-19","inc":"CIF GDAŃSK","frame":"silver","status":"7 - płynie z CN","mag":"","cat":"incoming","lp":62},{"name":"JKM590N-72HL4-BDV","brand":"JINKO","power":590,"mod":720,"eta":"2026-09-19","inc":"CIF GDAŃSK","frame":"silver","status":"7 - płynie z CN","mag":"","cat":"incoming","lp":63},{"name":"JKM645N-66QL6-BDV","brand":"JINKO","power":645,"mod":720,"eta":"2026-09-25","inc":"CIF GDAŃSK","frame":"silver","status":"5 - czeka na zaliczkę","mag":"","cat":"incoming","lp":64},{"name":"JKM515N-54HL4M-BDV","brand":"JINKO","power":515,"mod":888,"eta":"2026-09-07","inc":"CIF GDAŃSK","frame":"black","status":"7a - BL - płynie na 100%","mag":"","cat":"incoming","lp":65},{"name":"JKM475N-48QL6-DV","brand":"JINKO","power":475,"mod":962,"eta":"2026-10-01","inc":"CIF GDAŃSK","frame":"black","status":"7 - płynie z CN","mag":"","cat":"incoming","lp":66},{"name":"JKM475N-48QL6-DV","brand":"JINKO","power":475,"mod":962,"eta":"2026-10-01","inc":"CIF GDAŃSK","frame":"black","status":"7 - płynie z CN","mag":"","cat":"incoming","lp":67},{"name":"JKM475N-48QL6-DV","brand":"JINKO","power":475,"mod":962,"eta":"2026-10-01","inc":"CIF GDAŃSK","frame":"black","status":"7 - płynie z CN","mag":"","cat":"incoming","lp":68},{"name":"JKM590N-72HL4-BDV","brand":"JINKO","power":590,"mod":720,"eta":"2026-07-30","inc":"CIF GDAŃSK","frame":"silver","status":"6 - czekamy na booking","mag":"","cat":"incoming","lp":69},{"name":"JKM590N-72HL4-BDV","brand":"JINKO","power":590,"mod":720,"eta":"2026-07-30","inc":"CIF GDAŃSK","frame":"silver","status":"6 - czekamy na booking","mag":"","cat":"incoming","lp":70},{"name":"JKM590N-72HL4-BDV","brand":"JINKO","power":590,"mod":720,"eta":"2026-07-30","inc":"CIF GDAŃSK","frame":"silver","status":"6 - czekamy na booking","mag":"","cat":"incoming","lp":71},{"name":"JKM590N-72HL4-BDV","brand":"JINKO","power":590,"mod":720,"eta":"2026-07-30","inc":"CIF GDAŃSK","frame":"silver","status":"6 - czekamy na booking","mag":"","cat":"incoming","lp":72},{"name":"JKM590N-72HL4-BDV","brand":"JINKO","power":590,"mod":720,"eta":"2026-07-30","inc":"CIF GDAŃSK","frame":"silver","status":"6 - czekamy na booking","mag":"","cat":"incoming","lp":73},{"name":"JKM590N-72HL4-BDV","brand":"JINKO","power":590,"mod":720,"eta":"2026-07-30","inc":"CIF GDAŃSK","frame":"silver","status":"6 - czekamy na booking","mag":"","cat":"incoming","lp":74},{"name":"JKM590N-72HL4-BDV","brand":"JINKO","power":590,"mod":720,"eta":"2026-07-30","inc":"CIF GDAŃSK","frame":"silver","status":"6 - czekamy na booking","mag":"","cat":"incoming","lp":75},{"name":"JKM590N-72HL4-BDV","brand":"JINKO","power":590,"mod":720,"eta":"2026-07-30","inc":"CIF GDAŃSK","frame":"silver","status":"6 - czekamy na booking","mag":"","cat":"incoming","lp":76},{"name":"JKM590N-72HL4-BDV","brand":"JINKO","power":590,"mod":720,"eta":"2026-07-30","inc":"CIF GDAŃSK","frame":"silver","status":"6 - czekamy na booking","mag":"","cat":"incoming","lp":77},{"name":"JKM590N-72HL4-BDV","brand":"JINKO","power":590,"mod":720,"eta":"2026-08-16","inc":"CIF GDAŃSK","frame":"silver","status":"6 - czekamy na booking","mag":"","cat":"incoming","lp":78},{"name":"JKM590N reserved","brand":"JINKO","power":590,"mod":720,"eta":"2026-07-30","inc":"","frame":"silver","status":"Reserved – loading to UA tomorrow","mag":"MWAW WARSZAWA","cat":"loading","lp":79},{"name":"JKM590N reserved","brand":"JINKO","power":590,"mod":720,"eta":"2026-07-30","inc":"","frame":"silver","status":"Reserved – loading to UA tomorrow","mag":"MWAW WARSZAWA","cat":"loading","lp":80},{"name":"JKM620N reserved","brand":"JINKO","power":620,"mod":720,"eta":"2026-07-30","inc":"","frame":"silver","status":"Reserved – loading to UA tomorrow","mag":"MWAW WARSZAWA","cat":"loading","lp":81},{"name":"JKM620N reserved","brand":"JINKO","power":620,"mod":720,"eta":"2026-07-30","inc":"","frame":"silver","status":"Reserved – loading to UA tomorrow","mag":"MWAW WARSZAWA","cat":"loading","lp":82},{"name":"JKM620N reserved","brand":"JINKO","power":620,"mod":720,"eta":"2026-07-30","inc":"","frame":"silver","status":"Reserved – loading to UA tomorrow","mag":"MWAW WARSZAWA","cat":"loading","lp":83},{"name":"JKM620N reserved","brand":"JINKO","power":620,"mod":720,"eta":"2026-07-30","inc":"","frame":"silver","status":"Reserved – loading to UA tomorrow","mag":"MWAW WARSZAWA","cat":"loading","lp":84},{"name":"JKM620N reserved","brand":"JINKO","power":620,"mod":720,"eta":"2026-07-30","inc":"","frame":"silver","status":"Reserved – loading to UA tomorrow","mag":"MWAW WARSZAWA","cat":"loading","lp":85},{"name":"JKM620N reserved","brand":"JINKO","power":620,"mod":720,"eta":"2026-07-30","inc":"","frame":"silver","status":"Reserved – loading to UA tomorrow","mag":"MWAW WARSZAWA","cat":"loading","lp":86},{"name":"JKM640N reserved","brand":"JINKO","power":640,"mod":720,"eta":"2026-07-30","inc":"","frame":"silver","status":"Reserved – loading to UA tomorrow","mag":"MWAW WARSZAWA","cat":"loading","lp":87}];
+const TODAY=new Date("2026-07-29T00:00:00"), UPDATED="2026-07-29 12:33";
+const $=id=>document.getElementById(id);
+const DFMT=new Intl.DateTimeFormat("en-GB",{day:"numeric",month:"short"});
+let lang="en", sortK="date", sortDir=1;
+const CATC={available:{c:"a",col:"var(--avail)",ink:"var(--avail-ink)"},incoming:{c:"i",col:"var(--inc)",ink:"var(--inc-ink)"},loading:{c:"l",col:"var(--load)",ink:"var(--load-ink)"}};
+const T={
+ en:{eyebrow:"Energynat Ukraine · live from Monday",title:"What's coming for UA — live stock board",
+   sub:'Every circle is a container flagged "PAWEŁ UA" in Monday. Left to right = when it arrives; higher = more powerful panel; a taller stack = more containers. Green = in our warehouse now, blue = still incoming.',
+   t_avail:"In warehouse now",t_inc:"Incoming",t_load:"Loading to UA tomorrow",
+   lg_a:"in warehouse now",lg_i:"incoming",lg_l:"loading tomorrow",lg_each:"each circle = 1 container",
+   ax_power:"Panel power · W",ax_date:"Arrival date →",now:"in warehouse",
+   tbl:"Container detail",c_num:"#",c_status:"Status",c_arr:"Arrives",c_panel:"Panel",c_brand:"Brand",c_mod:"Modules",c_inc:"Incoterm",c_frame:"Frame",c_wh:"Warehouse",
+   cat:{available:"In warehouse",incoming:"Incoming",loading:"Loading tomorrow"},
+   frames:{silver:"silver",black:"black"},total:"Total",containers:"containers",sortedby:"sorted by",
+   inWh:"in warehouse",cont:"cont",
+   foot:(a,i,l)=>a+" in warehouse · "+i+" incoming · "+l+" loading tomorrow. Live from Monday board \u201c0. ZAKUPY\u201d, kontrahenci = PAWE\u0141 UA, DEYE excluded, delivered-to-client hidden. Updated "+UPDATED+"."},
+ ua:{eyebrow:"Energynat Україна · наживо з Monday",title:"Що прибуває для UA — живий облік складу",
+   sub:'Кожне коло — контейнер із позначкою "PAWEŁ UA" в Monday. Зліва направо — коли прибуває; вище — потужніша панель; вищий стос — більше контейнерів. Зелене — вже на нашому складі, синє — ще в дорозі.',
+   t_avail:"На складі зараз",t_inc:"В дорозі",t_load:"Завантаження в UA завтра",
+   lg_a:"на складі зараз",lg_i:"в дорозі",lg_l:"завантаження завтра",lg_each:"кожне коло = 1 контейнер",
+   ax_power:"Потужність панелі · Вт",ax_date:"Дата прибуття →",now:"на складі",
+   tbl:"Деталі по контейнерах",c_num:"№",c_status:"Статус",c_arr:"Прибуває",c_panel:"Панель",c_brand:"Бренд",c_mod:"Модулів",c_inc:"Інкотермс",c_frame:"Рама",c_wh:"Склад",
+   cat:{available:"На складі",incoming:"В дорозі",loading:"Завантаження завтра"},
+   frames:{silver:"срібляста",black:"чорна"},total:"Разом",containers:"контейнерів",sortedby:"сортування:",
+   inWh:"на складі",cont:"конт",
+   foot:(a,i,l)=>a+" на складі · "+i+" в дорозі · "+l+" завантаження завтра. Наживо з дошки Monday \u201c0. ZAKUPY\u201d, kontrahenci = PAWE\u0141 UA, DEYE виключено, доставлені клієнту приховані. Оновлено "+UPDATED+"."}
+};
+function effDate(c){ if(c.cat==="available")return new Date(TODAY); var d=c.eta?new Date(c.eta+"T00:00:00"):new Date(TODAY); return d<TODAY?new Date(TODAY):d; }
+function arrivesTxt(c){ if(c.cat==="available")return T[lang].inWh; var d=effDate(c); return DFMT.format(d); }
+
+function groups(){
+  const g={};
+  DATA.forEach(c=>{const d=effDate(c);const key=d.getTime()+"|"+c.power+"|"+c.cat;
+    const o=g[key]||(g[key]={date:d,power:c.power,cat:c.cat,n:0,items:[]});
+    o.n++;o.items.push(c);});
+  return Object.values(g).sort((a,b)=>a.date-b.date||a.power-b.power);
+}
+function render(){
+  const G=groups();
+  const W=980,H=430,padL=52,padR=18,padT=18,padB=40,plotW=W-padL-padR,plotH=H-padT-padB;
+  const start=new Date(TODAY),endMax=G.reduce((m,x)=>x.date>m?x.date:m,new Date(TODAY.getTime()+7*864e5));
+  const end=new Date(Math.max(endMax.getTime(),start.getTime()+21*864e5)+3*864e5),span=end-start;
+  const x=d=>padL+(d-start)/span*plotW;
+  const pw=DATA.map(c=>c.power);let yMin=Math.min(...pw)-25,yMax=Math.max(...pw)+25;
+  const y=v=>padT+plotH-(v-yMin)/(yMax-yMin)*plotH;
+  let s='';
+  // "in warehouse now" band around today
+  const bx=x(start);s+=`<rect class="nowband" x="${padL}" y="${padT}" width="${Math.max(20,bx-padL+26)}" height="${plotH}"/>`;
+  s+=`<text class="nowlbl" x="${padL+3}" y="${padT+12}">${T[lang].now} \u25B8</text>`;
+  // y grid (power) at 50s
+  const p0=Math.ceil(yMin/50)*50;for(let v=p0;v<=yMax;v+=50){const yy=y(v);s+=`<line class="gridline" x1="${padL}" y1="${yy}" x2="${padL+plotW}" y2="${yy}"/><text class="axislbl" x="${padL-8}" y="${yy+4}" text-anchor="end">${v}</text>`;}
+  s+=`<text class="axistitle" transform="translate(13,${padT+plotH/2}) rotate(-90)" text-anchor="middle">${T[lang].ax_power}</text>`;
+  for(let t=0;t<=span;t+=7*864e5){const d=new Date(start.getTime()+t),xx=x(d);s+=`<line class="axisline" x1="${xx}" y1="${padT+plotH}" x2="${xx}" y2="${padT+plotH+5}"/><text class="axislbl" x="${xx}" y="${padT+plotH+18}" text-anchor="middle">${DFMT.format(d)}</text>`;}
+  s+=`<text class="axistitle" x="${padL}" y="${H-4}" text-anchor="start">${T[lang].ax_date}</text>`;
+  const byXY={};G.forEach(g=>{const k=g.date.getTime()+"|"+g.power;(byXY[k]=byXY[k]||[]).push(g);});
+  const pos=new Map();Object.values(byXY).forEach(a=>{a.forEach((g,i)=>pos.set(g,(i-(a.length-1)/2)*15));});
+  const OX=5,OY=4,R=11;
+  const B=G.map((g,i)=>({g,cx:x(g.date)+(pos.get(g)||0),cy:y(g.power),i}));
+  B.forEach(b=>{const cc=CATC[b.g.cat];for(let k=b.g.n-1;k>=0;k--){s+=`<circle class="bubble" data-i="${b.i}" cx="${b.cx+k*OX}" cy="${b.cy-k*OY}" r="${R}" fill="${cc.col}" fill-opacity="0.9" stroke="${cc.ink}"/>`;}});
+  B.forEach(b=>{const N=b.g.n;s+=`<text class="bublab" x="${b.cx}" y="${b.cy}" dy="0.32em" style="font-size:${R>10?11:9}px">${b.g.power}</text>`+
+    `<text class="bubcnt" x="${b.cx+(N-1)*OX/2}" y="${b.cy-(N-1)*OY-R-4}">${N}\u00d7</text>`;});
+  $("chart").innerHTML=`<svg class="flow" viewBox="0 0 ${W} ${H}" role="img">${s}</svg>`;
+  const tip=$("tip");
+  $("chart").querySelectorAll(".bubble").forEach(el=>{
+    el.addEventListener("mouseenter",()=>{const g=B[+el.dataset.i].g;const codes={};g.items.forEach(c=>codes[c.name]=(codes[c.name]||0)+1);
+      tip.innerHTML=`<div class="d">JINKO ${g.power}W · ${T[lang].cat[g.cat]}</div>`+
+        `<div class="row"><span>${T[lang].c_arr}</span><b>${g.cat==="available"?T[lang].inWh:DFMT.format(g.date)}</b></div>`+
+        `<div class="row"><span>${T[lang].c_mod==="Modules"?"Qty":T[lang].c_mod}</span><b>${g.n} ${T[lang].cont}</b></div>`+
+        `<div class="row"><span>${T[lang].c_wh}</span><b>${g.items[0].mag||"–"}</b></div>`;
+      tip.style.opacity=1;});
+    el.addEventListener("mousemove",e=>{let X=e.clientX+14,Y=e.clientY+14;if(X+260>innerWidth)X=e.clientX-260;if(Y+130>innerHeight)Y=e.clientY-130;tip.style.left=X+"px";tip.style.top=Y+"px";});
+    el.addEventListener("mouseleave",()=>{tip.style.opacity=0;});
+  });
+  $("t_a").textContent=DATA.filter(c=>c.cat==="available").length;
+  $("t_i").textContent=DATA.filter(c=>c.cat==="incoming").length;
+  $("t_l").textContent=DATA.filter(c=>c.cat==="loading").length;
+  buildTable();
+}
+function buildTable(){
+  const rows=DATA.map(c=>({...c,date:effDate(c)}));
+  const catord={available:0,loading:1,incoming:2};
+  rows.sort((a,b)=>{if(sortK==="cat")return (catord[a.cat]-catord[b.cat]||a.date-b.date)*sortDir;
+    if(sortK==="date")return (a.date-b.date||a.power-b.power)*sortDir;
+    let x=a[sortK],y=b[sortK];if(typeof x==="string")return (x||"").localeCompare(y||"")*sortDir;return (x-y)*sortDir;});
+  let h="";rows.forEach(r=>{const cc=CATC[r.cat];const fr=T[lang].frames[r.frame]||r.frame;
+    h+=`<tr><td>${r.lp}</td>`+
+      `<td><span class="pill ${cc.c}">${T[lang].cat[r.cat]}</span></td>`+
+      `<td>${arrivesTxt(r)}</td>`+
+      `<td><span class="pw">${r.power}W</span></td>`+
+      `<td>${r.brand}</td><td class="r">${r.mod}</td><td>${r.inc||"–"}</td>`+
+      `<td class="fr">${fr||"–"}</td><td class="fr">${r.mag||"–"}</td></tr>`;});
+  $("tbody").innerHTML=h;
+  const tm=DATA.reduce((s,c)=>s+(c.mod||0),0);
+  $("tfoot").innerHTML=`<tr><td colspan="5">${T[lang].total} · ${DATA.length} ${T[lang].containers}</td><td class="r">${tm.toLocaleString("en-US")}</td><td></td><td></td><td></td></tr>`;
+  $("tblcount").textContent="· "+DATA.length+" "+T[lang].containers+" · "+T[lang].sortedby+" "+sortK;
+  document.querySelectorAll(".ctbl th").forEach(th=>{const on=th.dataset.k===sortK;th.classList.toggle("sort",on);th.classList.toggle("asc",on&&sortDir===1);});
+  $("foot").textContent=T[lang].foot(DATA.filter(c=>c.cat==="available").length,DATA.filter(c=>c.cat==="incoming").length,DATA.filter(c=>c.cat==="loading").length);
+}
+function applyLang(){document.querySelectorAll("[data-i18n]").forEach(el=>{const k=el.getAttribute("data-i18n");if(T[lang][k]!=null)el.textContent=T[lang][k];});render();}
+document.querySelectorAll(".ctbl th").forEach(th=>th.addEventListener("click",()=>{const k=th.dataset.k;if(sortK===k)sortDir*=-1;else{sortK=k;sortDir=1;}buildTable();}));
+$("langseg").addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;[...b.parentNode.children].forEach(x=>x.classList.remove("on"));b.classList.add("on");lang=b.dataset.l;applyLang();});
+const root=document.documentElement;
+function sysDark(){return matchMedia&&matchMedia("(prefers-color-scheme:dark)").matches}
+function setTheme(t){root.setAttribute("data-theme",t);$("themebtn").textContent=t==="dark"?"☾":"☀";render();}
+$("themebtn").addEventListener("click",()=>setTheme((root.getAttribute("data-theme")||(sysDark()?"dark":"light"))==="dark"?"light":"dark"));
+setTheme(sysDark()?"dark":"light");
+applyLang();
+</script>
+</body>
+</html>
