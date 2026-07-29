@@ -5,42 +5,29 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>What's Coming — Energynat Ukraine</title>
 <style>
-  :root{
-    --bg:#FBFAF7; --panel:#ffffff; --panel-2:#F3F1EB; --ink:#1a1d21; --ink-soft:#5f656e; --ink-mute:#8b9098;
-    --line:#E6E2D9; --line-strong:#d5d0c4;
-    --accent:#E0871F; --accent-ink:#8a5310; --accent-on:#fff;
-    --cheap:#2E9E5B; --cheap-ink:#1c6b3c; --pricey:#D2542E; --pricey-ink:#a23c1c;
-    --grid:#ECE8DF; --thr:#C0442E;
-    --shadow:0 1px 2px rgba(30,25,15,.05),0 8px 22px rgba(30,25,15,.07); --r:14px;
-  }
-  @media (prefers-color-scheme:dark){:root{
-    --bg:#121417; --panel:#1b1e22; --panel-2:#23272c; --ink:#e9eaec; --ink-soft:#9aa0a8; --ink-mute:#727880;
-    --line:#2b3037; --line-strong:#3a4048; --accent:#F0A23E; --accent-ink:#F0A23E; --accent-on:#1a1205;
-    --cheap:#46B873; --cheap-ink:#8ad9a8; --pricey:#E67A50; --pricey-ink:#f0a488;
-    --grid:#262b31; --thr:#E67A50;
-    --shadow:0 1px 2px rgba(0,0,0,.3),0 10px 26px rgba(0,0,0,.4);}}
-  :root[data-theme="light"]{--bg:#FBFAF7;--panel:#fff;--panel-2:#F3F1EB;--ink:#1a1d21;--ink-soft:#5f656e;--ink-mute:#8b9098;--line:#E6E2D9;--line-strong:#d5d0c4;--accent:#E0871F;--accent-ink:#8a5310;--accent-on:#fff;--cheap:#2E9E5B;--cheap-ink:#1c6b3c;--pricey:#D2542E;--pricey-ink:#a23c1c;--grid:#ECE8DF;--thr:#C0442E;}
-  :root[data-theme="dark"]{--bg:#121417;--panel:#1b1e22;--panel-2:#23272c;--ink:#e9eaec;--ink-soft:#9aa0a8;--ink-mute:#727880;--line:#2b3037;--line-strong:#3a4048;--accent:#F0A23E;--accent-ink:#F0A23E;--accent-on:#1a1205;--cheap:#46B873;--cheap-ink:#8ad9a8;--pricey:#E67A50;--pricey-ink:#f0a488;--grid:#262b31;--thr:#E67A50;}
+  :root{--bg:#FBFAF7;--panel:#fff;--panel-2:#F3F1EB;--ink:#1a1d21;--ink-soft:#5f656e;--ink-mute:#8b9098;--line:#E6E2D9;--line-strong:#d5d0c4;--accent:#E0871F;--accent-ink:#8a5310;--accent-on:#fff;--cheap:#2E9E5B;--cheap-ink:#1c6b3c;--pricey:#D2542E;--pricey-ink:#a23c1c;--grid:#ECE8DF;--thr:#C0442E;--shadow:0 1px 2px rgba(30,25,15,.05),0 8px 22px rgba(30,25,15,.07);--r:14px}
+  @media (prefers-color-scheme:dark){:root{--bg:#121417;--panel:#1b1e22;--panel-2:#23272c;--ink:#e9eaec;--ink-soft:#9aa0a8;--ink-mute:#727880;--line:#2b3037;--line-strong:#3a4048;--accent:#F0A23E;--accent-ink:#F0A23E;--accent-on:#1a1205;--cheap:#46B873;--cheap-ink:#8ad9a8;--pricey:#E67A50;--pricey-ink:#f0a488;--grid:#262b31;--thr:#E67A50;--shadow:0 1px 2px rgba(0,0,0,.3),0 10px 26px rgba(0,0,0,.4)}}
+  :root[data-theme="light"]{--bg:#FBFAF7;--panel:#fff;--panel-2:#F3F1EB;--ink:#1a1d21;--ink-soft:#5f656e;--ink-mute:#8b9098;--line:#E6E2D9;--line-strong:#d5d0c4;--accent:#E0871F;--accent-ink:#8a5310;--accent-on:#fff;--cheap:#2E9E5B;--cheap-ink:#1c6b3c;--pricey:#D2542E;--pricey-ink:#a23c1c;--grid:#ECE8DF;--thr:#C0442E}
+  :root[data-theme="dark"]{--bg:#121417;--panel:#1b1e22;--panel-2:#23272c;--ink:#e9eaec;--ink-soft:#9aa0a8;--ink-mute:#727880;--line:#2b3037;--line-strong:#3a4048;--accent:#F0A23E;--accent-ink:#F0A23E;--accent-on:#1a1205;--cheap:#46B873;--cheap-ink:#8ad9a8;--pricey:#E67A50;--pricey-ink:#f0a488;--grid:#262b31;--thr:#E67A50}
   *{box-sizing:border-box}
   body{margin:0;background:var(--bg);color:var(--ink);font-family:ui-sans-serif,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;font-size:15px;line-height:1.45;-webkit-font-smoothing:antialiased;-webkit-text-size-adjust:100%;padding:clamp(12px,2.5vw,24px)}
   .wrap{max-width:1000px;margin:0 auto}
   header{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:12px}
   .brand{font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--accent-ink)}
   h1{font-size:clamp(20px,3.2vw,26px);margin:2px 0 0;font-weight:800;letter-spacing:-.015em}
-  .sub{font-size:13px;color:var(--ink-soft);margin:3px 0 0;max-width:60ch}
-  .themebtn{flex:none;border:1px solid var(--line-strong);background:var(--panel);color:var(--ink-soft);border-radius:99px;padding:6px 10px;font-size:15px;line-height:1;cursor:pointer}
+  .sub{font-size:13px;color:var(--ink-soft);margin:3px 0 0;max-width:64ch}
+  .hctl{display:flex;flex-direction:column;align-items:flex-end;gap:6px;flex:none}
+  .lang{display:flex;gap:3px;background:var(--panel-2);border:1px solid var(--line);border-radius:99px;padding:3px}
+  .lang button{font:inherit;font-size:11px;font-weight:800;letter-spacing:.03em;color:var(--ink-soft);background:none;border:0;border-radius:99px;padding:5px 10px;cursor:pointer}
+  .lang button.on{background:var(--accent);color:var(--accent-on)}
+  .themebtn{border:1px solid var(--line-strong);background:var(--panel);color:var(--ink-soft);border-radius:99px;padding:5px 9px;font-size:15px;line-height:1;cursor:pointer}
   .card{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow)}
-
   .toolrow{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;padding:12px 14px 4px}
   .legend{display:flex;flex-wrap:wrap;gap:7px 16px;font-size:11.5px;color:var(--ink-soft);align-items:center}
   .lg{display:inline-flex;align-items:center;gap:6px}
   .bub{display:inline-block;border-radius:50%;border:2px solid}
   .bub.c{background:color-mix(in srgb,var(--cheap) 80%,transparent);border-color:var(--cheap-ink)}
   .bub.p{background:color-mix(in srgb,var(--pricey) 80%,transparent);border-color:var(--pricey-ink)}
-  .seg{display:inline-flex;gap:3px;background:var(--panel-2);border:1px solid var(--line);border-radius:10px;padding:3px}
-  .seg button{font:inherit;font-size:12px;font-weight:700;color:var(--ink-soft);background:none;border:0;border-radius:7px;padding:6px 11px;cursor:pointer}
-  .seg button.on{background:var(--accent);color:var(--accent-on)}
-
   .chartwrap{padding:4px 8px 12px}
   svg.flow{width:100%;height:auto;display:block;overflow:visible}
   .axislbl{fill:var(--ink-mute);font-size:11px;font-weight:600}
@@ -54,31 +41,12 @@
   .bublab{font-weight:800;fill:#fff;text-anchor:middle;pointer-events:none;font-variant-numeric:tabular-nums}
   .bubcnt{font-weight:800;fill:var(--ink);text-anchor:middle;pointer-events:none;font-size:11px}
   .bubpr{font-weight:700;text-anchor:middle;pointer-events:none;font-size:10px}
-  .tip{position:fixed;pointer-events:none;z-index:9;background:var(--panel);border:1px solid var(--line-strong);box-shadow:var(--shadow);border-radius:10px;padding:9px 11px;font-size:12px;opacity:0;transition:opacity .1s;max-width:230px}
+  .tip{position:fixed;pointer-events:none;z-index:9;background:var(--panel);border:1px solid var(--line-strong);box-shadow:var(--shadow);border-radius:10px;padding:9px 11px;font-size:12px;opacity:0;transition:opacity .1s;max-width:240px}
   .tip .d{font-weight:800;margin-bottom:5px}
   .tip .row{display:flex;justify-content:space-between;gap:16px;color:var(--ink-soft)}
   .tip .row b{color:var(--ink);font-variant-numeric:tabular-nums}
   .tip .pr{margin-top:5px;padding-top:5px;border-top:1px solid var(--line);font-weight:800}
-
-  details{margin-top:14px;border:1px solid var(--line);border-radius:var(--r);background:var(--panel);box-shadow:var(--shadow);overflow:hidden}
-  summary{cursor:pointer;padding:13px 15px;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-soft);list-style:none;display:flex;justify-content:space-between;align-items:center}
-  summary::-webkit-details-marker{display:none}
-  summary .chev{transition:transform .2s} details[open] summary .chev{transform:rotate(180deg)}
-  .pgrid{border-top:1px solid var(--line);padding:12px 14px;display:grid;grid-template-columns:repeat(4,1fr);gap:12px 16px}
-  @media(max-width:680px){.pgrid{grid-template-columns:repeat(2,1fr)}}
-  .pf{display:flex;flex-direction:column;gap:4px}
-  .pf.thr input{border-color:var(--thr)}
-  .pf label{font-size:10.5px;font-weight:600;color:var(--ink-soft)}
-  .pf input{font:inherit;font-size:14px;font-weight:700;color:var(--ink);background:var(--panel-2);border:1.5px solid var(--line-strong);border-radius:9px;padding:8px 10px;font-variant-numeric:tabular-nums}
-  .pf input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px color-mix(in srgb,var(--accent) 20%,transparent)}
-  .preset{display:flex;gap:8px;align-items:center;padding:2px 14px 14px}
-  .preset button{font:inherit;font-size:11.5px;font-weight:700;color:var(--ink-soft);background:var(--panel-2);border:1px solid var(--line-strong);border-radius:8px;padding:7px 11px;cursor:pointer}
-  .preset button:hover{border-color:var(--accent);color:var(--accent-ink)}
-  .note{font-size:10.5px;color:var(--ink-mute);margin-left:auto;max-width:44ch;text-align:right}
-  footer{margin-top:14px;padding:0 4px;color:var(--ink-mute);font-size:10.5px;line-height:1.55}
-  footer b{color:var(--ink-soft)}
-  /* container table */
-  .tablecard{margin-bottom:16px}
+  .tablecard{margin-bottom:8px}
   .thead{padding:12px 14px 2px;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-soft)}
   .thead .cnt{color:var(--ink-mute);font-weight:600;text-transform:none;letter-spacing:0;margin-left:6px}
   .tscroll{overflow-x:auto;padding:2px 6px 8px}
@@ -86,7 +54,7 @@
   .ctbl th{position:sticky;top:0;text-align:left;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.03em;color:var(--ink-soft);padding:8px 10px;border-bottom:1px solid var(--line);cursor:pointer;white-space:nowrap;user-select:none;background:var(--panel)}
   .ctbl th.r{text-align:right}
   .ctbl th:hover{color:var(--accent-ink)}
-  .ctbl th.sort{color:var(--accent-ink)} .ctbl th.sort::after{content:" ▾"} .ctbl th.sort.asc::after{content:" ▴"}
+  .ctbl th.sort{color:var(--accent-ink)} .ctbl th.sort::after{content:" ↓"} .ctbl th.sort.asc::after{content:" ↑"}
   .ctbl td{padding:8px 10px;border-bottom:1px solid var(--line);white-space:nowrap;font-variant-numeric:tabular-nums}
   .ctbl td.r{text-align:right}
   .ctbl tbody tr:hover td{background:var(--panel-2)}
@@ -94,6 +62,7 @@
   .ctbl .dot{display:inline-block;width:8px;height:8px;border-radius:2px;margin-right:7px;vertical-align:1px}
   .ctbl .fr{color:var(--ink-soft);font-size:11.5px}
   .ctbl tfoot td{font-weight:800;border-top:2px solid var(--line-strong);border-bottom:none;padding-top:9px;color:var(--ink)}
+  footer{margin-top:14px;padding:0 4px;color:var(--ink-mute);font-size:10.5px;line-height:1.55}
   @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
 </head>
@@ -102,42 +71,39 @@
 <div class="wrap">
   <header>
     <div>
-      <div class="brand">Energynat Ukraine · sales board</div>
-      <h1>What's coming — and at what price</h1>
-      <p class="sub">Every bubble is a shipment. <b>Left→right = when it lands. Higher = more expensive.</b> Size = how many containers. Presell the cheap stock before it arrives.</p>
+      <div class="brand" data-i18n="eyebrow">Energynat Ukraine · sales board</div>
+      <h1 data-i18n="title">What's coming — and at what price</h1>
+      <p class="sub" data-i18n="sub">Every bubble is a shipment. Left to right = when it lands. Higher = more expensive. Bubble size = how many containers.</p>
     </div>
-    <button class="themebtn" id="themebtn" type="button" aria-label="Theme">◐</button>
+    <div class="hctl">
+      <div class="lang" id="langseg"><button type="button" data-l="en" class="on">EN</button><button type="button" data-l="ua">UA</button></div>
+      <button class="themebtn" id="themebtn" type="button" aria-label="Theme">◐</button>
+    </div>
   </header>
 
   <section class="card">
     <div class="toolrow">
       <div class="legend">
-        <span class="lg"><span class="bub c" style="width:13px;height:13px"></span>at / below threshold — cheaper</span>
-        <span class="lg"><span class="bub p" style="width:13px;height:13px"></span>above threshold — pricier</span>
-        <span class="lg"><span class="bub c" style="width:9px;height:9px"></span><span class="bub c" style="width:15px;height:15px"></span><span class="bub c" style="width:21px;height:21px"></span>&nbsp;more containers</span>
-      </div>
-      <div class="seg" id="sizeseg">
-        <button type="button" data-s="ct" class="on">Size = containers</button>
-        <button type="button" data-s="kwp">Size = MWp</button>
+        <span class="lg"><span class="bub c" style="width:13px;height:13px"></span><span data-i18n="lg_cheap">at / below 14¢ — cheaper</span></span>
+        <span class="lg"><span class="bub p" style="width:13px;height:13px"></span><span data-i18n="lg_pricey">above 14¢ — pricier</span></span>
+        <span class="lg"><span class="bub c" style="width:9px;height:9px"></span><span class="bub c" style="width:15px;height:15px"></span><span class="bub c" style="width:21px;height:21px"></span>&nbsp;<span data-i18n="lg_size">bigger = more containers</span></span>
       </div>
     </div>
     <div class="chartwrap"><div id="chart"></div></div>
   </section>
 
   <section class="card tablecard">
-    <div class="thead">Container detail <span class="cnt" id="tblcount"></span></div>
+    <div class="thead"><span data-i18n="tbl_title">Container detail</span> <span class="cnt" id="tblcount"></span></div>
     <div class="tscroll">
       <table class="ctbl">
         <thead><tr>
-          <th data-k="lp">#</th>
-          <th data-k="date">Arrives</th>
-          <th data-k="prod">Panel</th>
-          <th data-k="frame">Frame</th>
-          <th class="r" data-k="mod">Modules</th>
-          <th class="r" data-k="kwp">kWp</th>
-          <th data-k="inc">Incoterm</th>
-          <th class="r" data-k="cents">Price &#162;/Wp</th>
-          <th class="r" data-k="val">Value $</th>
+          <th data-k="lp" data-i18n="th_num">#</th>
+          <th data-k="date" data-i18n="th_arr">Arrives</th>
+          <th data-k="prod" data-i18n="th_panel">Panel</th>
+          <th data-k="frame" data-i18n="th_frame">Frame</th>
+          <th class="r" data-k="mod" data-i18n="th_mod">Modules</th>
+          <th data-k="inc" data-i18n="th_inc">Incoterm</th>
+          <th class="r" data-k="cents" data-i18n="th_price">Price ¢/Wp</th>
         </tr></thead>
         <tbody id="tbody"></tbody>
         <tfoot id="tfoot"></tfoot>
@@ -145,133 +111,110 @@
     </div>
   </section>
 
-  <details id="params" open>
-    <summary>Price drivers — adjust and the whole board re-prices <span class="chev">⌄</span></summary>
-    <div class="pgrid">
-      <div class="pf thr"><label for="p_thr">"Expensive" threshold (¢/Wp)</label><input id="p_thr" type="number" step="0.1" value="14"></div>
-      <div class="pf"><label for="p_fx">FX (USD per €)</label><input id="p_fx" type="number" step="0.01" value="1.14"></div>
-      <div class="pf"><label for="p_tchm">Transport → Chmielnicki (€/car)</label><input id="p_tchm" type="number" step="10" value="2450"></div>
-      <div class="pf"><label for="p_gda">GDA → Warsaw leg (€/car)</label><input id="p_gda" type="number" step="10" value="450"></div>
-      <div class="pf"><label for="p_upl">Uplift — customs (%)</label><input id="p_upl" type="number" step="0.05" value="1.95"></div>
-      <div class="pf"><label for="p_fin">Financing / insurance (%)</label><input id="p_fin" type="number" step="0.05" value="0.70"></div>
-      <div class="pf"><label for="p_rtd">RTD → Warsaw leg (€/car)</label><input id="p_rtd" type="number" step="10" value="1800"></div>
-    </div>
-    <div class="preset">
-      <button type="button" id="reset">Reset to source</button>
-      <span class="note">Price shown = Chmielnicki landed cost (¢/Wp). Purchase price is baked in and not shown.</span>
-    </div>
-  </details>
-
   <footer id="foot"></footer>
 </div>
 <div class="tip" id="tip"></div>
 
 <script>
-const DATA=[{"lp":1,"brand":"Tongwei","power":640,"mod":576,"inc":"WAW","K":9.1,"eta":"available","code":"TWMND-78HD-640","frame":"silver"},{"lp":2,"brand":"Tongwei","power":640,"mod":576,"inc":"WAW","K":9.1,"eta":"available","code":"TWMND-78HD-640","frame":"silver"},{"lp":3,"brand":"Tongwei","power":640,"mod":576,"inc":"WAW","K":9.1,"eta":"available","code":"TWMND-78HD-640","frame":"silver"},{"lp":4,"brand":"JINKO","power":620,"mod":648,"inc":"GDA","K":9.6,"eta":"available","code":"JKM620N-66HL4M-BDV","frame":"silver"},{"lp":5,"brand":"JINKO","power":620,"mod":648,"inc":"GDA","K":9.6,"eta":"available","code":"JKM620N-66HL4M-BDV","frame":"silver"},{"lp":6,"brand":"JINKO","power":620,"mod":648,"inc":"GDA","K":9.6,"eta":"available","code":"JKM620N-66HL4M-BDV","frame":"silver"},{"lp":7,"brand":"JINKO","power":620,"mod":648,"inc":"GDA","K":9.6,"eta":"available","code":"JKM620N-66HL4M-BDV","frame":"silver"},{"lp":8,"brand":"JINKO","power":620,"mod":648,"inc":"GDA","K":9.6,"eta":"available","code":"JKM620N-66HL4M-BDV","frame":"silver"},{"lp":9,"brand":"JINKO","power":620,"mod":648,"inc":"GDA","K":9.6,"eta":"available","code":"JKM620N-66HL4M-BDV","frame":"silver"},{"lp":10,"brand":"JINKO","power":510,"mod":888,"inc":"WAW","K":11.5,"eta":"August 3","code":"JKM510N-54HL4M-BDV","frame":"black"},{"lp":11,"brand":"JINKO","power":515,"mod":888,"inc":"WAW","K":11.5,"eta":"August 3","code":"JKM515N-54HL4M-BDV","frame":"black"},{"lp":12,"brand":"JINKO","power":515,"mod":888,"inc":"WAW","K":11.5,"eta":"August 10","code":"JKM515N-54HL4M-BDV","frame":"black"},{"lp":13,"brand":"JINKO","power":515,"mod":888,"inc":"WAW","K":11.5,"eta":"August 10","code":"JKM515N-54HL4M-BDV","frame":"black"},{"lp":14,"brand":"JINKO","power":515,"mod":888,"inc":"WAW","K":11.5,"eta":"August 10","code":"JKM515N-54HL4M-BDV","frame":"black"},{"lp":15,"brand":"JINKO","power":510,"mod":888,"inc":"WAW","K":11.5,"eta":"August 15","code":"JKM510N-54HL4M-BDV","frame":"black"},{"lp":16,"brand":"JINKO","power":510,"mod":888,"inc":"WAW","K":11.5,"eta":"August 15","code":"JKM510N-54HL4M-BDV","frame":"black"},{"lp":17,"brand":"JINKO","power":510,"mod":888,"inc":"WAW","K":11.5,"eta":"August 15","code":"JKM510N-54HL4M-BDV","frame":"black"},{"lp":18,"brand":"JINKO","power":510,"mod":888,"inc":"WAW","K":11.5,"eta":"August 15","code":"JKM510N-54HL4M-BDV","frame":"black"},{"lp":19,"brand":"JINKO","power":510,"mod":888,"inc":"WAW","K":11.5,"eta":"August 15","code":"JKM510N-54HL4M-BDV","frame":"black"},{"lp":20,"brand":"JINKO","power":510,"mod":888,"inc":"WAW","K":11.5,"eta":"August 15","code":"JKM510N-54HL4M-BDV","frame":"black"},{"lp":21,"brand":"JINKO","power":510,"mod":888,"inc":"GDA","K":11.7,"eta":"August 21","code":"JKM510N-54HL4M-BDV","frame":"black"},{"lp":22,"brand":"JINKO","power":510,"mod":888,"inc":"GDA","K":11.7,"eta":"August 21","code":"JKM510N-54HL4M-BDV","frame":"black"},{"lp":23,"brand":"JINKO","power":510,"mod":888,"inc":"GDA","K":11.7,"eta":"August 21","code":"JKM510N-54HL4M-BDV","frame":"black"},{"lp":24,"brand":"JINKO","power":475,"mod":925,"inc":"GDA","K":11.2,"eta":"August 21","code":"JKM475N-48QL6-DV","frame":"black"},{"lp":25,"brand":"JINKO","power":475,"mod":925,"inc":"GDA","K":11.2,"eta":"August 21","code":"JKM475N-48QL6-DV","frame":"black"},{"lp":26,"brand":"JINKO","power":475,"mod":925,"inc":"GDA","K":11.2,"eta":"August 21","code":"JKM475N-48QL6-DV","frame":"black"},{"lp":27,"brand":"JINKO","power":590,"mod":720,"inc":"GDA","K":10.8,"eta":"August 21","code":"JKM590N-72HL4-BDV","frame":"silver"},{"lp":28,"brand":"JINKO","power":590,"mod":720,"inc":"GDA","K":10.8,"eta":"August 21","code":"JKM590N-72HL4-BDV","frame":"silver"},{"lp":29,"brand":"JINKO","power":590,"mod":720,"inc":"GDA","K":10.8,"eta":"August 21","code":"JKM590N-72HL4-BDV","frame":"silver"},{"lp":30,"brand":"JINKO","power":590,"mod":720,"inc":"GDA","K":10.8,"eta":"August 21","code":"JKM590N-72HL4-BDV","frame":"silver"},{"lp":31,"brand":"JINKO","power":590,"mod":720,"inc":"GDA","K":10.8,"eta":"August 21","code":"JKM590N-72HL4-BDV","frame":"silver"},{"lp":32,"brand":"JINKO","power":590,"mod":720,"inc":"GDA","K":10.8,"eta":"August 21","code":"JKM590N-72HL4-BDV","frame":"silver"},{"lp":33,"brand":"JINKO","power":590,"mod":720,"inc":"GDA","K":10.8,"eta":"August 21","code":"JKM590N-72HL4-BDV","frame":"silver"}];
-const TODAY=new Date(2026,6,29);
+const DATA=[{"lp":1,"brand":"Tongwei","power":640,"mod":576,"inc":"DDP WAW","eta":"available","frame":"silver","cents":11.4066},{"lp":2,"brand":"Tongwei","power":640,"mod":576,"inc":"DDP WAW","eta":"available","frame":"silver","cents":11.4066},{"lp":3,"brand":"Tongwei","power":640,"mod":576,"inc":"DDP WAW","eta":"available","frame":"silver","cents":11.4066},{"lp":4,"brand":"Jinko","power":620,"mod":648,"inc":"FCA RTD","eta":"available","frame":"silver","cents":12.674},{"lp":5,"brand":"Jinko","power":620,"mod":648,"inc":"CIF GDA","eta":"available","frame":"silver","cents":12.0569},{"lp":6,"brand":"Jinko","power":620,"mod":648,"inc":"CIF GDA","eta":"available","frame":"silver","cents":12.0569},{"lp":7,"brand":"Jinko","power":620,"mod":648,"inc":"CIF GDA","eta":"available","frame":"silver","cents":12.0569},{"lp":8,"brand":"Jinko","power":620,"mod":648,"inc":"CIF GDA","eta":"available","frame":"silver","cents":12.0569},{"lp":9,"brand":"Jinko","power":620,"mod":648,"inc":"CIF GDA","eta":"available","frame":"silver","cents":12.0569},{"lp":10,"brand":"Jinko","power":510,"mod":888,"inc":"DDP WAW","eta":"August 3","frame":"black","cents":14.0741},{"lp":11,"brand":"Jinko","power":515,"mod":888,"inc":"DDP WAW","eta":"August 3","frame":"black","cents":14.0681},{"lp":12,"brand":"Jinko","power":515,"mod":888,"inc":"DDP WAW","eta":"August 10","frame":"black","cents":14.0681},{"lp":13,"brand":"Jinko","power":515,"mod":888,"inc":"DDP WAW","eta":"August 10","frame":"black","cents":14.0681},{"lp":14,"brand":"Jinko","power":515,"mod":888,"inc":"DDP WAW","eta":"August 10","frame":"black","cents":14.0681},{"lp":15,"brand":"Jinko","power":510,"mod":888,"inc":"DDP WAW","eta":"August 15","frame":"black","cents":14.0741},{"lp":16,"brand":"Jinko","power":510,"mod":888,"inc":"DDP WAW","eta":"August 15","frame":"black","cents":14.0741},{"lp":17,"brand":"Jinko","power":510,"mod":888,"inc":"DDP WAW","eta":"August 15","frame":"black","cents":14.0741},{"lp":18,"brand":"Jinko","power":510,"mod":888,"inc":"DDP WAW","eta":"August 15","frame":"black","cents":14.0741},{"lp":19,"brand":"Jinko","power":510,"mod":888,"inc":"DDP WAW","eta":"August 15","frame":"black","cents":14.0741},{"lp":20,"brand":"Jinko","power":510,"mod":888,"inc":"DDP WAW","eta":"August 15","frame":"black","cents":14.0741},{"lp":21,"brand":"Jinko","power":510,"mod":888,"inc":"CIF GDA","eta":"August 21","frame":"black","cents":14.4215},{"lp":22,"brand":"Jinko","power":510,"mod":888,"inc":"CIF GDA","eta":"August 21","frame":"black","cents":14.4215},{"lp":23,"brand":"Jinko","power":510,"mod":888,"inc":"CIF GDA","eta":"August 21","frame":"black","cents":14.4215},{"lp":24,"brand":"Jinko","power":475,"mod":925,"inc":"CIF GDA","eta":"August 21","frame":"black, NON-bi","cents":14.2098},{"lp":25,"brand":"Jinko","power":475,"mod":925,"inc":"CIF GDA","eta":"August 21","frame":"black, NON-bi","cents":14.2098},{"lp":26,"brand":"Jinko","power":475,"mod":925,"inc":"CIF GDA","eta":"August 21","frame":"black, NON-bi","cents":14.2098},{"lp":27,"brand":"Jinko","power":590,"mod":720,"inc":"CIF GDA","eta":"August 21","frame":"silver","cents":13.4165},{"lp":28,"brand":"Jinko","power":590,"mod":720,"inc":"CIF GDA","eta":"August 21","frame":"silver","cents":13.4165},{"lp":29,"brand":"Jinko","power":590,"mod":720,"inc":"CIF GDA","eta":"August 21","frame":"silver","cents":13.4165},{"lp":30,"brand":"Jinko","power":590,"mod":720,"inc":"CIF GDA","eta":"August 21","frame":"silver","cents":13.4165},{"lp":31,"brand":"Jinko","power":590,"mod":720,"inc":"CIF GDA","eta":"August 21","frame":"silver","cents":13.4165},{"lp":32,"brand":"Jinko","power":590,"mod":720,"inc":"CIF GDA","eta":"August 21","frame":"silver","cents":13.4165},{"lp":33,"brand":"Jinko","power":590,"mod":720,"inc":"CIF GDA","eta":"August 21","frame":"silver","cents":13.4165}];
+const THR=14, TODAY=new Date(2026,6,29);
 const MONTHS={january:0,february:1,march:2,april:3,may:4,june:5,july:6,august:7,september:8,october:9,november:10,december:11};
-function etaDate(e){if(!e||/available/i.test(e))return new Date(TODAY);const m=e.trim().split(/\s+/);const mo=MONTHS[m[0].toLowerCase()];return mo==null?new Date(TODAY):new Date(2026,mo,parseInt(m[1],10));}
+function isAvail(e){return !e||/available/i.test(e)}
+function etaDate(e){if(isAvail(e))return new Date(TODAY);const m=e.trim().split(/\s+/);const mo=MONTHS[m[0].toLowerCase()];return mo==null?new Date(TODAY):new Date(2026,mo,parseInt(m[1],10));}
 function fam(p){return (p===510||p===515)?"510-15":String(p);}
 const $=id=>document.getElementById(id);
-let sizeBy="ct", P={};
-function readP(){P={thr:+$("p_thr").value||0,fx:+$("p_fx").value||0,tchm:+$("p_tchm").value||0,gda:+$("p_gda").value||0,rtd:+$("p_rtd").value||0,upl:+$("p_upl").value||0,fin:+$("p_fin").value||0};}
-function leg(inc){return inc==="GDA"?P.gda:(inc==="RTD"?P.rtd:0);}
-function cWp(c){return c.K*P.fx/100*(1+P.upl/100)+(P.tchm+leg(c.inc))*P.fx/(c.power*c.mod)+c.K*P.fx/100*(P.fin/100);}
 const DFMT=new Intl.DateTimeFormat("en-GB",{day:"numeric",month:"short"});
-const money=v=>"$"+Math.round(v).toLocaleString("en-US");
-function relDay(d){const dd=Math.round((d-TODAY)/864e5);return dd<=0?"available now":"in "+dd+" days";}
+let lang="en", sortK="date", sortDir=1;
+const T={
+ en:{eyebrow:"Energynat Ukraine · sales board",title:"What's coming — and at what price",
+   sub:"Every bubble is a shipment. Left to right = when it lands. Higher = more expensive. Bubble size = how many containers.",
+   lg_cheap:"at / below 14¢ — cheaper",lg_pricey:"above 14¢ — pricier",lg_size:"bigger = more containers",
+   ax_price:"Price · ¢/Wp landed",ax_date:"Arrival date →",thr:"expensive > 14¢",
+   tbl_title:"Container detail",th_num:"#",th_arr:"Arrives",th_panel:"Panel",th_frame:"Frame",th_mod:"Modules",th_inc:"Incoterm",th_price:"Price ¢/Wp",
+   inWaw:"in WAW warehouse",tip_arr:"Arrives",tip_qty:"Quantity",tip_break:"Breakdown",tip_price:"Chmielnicki price",
+   cont:"cont",containers:"containers",total:"Total",sortedby:"sorted by",
+   frames:{silver:"silver",black:"black"},
+   foot:(n,a,b)=>n+" containers · arriving "+a+" – "+b+". Price = Chmielnicki landed cost (¢/Wp), read from Stock_flow_EN_July_29. Tap a bubble or click a table header to sort."},
+ ua:{eyebrow:"Energynat Україна · дошка продажів",title:"Що прибуває — і за якою ціною",
+   sub:"Кожна бульбашка — це поставка. Зліва направо — коли прибуває. Вище — дорожче. Розмір — скільки контейнерів.",
+   lg_cheap:"≤ 14¢ — дешевше",lg_pricey:"> 14¢ — дорожче",lg_size:"більше = більше контейнерів",
+   ax_price:"Ціна · ¢/Вт (Хмельницький)",ax_date:"Дата прибуття →",thr:"дорого > 14¢",
+   tbl_title:"Деталі по контейнерах",th_num:"№",th_arr:"Прибуває",th_panel:"Панель",th_frame:"Рама",th_mod:"Модулів",th_inc:"Інкотермс",th_price:"Ціна ¢/Вт",
+   inWaw:"на складі WAW",tip_arr:"Прибуває",tip_qty:"Кількість",tip_break:"Розбивка",tip_price:"Ціна у Хмельницькому",
+   cont:"конт",containers:"контейнерів",total:"Разом",sortedby:"сортування:",
+   frames:{silver:"срібляста",black:"чорна"},
+   foot:(n,a,b)=>n+" контейнерів · прибуває "+a+" – "+b+". Ціна = собівартість у Хмельницькому (¢/Вт), зі Stock_flow_EN_July_29. Торкніться бульбашки або заголовка таблиці для сортування."}
+};
+function arrivesTxt(eta,d){return isAvail(eta)?T[lang].inWaw:DFMT.format(d);}
 
 function groups(){
   const g={};
-  DATA.forEach(c=>{const d=etaDate(c.eta);const key=d.getTime()+"|"+fam(c.power);
-    const o=g[key]||(g[key]={date:d,fam:fam(c.power),n:0,kwp:0,cost:0,wsum:0,brand:c.brand,code:c.code,powers:{}});
-    const cw=cWp(c);o.n++;o.kwp+=c.power*c.mod/1000;o.cost+=cw*c.power*c.mod;o.wsum+=cw*c.power*c.mod;o.powers[c.power]=(o.powers[c.power]||0)+1;});
-  return Object.values(g).map(o=>{o.priceWp=o.wsum/ (o.kwp*1000); o.cents=o.priceWp*100; return o;}).sort((a,b)=>a.date-b.date||a.cents-b.cents);
+  DATA.forEach(c=>{const d=etaDate(c.eta);const key=d.getTime()+"|"+fam(c.power)+"|"+c.cents.toFixed(2);
+    const o=g[key]||(g[key]={date:d,fam:fam(c.power),eta:c.eta,n:0,wp:0,csum:0,brand:c.brand,powers:{}});
+    o.n++;o.wp+=c.power*c.mod;o.csum+=c.cents*c.power*c.mod;o.powers[c.power]=(o.powers[c.power]||0)+1;});
+  return Object.values(g).map(o=>{o.cents=o.csum/o.wp;return o;}).sort((a,b)=>a.date-b.date||a.cents-b.cents);
 }
-
 function render(){
-  readP();const G=groups();
-  const W=980,H=460,padL=52,padR=150,padT=20,padB=40,plotW=W-padL-padR,plotH=H-padT-padB;
+  const G=groups();
+  const W=980,H=440,padL=52,padR=150,padT=20,padB=40,plotW=W-padL-padR,plotH=H-padT-padB;
   const start=TODAY,endMax=G.reduce((m,x)=>x.date>m?x.date:m,TODAY),end=new Date(Math.max(endMax.getTime(),start.getTime()+28*864e5)+4*864e5);
-  const span=end-start;const x=d=>padL+(d-start)/span*plotW;
-  const cs=G.map(g=>g.cents);let yMin=Math.floor(Math.min(...cs)-0.6),yMax=Math.ceil(Math.max(...cs,P.thr)+0.6);
-  if(yMax-yMin<3)yMax=yMin+3;
+  const span=end-start,x=d=>padL+(d-start)/span*plotW;
+  const cs=G.map(g=>g.cents);let yMin=Math.floor(Math.min(...cs)-0.6),yMax=Math.ceil(Math.max(...cs,THR)+0.6);if(yMax-yMin<3)yMax=yMin+3;
   const y=v=>padT+plotH-(v-yMin)/(yMax-yMin)*plotH;
-  const nMax=Math.max(...G.map(g=>sizeBy==="ct"?g.n:g.kwp));const rOf=v=>8+16*Math.sqrt((sizeBy==="ct"?v:v)/nMax);
+  const nMax=Math.max(...G.map(g=>g.n)),rOf=n=>10+16*Math.sqrt(n/nMax);
   let s='';
-  // y grid + axis (price)
-  for(let v=yMin;v<=yMax+0.001;v+=1){const yy=y(v);s+=`<line class="gridline" x1="${padL}" y1="${yy}" x2="${padL+plotW}" y2="${yy}"/>`+
-    `<text class="axislbl" x="${padL-8}" y="${yy+4}" text-anchor="end">${v.toFixed(0)}¢</text>`;}
-  s+=`<text class="axistitle" transform="translate(${14},${padT+plotH/2}) rotate(-90)" text-anchor="middle">Price · ¢/Wp landed</text>`;
-  // x ticks weekly + "now"
-  for(let t=0;t<=span;t+=7*864e5){const d=new Date(start.getTime()+t),xx=x(d);
-    s+=`<line class="axisline" x1="${xx}" y1="${padT+plotH}" x2="${xx}" y2="${padT+plotH+5}"/>`+
-      `<text class="axislbl" x="${xx}" y="${padT+plotH+18}" text-anchor="middle">${DFMT.format(d)}</text>`;}
-  s+=`<text class="axistitle" x="${padL}" y="${H-4}" text-anchor="start">Arrival date →</text>`;
-  // threshold line
-  const ty=y(P.thr);s+=`<line class="thrline" x1="${padL}" y1="${ty}" x2="${padL+plotW}" y2="${ty}"/>`+
-    `<text class="thrlbl" x="${padL+plotW}" y="${ty-6}" text-anchor="end">expensive &gt; ${P.thr}¢</text>`;
-  // dodge groups sharing a date horizontally
+  for(let v=yMin;v<=yMax+0.001;v+=1){const yy=y(v);s+=`<line class="gridline" x1="${padL}" y1="${yy}" x2="${padL+plotW}" y2="${yy}"/><text class="axislbl" x="${padL-8}" y="${yy+4}" text-anchor="end">${v.toFixed(0)}¢</text>`;}
+  s+=`<text class="axistitle" transform="translate(14,${padT+plotH/2}) rotate(-90)" text-anchor="middle">${T[lang].ax_price}</text>`;
+  for(let t=0;t<=span;t+=7*864e5){const d=new Date(start.getTime()+t),xx=x(d);s+=`<line class="axisline" x1="${xx}" y1="${padT+plotH}" x2="${xx}" y2="${padT+plotH+5}"/><text class="axislbl" x="${xx}" y="${padT+plotH+18}" text-anchor="middle">${DFMT.format(d)}</text>`;}
+  s+=`<text class="axistitle" x="${padL}" y="${H-4}" text-anchor="start">${T[lang].ax_date}</text>`;
+  const ty=y(THR);s+=`<line class="thrline" x1="${padL}" y1="${ty}" x2="${padL+plotW}" y2="${ty}"/><text class="thrlbl" x="${padL+plotW}" y="${ty-6}" text-anchor="end">${T[lang].thr}</text>`;
   const byDate={};G.forEach(g=>{(byDate[g.date.getTime()]=byDate[g.date.getTime()]||[]).push(g);});
-  const pos=new Map();Object.values(byDate).forEach(arr=>{arr.sort((a,b)=>a.cents-b.cents);arr.forEach((g,i)=>{const off=(i-(arr.length-1)/2)*22;pos.set(g,off);});});
-  // bubbles
-  const bubbles=G.map((g,idx)=>{const cx=x(g.date)+(pos.get(g)||0),cy=y(g.cents),r=rOf(sizeBy==="ct"?g.n:g.kwp),pricey=g.cents>P.thr+1e-9;
-    return {g,cx,cy,r,pricey,idx};});
-  bubbles.forEach(b=>{const col=b.pricey?'var(--pricey)':'var(--cheap)',ink=b.pricey?'var(--pricey-ink)':'var(--cheap-ink)';
-    s+=`<circle class="bubble" data-i="${b.idx}" cx="${b.cx}" cy="${b.cy}" r="${b.r}" fill="${col}" fill-opacity="0.82" stroke="${ink}"/>`;
-    s+=`<text class="bublab" x="${b.cx}" y="${b.cy+ (b.r>16?0:1)}" dy="0.32em" style="font-size:${b.r>18?14:b.r>13?12:10}px">${b.g.fam}</text>`;
-    s+=`<text class="bubcnt" x="${b.cx}" y="${b.cy-b.r-4}">${sizeBy==="ct"?b.g.n+'×':(b.g.kwp/1000).toFixed(2)+' MWp'}</text>`;
-    s+=`<text class="bubpr" x="${b.cx}" y="${b.cy+b.r+13}" fill="${b.pricey?'var(--pricey-ink)':'var(--cheap-ink)'}">${b.g.cents.toFixed(1)}¢</text>`;});
-  $("chart").innerHTML=`<svg class="flow" viewBox="0 0 ${W} ${H}" role="img" aria-label="Arrivals by date and price">${s}</svg>`;
-  // tooltips
+  const pos=new Map();Object.values(byDate).forEach(a=>{a.sort((p,q)=>p.cents-q.cents);a.forEach((g,i)=>pos.set(g,(i-(a.length-1)/2)*22));});
+  const B=G.map((g,i)=>({g,cx:x(g.date)+(pos.get(g)||0),cy:y(g.cents),r:rOf(g.n),p:g.cents>THR+1e-9,i}));
+  B.forEach(b=>{const col=b.p?'var(--pricey)':'var(--cheap)',ink=b.p?'var(--pricey-ink)':'var(--cheap-ink)';
+    s+=`<circle class="bubble" data-i="${b.i}" cx="${b.cx}" cy="${b.cy}" r="${b.r}" fill="${col}" fill-opacity="0.82" stroke="${ink}"/>`+
+       `<text class="bublab" x="${b.cx}" y="${b.cy}" dy="0.32em" style="font-size:${b.r>18?14:b.r>13?12:10}px">${b.g.fam}</text>`+
+       `<text class="bubcnt" x="${b.cx}" y="${b.cy-b.r-4}">${b.g.n}×</text>`+
+       `<text class="bubpr" x="${b.cx}" y="${b.cy+b.r+13}" fill="${b.p?'var(--pricey-ink)':'var(--cheap-ink)'}">${b.g.cents.toFixed(1)}¢</text>`;});
+  $("chart").innerHTML=`<svg class="flow" viewBox="0 0 ${W} ${H}" role="img">${s}</svg>`;
   const tip=$("tip");
   $("chart").querySelectorAll(".bubble").forEach(el=>{
-    el.addEventListener("mouseenter",()=>{const g=bubbles[+el.dataset.i].g;const pw=Object.entries(g.powers).map(([p,n])=>n+'× '+p+'W').join(', ');
-      tip.innerHTML=`<div class="d">${g.fam==="510-15"?"Jinko 510/515":g.brand+" "+g.fam} · ${g.code}</div>`+
-        `<div class="row"><span>Arrives</span><b>${DFMT.format(g.date)} (${relDay(g.date)})</b></div>`+
-        `<div class="row"><span>Quantity</span><b>${g.n} cont · ${(g.kwp/1000).toFixed(2)} MWp</b></div>`+
-        `<div class="row"><span>Breakdown</span><b>${pw}</b></div>`+
-        `<div class="row"><span>Base value</span><b>${money(g.cost)}</b></div>`+
-        `<div class="row pr" style="color:${g.cents>P.thr?'var(--pricey-ink)':'var(--cheap-ink)'}"><span>Chmielnicki price</span><b>${g.cents.toFixed(2)}¢/Wp</b></div>`;
+    el.addEventListener("mouseenter",()=>{const g=B[+el.dataset.i].g;const pw=Object.entries(g.powers).map(([p,n])=>n+'× '+p+'W').join(', ');
+      tip.innerHTML=`<div class="d">${g.fam==="510-15"?"Jinko 510/515":g.brand+" "+g.fam}</div>`+
+        `<div class="row"><span>${T[lang].tip_arr}</span><b>${arrivesTxt(g.eta,g.date)}</b></div>`+
+        `<div class="row"><span>${T[lang].tip_qty}</span><b>${g.n} ${T[lang].cont}</b></div>`+
+        `<div class="row"><span>${T[lang].tip_break}</span><b>${pw}</b></div>`+
+        `<div class="row pr" style="color:${g.cents>THR?'var(--pricey-ink)':'var(--cheap-ink)'}"><span>${T[lang].tip_price}</span><b>${g.cents.toFixed(2)}¢/Wp</b></div>`;
       tip.style.opacity=1;});
-    el.addEventListener("mousemove",e=>{let X=e.clientX+14,Y=e.clientY+14;if(X+240>innerWidth)X=e.clientX-240;if(Y+150>innerHeight)Y=e.clientY-150;tip.style.left=X+"px";tip.style.top=Y+"px";});
+    el.addEventListener("mousemove",e=>{let X=e.clientX+14,Y=e.clientY+14;if(X+250>innerWidth)X=e.clientX-250;if(Y+150>innerHeight)Y=e.clientY-150;tip.style.left=X+"px";tip.style.top=Y+"px";});
     el.addEventListener("mouseleave",()=>{tip.style.opacity=0;});
   });
-  let ct=DATA.length,mw=DATA.reduce((s,c)=>s+c.power*c.mod,0)/1e6;
-  $("foot").innerHTML=`<b>${ct}</b> containers · <b>${mw.toFixed(1)}</b> MWp arriving ${DFMT.format(TODAY)} – ${DFMT.format(endMax)}. `+
-    `Price = Chmielnicki landed cost ¢/Wp = price×FX×(1+uplift%) + (transport+leg)×FX÷(power×mod) + price×FX×fin%. Source <b>Stock_flow_EN_July_29</b> (FX ${P.fx.toFixed(2)}). Hover a bubble for detail.`;
+  $("foot").textContent=T[lang].foot(DATA.length,DFMT.format(TODAY),DFMT.format(endMax));
   buildTable();
 }
-
-let sortK="date",sortDir=1;
 function buildTable(){
-  const rows=DATA.map(c=>{const cw=cWp(c);return {lp:c.lp,date:etaDate(c.eta),eta:c.eta,brand:c.brand==="JINKO"?"Jinko":c.brand,power:c.power,frame:c.frame||"",mod:c.mod,inc:c.inc,kwp:c.power*c.mod/1000,cents:cw*100,val:cw*c.power*c.mod,prod:(c.brand==="JINKO"?"Jinko":c.brand)+" "+c.power};});
+  const rows=DATA.map(c=>({lp:c.lp,date:etaDate(c.eta),eta:c.eta,brand:c.brand,power:c.power,frame:c.frame||"",mod:c.mod,inc:c.inc,cents:c.cents,prod:c.brand+" "+c.power}));
   rows.sort((a,b)=>{if(sortK==="date")return (a.date-b.date||a.cents-b.cents)*sortDir;let x=a[sortK],y=b[sortK];if(typeof x==="string")return x.localeCompare(y)*sortDir;return (x-y)*sortDir;});
-  let h="";rows.forEach(r=>{const p=r.cents>P.thr+1e-9;h+=`<tr>`+
-    `<td>${r.lp}</td>`+
-    `<td>${DFMT.format(r.date)}${/available/i.test(r.eta)?" · now":""}</td>`+
-    `<td><span class="dot" style="background:${p?"var(--pricey)":"var(--cheap)"}"></span>${r.prod}W</td>`+
-    `<td class="fr">${r.frame}</td>`+
-    `<td class="r">${r.mod}</td>`+
-    `<td class="r">${r.kwp.toFixed(1)}</td>`+
-    `<td>${r.inc}</td>`+
-    `<td class="r pc ${p?"p":"c"}">${r.cents.toFixed(2)}¢</td>`+
-    `<td class="r">${money(r.val)}</td></tr>`;});
+  let h="";rows.forEach(r=>{const p=r.cents>THR+1e-9;const fr=T[lang].frames[r.frame]||r.frame;
+    h+=`<tr><td>${r.lp}</td><td>${arrivesTxt(r.eta,r.date)}</td>`+
+      `<td><span class="dot" style="background:${p?'var(--pricey)':'var(--cheap)'}"></span>${r.prod}W</td>`+
+      `<td class="fr">${fr}</td><td class="r">${r.mod}</td><td>${r.inc}</td>`+
+      `<td class="r pc ${p?'p':'c'}">${r.cents.toFixed(2)}¢</td></tr>`;});
   $("tbody").innerHTML=h;
-  const tc=DATA.length,tm=DATA.reduce((s,c)=>s+c.mod,0),tk=DATA.reduce((s,c)=>s+c.power*c.mod/1000,0),tv=DATA.reduce((s,c)=>s+cWp(c)*c.power*c.mod,0);
-  $("tfoot").innerHTML=`<tr><td colspan="4">Total · ${tc} containers</td><td class="r">${tm.toLocaleString("en-US")}</td><td class="r">${tk.toFixed(0)}</td><td></td><td></td><td class="r">${money(tv)}</td></tr>`;
-  $("tblcount").textContent="· "+tc+" containers, sorted by "+sortK;
+  const tm=DATA.reduce((s,c)=>s+c.mod,0);
+  $("tfoot").innerHTML=`<tr><td colspan="4">${T[lang].total} · ${DATA.length} ${T[lang].containers}</td><td class="r">${tm.toLocaleString("en-US")}</td><td></td><td></td></tr>`;
+  $("tblcount").textContent="· "+DATA.length+" "+T[lang].containers+" · "+T[lang].sortedby+" "+sortK;
   document.querySelectorAll(".ctbl th").forEach(th=>{const on=th.dataset.k===sortK;th.classList.toggle("sort",on);th.classList.toggle("asc",on&&sortDir===1);});
 }
+function applyLang(){document.querySelectorAll("[data-i18n]").forEach(el=>{const k=el.getAttribute("data-i18n");if(T[lang][k]!=null)el.textContent=T[lang][k];});render();}
 document.querySelectorAll(".ctbl th").forEach(th=>th.addEventListener("click",()=>{const k=th.dataset.k;if(sortK===k)sortDir*=-1;else{sortK=k;sortDir=1;}buildTable();}));
-$("sizeseg").addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;[...b.parentNode.children].forEach(x=>x.classList.remove("on"));b.classList.add("on");sizeBy=b.dataset.s;render();});
-["p_thr","p_fx","p_tchm","p_gda","p_rtd","p_upl","p_fin"].forEach(id=>$(id).addEventListener("input",render));
-$("reset").addEventListener("click",()=>{$("p_thr").value=14;$("p_fx").value=1.14;$("p_tchm").value=2450;$("p_gda").value=450;$("p_rtd").value=1800;$("p_upl").value=1.95;$("p_fin").value=0.70;render();});
+$("langseg").addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;[...b.parentNode.children].forEach(x=>x.classList.remove("on"));b.classList.add("on");lang=b.dataset.l;applyLang();});
 const root=document.documentElement;
 function sysDark(){return matchMedia&&matchMedia("(prefers-color-scheme:dark)").matches}
 function setTheme(t){root.setAttribute("data-theme",t);$("themebtn").textContent=t==="dark"?"☾":"☀";render();}
 $("themebtn").addEventListener("click",()=>setTheme((root.getAttribute("data-theme")||(sysDark()?"dark":"light"))==="dark"?"light":"dark"));
 setTheme(sysDark()?"dark":"light");
+applyLang();
 </script>
 </body>
 </html>
