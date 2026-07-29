@@ -136,7 +136,7 @@
     <div class="sec-t"><b>2</b> <span data-i18n="s2">Cost at destination &amp; profit</span></div>
     <div class="card">
       <div class="rhead">
-        <div class="chan" id="chanseg"><button type="button" data-c="sp" class="on">San Paver</button><button type="button" data-c="rv">ROLV</button></div>
+        <div class="chan" id="chanseg"><button type="button" data-c="sp" class="on" data-i18n="ch_sp">Odessa Broker</button><button type="button" data-c="rv" data-i18n="ch_rv">Kiev Broker</button></div>
       </div>
       <table class="rt">
         <thead><tr>
@@ -146,7 +146,7 @@
         </tr></thead>
         <tbody id="rbody"></tbody>
       </table>
-      <div class="rfoot"><span id="foottx"></span><span class="chanpill sp" id="chanpill">San Paver</span></div>
+      <div class="rfoot"><span id="foottx"></span><span class="chanpill sp" id="chanpill">Odessa Broker</span></div>
     </div>
   </section>
 
@@ -170,12 +170,12 @@
         <div class="arow"><label><span data-i18n="fl_o">Floor · Other</span> <span class="u">$/Wp</span></label><input id="fl_OTHER" type="number" step="0.005" value="0.125"></div>
       </div>
       <div class="agroup sp">
-        <h4><span data-i18n="g_sp">San Paver fees</span></h4>
+        <h4><span data-i18n="g_sp">Odessa Broker fees</span></h4>
         <div class="arow"><label><span data-i18n="sp_transfer">Transfer Fee</span> <span class="u">%</span></label><input id="up1_sp" type="number" step="0.05" value="1.95"></div>
         <div class="arow"><label><span data-i18n="sp_sales">Sales Fee</span> <span class="u">%</span></label><input id="fin_sp" type="number" step="0.05" value="0.70"></div>
       </div>
       <div class="agroup rv">
-        <h4><span data-i18n="g_rv">ROLV fees</span></h4>
+        <h4><span data-i18n="g_rv">Kiev Broker fees</span></h4>
         <div class="arow"><label><span data-i18n="rv_operating">Operating Fee</span> <span class="u">%</span></label><input id="up1_rv" type="number" step="0.05" value="1.00"></div>
         <div class="arow"><label><span data-i18n="rv_transfer">Transfer Fee</span> <span class="u">%</span></label><input id="up2_rv" type="number" step="0.05" value="1.50"></div>
         <div class="arow"><label><span data-i18n="rv_sales">Sales Fee</span> <span class="u">%</span></label><input id="fin_rv" type="number" step="0.05" value="0.70"></div>
@@ -200,7 +200,7 @@
       sum_adj:"Adjust rates — applied on Calculate",g_shared:"Shared",a_fx:"FX",a_gda:"Port→Warsaw · GDA",a_rtd:"Port→Warsaw · RTD",
       a_chm:"Transport · Chmielnicki",a_kie:"Transport · Kiev",a_ode:"Transport · Odessa",a_lvi:"Transport · Lviv",cf:"confirm",
       fl_j:"Floor · Jinko",fl_t:"Floor · Tongwei",fl_s:"Floor · Suntech",fl_o:"Floor · Other",
-      g_sp:"San Paver fees",g_rv:"ROLV fees",sp_transfer:"Transfer Fee",sp_sales:"Sales Fee",
+      g_sp:"Odessa Broker fees",g_rv:"Kiev Broker fees",ch_sp:"Odessa Broker",ch_rv:"Kiev Broker",sp_transfer:"Transfer Fee",sp_sales:"Sales Fee",
       rv_operating:"Operating Fee",rv_transfer:"Transfer Fee",rv_sales:"Sales Fee",rv_custom:"Custom Declaration",
       cents:"€-cents/Wp",dirty:"Inputs changed — tap Calculate to update",
       cities:{chm:"Chmielnicki",kie:"Kiev",ode:"Odessa",lvi:"Lviv"},cont:"Container",kwp:"kWp",pcs:"pcs",
@@ -212,7 +212,7 @@
       sum_adj:"Ставки — застосовуються при розрахунку",g_shared:"Спільні",a_fx:"Курс",a_gda:"Порт→Варшава · GDA",a_rtd:"Порт→Варшава · RTD",
       a_chm:"Транспорт · Хмельницький",a_kie:"Транспорт · Київ",a_ode:"Транспорт · Одеса",a_lvi:"Транспорт · Львів",cf:"уточнити",
       fl_j:"Мін. · Jinko",fl_t:"Мін. · Tongwei",fl_s:"Мін. · Suntech",fl_o:"Мін. · Інше",
-      g_sp:"San Paver — комісії",g_rv:"ROLV — комісії",sp_transfer:"Комісія за переказ",sp_sales:"Комісія з продажу",
+      g_sp:"Одеський брокер — комісії",g_rv:"Київський брокер — комісії",ch_sp:"Одеський брокер",ch_rv:"Київський брокер",sp_transfer:"Комісія за переказ",sp_sales:"Комісія з продажу",
       rv_operating:"Операційна комісія",rv_transfer:"Комісія за переказ",rv_sales:"Комісія з продажу",rv_custom:"Митна декларація",
       cents:"€-центів/Wp",dirty:"Дані змінено — натисніть «Розрахувати»",
       cities:{chm:"Хмельницький",kie:"Київ",ode:"Одеса",lvi:"Львів"},cont:"Контейнер",kwp:"кВтп",pcs:"шт",
@@ -245,7 +245,7 @@
         '<td class="profit">'+money(d.profit)+'</td></tr>';});
     $("rbody").innerHTML=html;
     $("foottx").innerHTML=t.cont+' <b>'+results.kw.toFixed(1)+'</b> '+t.kwp+' · <b>'+results.pcs+'</b> '+t.pcs;
-    var pill=$("chanpill"); pill.textContent=channel==="sp"?"San Paver":"ROLV"; pill.className="chanpill "+channel;
+    var pill=$("chanpill"); pill.textContent=(channel==="sp"?t.ch_sp:t.ch_rv); pill.className="chanpill "+channel;
   }
   function applyLang(){
     var t=T[lang];
