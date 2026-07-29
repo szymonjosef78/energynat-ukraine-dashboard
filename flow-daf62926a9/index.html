@@ -77,6 +77,23 @@
   .note{font-size:10.5px;color:var(--ink-mute);margin-left:auto;max-width:44ch;text-align:right}
   footer{margin-top:14px;padding:0 4px;color:var(--ink-mute);font-size:10.5px;line-height:1.55}
   footer b{color:var(--ink-soft)}
+  /* container table */
+  .tablecard{margin-bottom:16px}
+  .thead{padding:12px 14px 2px;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-soft)}
+  .thead .cnt{color:var(--ink-mute);font-weight:600;text-transform:none;letter-spacing:0;margin-left:6px}
+  .tscroll{overflow-x:auto;padding:2px 6px 8px}
+  .ctbl{width:100%;border-collapse:collapse;font-size:12.5px}
+  .ctbl th{position:sticky;top:0;text-align:left;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.03em;color:var(--ink-soft);padding:8px 10px;border-bottom:1px solid var(--line);cursor:pointer;white-space:nowrap;user-select:none;background:var(--panel)}
+  .ctbl th.r{text-align:right}
+  .ctbl th:hover{color:var(--accent-ink)}
+  .ctbl th.sort{color:var(--accent-ink)} .ctbl th.sort::after{content:" ▾"} .ctbl th.sort.asc::after{content:" ▴"}
+  .ctbl td{padding:8px 10px;border-bottom:1px solid var(--line);white-space:nowrap;font-variant-numeric:tabular-nums}
+  .ctbl td.r{text-align:right}
+  .ctbl tbody tr:hover td{background:var(--panel-2)}
+  .ctbl .pc{font-weight:800} .ctbl .pc.c{color:var(--cheap-ink)} .ctbl .pc.p{color:var(--pricey-ink)}
+  .ctbl .dot{display:inline-block;width:8px;height:8px;border-radius:2px;margin-right:7px;vertical-align:1px}
+  .ctbl .fr{color:var(--ink-soft);font-size:11.5px}
+  .ctbl tfoot td{font-weight:800;border-top:2px solid var(--line-strong);border-bottom:none;padding-top:9px;color:var(--ink)}
   @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
 </head>
@@ -107,6 +124,27 @@
     <div class="chartwrap"><div id="chart"></div></div>
   </section>
 
+  <section class="card tablecard">
+    <div class="thead">Container detail <span class="cnt" id="tblcount"></span></div>
+    <div class="tscroll">
+      <table class="ctbl">
+        <thead><tr>
+          <th data-k="lp">#</th>
+          <th data-k="date">Arrives</th>
+          <th data-k="prod">Panel</th>
+          <th data-k="frame">Frame</th>
+          <th class="r" data-k="mod">Modules</th>
+          <th class="r" data-k="kwp">kWp</th>
+          <th data-k="inc">Incoterm</th>
+          <th class="r" data-k="cents">Price &#162;/Wp</th>
+          <th class="r" data-k="val">Value $</th>
+        </tr></thead>
+        <tbody id="tbody"></tbody>
+        <tfoot id="tfoot"></tfoot>
+      </table>
+    </div>
+  </section>
+
   <details id="params" open>
     <summary>Price drivers — adjust and the whole board re-prices <span class="chev">⌄</span></summary>
     <div class="pgrid">
@@ -129,7 +167,7 @@
 <div class="tip" id="tip"></div>
 
 <script>
-const DATA=[{"lp":1,"brand":"Tongwei","power":640,"mod":576,"inc":"WAW","K":9.1,"eta":"available","code":"TWMND-78HD-640"},{"lp":2,"brand":"Tongwei","power":640,"mod":576,"inc":"WAW","K":9.1,"eta":"available","code":"TWMND-78HD-640"},{"lp":3,"brand":"Tongwei","power":640,"mod":576,"inc":"WAW","K":9.1,"eta":"available","code":"TWMND-78HD-640"},{"lp":4,"brand":"JINKO","power":620,"mod":648,"inc":"GDA","K":9.6,"eta":"available","code":"JKM620N-66HL4M-BDV"},{"lp":5,"brand":"JINKO","power":620,"mod":648,"inc":"GDA","K":9.6,"eta":"available","code":"JKM620N-66HL4M-BDV"},{"lp":6,"brand":"JINKO","power":620,"mod":648,"inc":"GDA","K":9.6,"eta":"available","code":"JKM620N-66HL4M-BDV"},{"lp":7,"brand":"JINKO","power":620,"mod":648,"inc":"GDA","K":9.6,"eta":"available","code":"JKM620N-66HL4M-BDV"},{"lp":8,"brand":"JINKO","power":620,"mod":648,"inc":"GDA","K":9.6,"eta":"available","code":"JKM620N-66HL4M-BDV"},{"lp":9,"brand":"JINKO","power":620,"mod":648,"inc":"GDA","K":9.6,"eta":"available","code":"JKM620N-66HL4M-BDV"},{"lp":10,"brand":"JINKO","power":510,"mod":888,"inc":"WAW","K":11.5,"eta":"August 3","code":"JKM510N-54HL4M-BDV"},{"lp":11,"brand":"JINKO","power":515,"mod":888,"inc":"WAW","K":11.5,"eta":"August 3","code":"JKM515N-54HL4M-BDV"},{"lp":12,"brand":"JINKO","power":515,"mod":888,"inc":"WAW","K":11.5,"eta":"August 10","code":"JKM515N-54HL4M-BDV"},{"lp":13,"brand":"JINKO","power":515,"mod":888,"inc":"WAW","K":11.5,"eta":"August 10","code":"JKM515N-54HL4M-BDV"},{"lp":14,"brand":"JINKO","power":515,"mod":888,"inc":"WAW","K":11.5,"eta":"August 10","code":"JKM515N-54HL4M-BDV"},{"lp":15,"brand":"JINKO","power":510,"mod":888,"inc":"WAW","K":11.5,"eta":"August 15","code":"JKM510N-54HL4M-BDV"},{"lp":16,"brand":"JINKO","power":510,"mod":888,"inc":"WAW","K":11.5,"eta":"August 15","code":"JKM510N-54HL4M-BDV"},{"lp":17,"brand":"JINKO","power":510,"mod":888,"inc":"WAW","K":11.5,"eta":"August 15","code":"JKM510N-54HL4M-BDV"},{"lp":18,"brand":"JINKO","power":510,"mod":888,"inc":"WAW","K":11.5,"eta":"August 15","code":"JKM510N-54HL4M-BDV"},{"lp":19,"brand":"JINKO","power":510,"mod":888,"inc":"WAW","K":11.5,"eta":"August 15","code":"JKM510N-54HL4M-BDV"},{"lp":20,"brand":"JINKO","power":510,"mod":888,"inc":"WAW","K":11.5,"eta":"August 15","code":"JKM510N-54HL4M-BDV"},{"lp":21,"brand":"JINKO","power":510,"mod":888,"inc":"GDA","K":11.7,"eta":"August 21","code":"JKM510N-54HL4M-BDV"},{"lp":22,"brand":"JINKO","power":510,"mod":888,"inc":"GDA","K":11.7,"eta":"August 21","code":"JKM510N-54HL4M-BDV"},{"lp":23,"brand":"JINKO","power":510,"mod":888,"inc":"GDA","K":11.7,"eta":"August 21","code":"JKM510N-54HL4M-BDV"},{"lp":24,"brand":"JINKO","power":475,"mod":925,"inc":"GDA","K":11.2,"eta":"August 21","code":"JKM475N-48QL6-DV"},{"lp":25,"brand":"JINKO","power":475,"mod":925,"inc":"GDA","K":11.2,"eta":"August 21","code":"JKM475N-48QL6-DV"},{"lp":26,"brand":"JINKO","power":475,"mod":925,"inc":"GDA","K":11.2,"eta":"August 21","code":"JKM475N-48QL6-DV"},{"lp":27,"brand":"JINKO","power":590,"mod":720,"inc":"GDA","K":10.8,"eta":"August 21","code":"JKM590N-72HL4-BDV"},{"lp":28,"brand":"JINKO","power":590,"mod":720,"inc":"GDA","K":10.8,"eta":"August 21","code":"JKM590N-72HL4-BDV"},{"lp":29,"brand":"JINKO","power":590,"mod":720,"inc":"GDA","K":10.8,"eta":"August 21","code":"JKM590N-72HL4-BDV"},{"lp":30,"brand":"JINKO","power":590,"mod":720,"inc":"GDA","K":10.8,"eta":"August 21","code":"JKM590N-72HL4-BDV"},{"lp":31,"brand":"JINKO","power":590,"mod":720,"inc":"GDA","K":10.8,"eta":"August 21","code":"JKM590N-72HL4-BDV"},{"lp":32,"brand":"JINKO","power":590,"mod":720,"inc":"GDA","K":10.8,"eta":"August 21","code":"JKM590N-72HL4-BDV"},{"lp":33,"brand":"JINKO","power":590,"mod":720,"inc":"GDA","K":10.8,"eta":"August 21","code":"JKM590N-72HL4-BDV"}];
+const DATA=[{"lp":1,"brand":"Tongwei","power":640,"mod":576,"inc":"WAW","K":9.1,"eta":"available","code":"TWMND-78HD-640","frame":"silver"},{"lp":2,"brand":"Tongwei","power":640,"mod":576,"inc":"WAW","K":9.1,"eta":"available","code":"TWMND-78HD-640","frame":"silver"},{"lp":3,"brand":"Tongwei","power":640,"mod":576,"inc":"WAW","K":9.1,"eta":"available","code":"TWMND-78HD-640","frame":"silver"},{"lp":4,"brand":"JINKO","power":620,"mod":648,"inc":"GDA","K":9.6,"eta":"available","code":"JKM620N-66HL4M-BDV","frame":"silver"},{"lp":5,"brand":"JINKO","power":620,"mod":648,"inc":"GDA","K":9.6,"eta":"available","code":"JKM620N-66HL4M-BDV","frame":"silver"},{"lp":6,"brand":"JINKO","power":620,"mod":648,"inc":"GDA","K":9.6,"eta":"available","code":"JKM620N-66HL4M-BDV","frame":"silver"},{"lp":7,"brand":"JINKO","power":620,"mod":648,"inc":"GDA","K":9.6,"eta":"available","code":"JKM620N-66HL4M-BDV","frame":"silver"},{"lp":8,"brand":"JINKO","power":620,"mod":648,"inc":"GDA","K":9.6,"eta":"available","code":"JKM620N-66HL4M-BDV","frame":"silver"},{"lp":9,"brand":"JINKO","power":620,"mod":648,"inc":"GDA","K":9.6,"eta":"available","code":"JKM620N-66HL4M-BDV","frame":"silver"},{"lp":10,"brand":"JINKO","power":510,"mod":888,"inc":"WAW","K":11.5,"eta":"August 3","code":"JKM510N-54HL4M-BDV","frame":"black"},{"lp":11,"brand":"JINKO","power":515,"mod":888,"inc":"WAW","K":11.5,"eta":"August 3","code":"JKM515N-54HL4M-BDV","frame":"black"},{"lp":12,"brand":"JINKO","power":515,"mod":888,"inc":"WAW","K":11.5,"eta":"August 10","code":"JKM515N-54HL4M-BDV","frame":"black"},{"lp":13,"brand":"JINKO","power":515,"mod":888,"inc":"WAW","K":11.5,"eta":"August 10","code":"JKM515N-54HL4M-BDV","frame":"black"},{"lp":14,"brand":"JINKO","power":515,"mod":888,"inc":"WAW","K":11.5,"eta":"August 10","code":"JKM515N-54HL4M-BDV","frame":"black"},{"lp":15,"brand":"JINKO","power":510,"mod":888,"inc":"WAW","K":11.5,"eta":"August 15","code":"JKM510N-54HL4M-BDV","frame":"black"},{"lp":16,"brand":"JINKO","power":510,"mod":888,"inc":"WAW","K":11.5,"eta":"August 15","code":"JKM510N-54HL4M-BDV","frame":"black"},{"lp":17,"brand":"JINKO","power":510,"mod":888,"inc":"WAW","K":11.5,"eta":"August 15","code":"JKM510N-54HL4M-BDV","frame":"black"},{"lp":18,"brand":"JINKO","power":510,"mod":888,"inc":"WAW","K":11.5,"eta":"August 15","code":"JKM510N-54HL4M-BDV","frame":"black"},{"lp":19,"brand":"JINKO","power":510,"mod":888,"inc":"WAW","K":11.5,"eta":"August 15","code":"JKM510N-54HL4M-BDV","frame":"black"},{"lp":20,"brand":"JINKO","power":510,"mod":888,"inc":"WAW","K":11.5,"eta":"August 15","code":"JKM510N-54HL4M-BDV","frame":"black"},{"lp":21,"brand":"JINKO","power":510,"mod":888,"inc":"GDA","K":11.7,"eta":"August 21","code":"JKM510N-54HL4M-BDV","frame":"black"},{"lp":22,"brand":"JINKO","power":510,"mod":888,"inc":"GDA","K":11.7,"eta":"August 21","code":"JKM510N-54HL4M-BDV","frame":"black"},{"lp":23,"brand":"JINKO","power":510,"mod":888,"inc":"GDA","K":11.7,"eta":"August 21","code":"JKM510N-54HL4M-BDV","frame":"black"},{"lp":24,"brand":"JINKO","power":475,"mod":925,"inc":"GDA","K":11.2,"eta":"August 21","code":"JKM475N-48QL6-DV","frame":"black"},{"lp":25,"brand":"JINKO","power":475,"mod":925,"inc":"GDA","K":11.2,"eta":"August 21","code":"JKM475N-48QL6-DV","frame":"black"},{"lp":26,"brand":"JINKO","power":475,"mod":925,"inc":"GDA","K":11.2,"eta":"August 21","code":"JKM475N-48QL6-DV","frame":"black"},{"lp":27,"brand":"JINKO","power":590,"mod":720,"inc":"GDA","K":10.8,"eta":"August 21","code":"JKM590N-72HL4-BDV","frame":"silver"},{"lp":28,"brand":"JINKO","power":590,"mod":720,"inc":"GDA","K":10.8,"eta":"August 21","code":"JKM590N-72HL4-BDV","frame":"silver"},{"lp":29,"brand":"JINKO","power":590,"mod":720,"inc":"GDA","K":10.8,"eta":"August 21","code":"JKM590N-72HL4-BDV","frame":"silver"},{"lp":30,"brand":"JINKO","power":590,"mod":720,"inc":"GDA","K":10.8,"eta":"August 21","code":"JKM590N-72HL4-BDV","frame":"silver"},{"lp":31,"brand":"JINKO","power":590,"mod":720,"inc":"GDA","K":10.8,"eta":"August 21","code":"JKM590N-72HL4-BDV","frame":"silver"},{"lp":32,"brand":"JINKO","power":590,"mod":720,"inc":"GDA","K":10.8,"eta":"August 21","code":"JKM590N-72HL4-BDV","frame":"silver"},{"lp":33,"brand":"JINKO","power":590,"mod":720,"inc":"GDA","K":10.8,"eta":"August 21","code":"JKM590N-72HL4-BDV","frame":"silver"}];
 const TODAY=new Date(2026,6,29);
 const MONTHS={january:0,february:1,march:2,april:3,may:4,june:5,july:6,august:7,september:8,october:9,november:10,december:11};
 function etaDate(e){if(!e||/available/i.test(e))return new Date(TODAY);const m=e.trim().split(/\s+/);const mo=MONTHS[m[0].toLowerCase()];return mo==null?new Date(TODAY):new Date(2026,mo,parseInt(m[1],10));}
@@ -202,8 +240,30 @@ function render(){
   let ct=DATA.length,mw=DATA.reduce((s,c)=>s+c.power*c.mod,0)/1e6;
   $("foot").innerHTML=`<b>${ct}</b> containers · <b>${mw.toFixed(1)}</b> MWp arriving ${DFMT.format(TODAY)} – ${DFMT.format(endMax)}. `+
     `Price = Chmielnicki landed cost ¢/Wp = price×FX×(1+uplift%) + (transport+leg)×FX÷(power×mod) + price×FX×fin%. Source <b>Stock_flow_EN_July_29</b> (FX ${P.fx.toFixed(2)}). Hover a bubble for detail.`;
+  buildTable();
 }
 
+let sortK="date",sortDir=1;
+function buildTable(){
+  const rows=DATA.map(c=>{const cw=cWp(c);return {lp:c.lp,date:etaDate(c.eta),eta:c.eta,brand:c.brand==="JINKO"?"Jinko":c.brand,power:c.power,frame:c.frame||"",mod:c.mod,inc:c.inc,kwp:c.power*c.mod/1000,cents:cw*100,val:cw*c.power*c.mod,prod:(c.brand==="JINKO"?"Jinko":c.brand)+" "+c.power};});
+  rows.sort((a,b)=>{if(sortK==="date")return (a.date-b.date||a.cents-b.cents)*sortDir;let x=a[sortK],y=b[sortK];if(typeof x==="string")return x.localeCompare(y)*sortDir;return (x-y)*sortDir;});
+  let h="";rows.forEach(r=>{const p=r.cents>P.thr+1e-9;h+=`<tr>`+
+    `<td>${r.lp}</td>`+
+    `<td>${DFMT.format(r.date)}${/available/i.test(r.eta)?" · now":""}</td>`+
+    `<td><span class="dot" style="background:${p?"var(--pricey)":"var(--cheap)"}"></span>${r.prod}W</td>`+
+    `<td class="fr">${r.frame}</td>`+
+    `<td class="r">${r.mod}</td>`+
+    `<td class="r">${r.kwp.toFixed(1)}</td>`+
+    `<td>${r.inc}</td>`+
+    `<td class="r pc ${p?"p":"c"}">${r.cents.toFixed(2)}¢</td>`+
+    `<td class="r">${money(r.val)}</td></tr>`;});
+  $("tbody").innerHTML=h;
+  const tc=DATA.length,tm=DATA.reduce((s,c)=>s+c.mod,0),tk=DATA.reduce((s,c)=>s+c.power*c.mod/1000,0),tv=DATA.reduce((s,c)=>s+cWp(c)*c.power*c.mod,0);
+  $("tfoot").innerHTML=`<tr><td colspan="4">Total · ${tc} containers</td><td class="r">${tm.toLocaleString("en-US")}</td><td class="r">${tk.toFixed(0)}</td><td></td><td></td><td class="r">${money(tv)}</td></tr>`;
+  $("tblcount").textContent="· "+tc+" containers, sorted by "+sortK;
+  document.querySelectorAll(".ctbl th").forEach(th=>{const on=th.dataset.k===sortK;th.classList.toggle("sort",on);th.classList.toggle("asc",on&&sortDir===1);});
+}
+document.querySelectorAll(".ctbl th").forEach(th=>th.addEventListener("click",()=>{const k=th.dataset.k;if(sortK===k)sortDir*=-1;else{sortK=k;sortDir=1;}buildTable();}));
 $("sizeseg").addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;[...b.parentNode.children].forEach(x=>x.classList.remove("on"));b.classList.add("on");sizeBy=b.dataset.s;render();});
 ["p_thr","p_fx","p_tchm","p_gda","p_rtd","p_upl","p_fin"].forEach(id=>$(id).addEventListener("input",render));
 $("reset").addEventListener("click",()=>{$("p_thr").value=14;$("p_fx").value=1.14;$("p_tchm").value=2450;$("p_gda").value=450;$("p_rtd").value=1800;$("p_upl").value=1.95;$("p_fin").value=0.70;render();});
