@@ -5,10 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>What's Coming — Energynat Ukraine</title>
 <style>
-  :root{--bg:#FBFAF7;--panel:#fff;--panel-2:#F3F1EB;--ink:#1a1d21;--ink-soft:#5f656e;--ink-mute:#8b9098;--line:#E6E2D9;--line-strong:#d5d0c4;--accent:#E0871F;--accent-ink:#8a5310;--accent-on:#fff;--cheap:#2E9E5B;--cheap-ink:#1c6b3c;--pricey:#D2542E;--pricey-ink:#a23c1c;--grid:#ECE8DF;--thr:#C0442E;--shadow:0 1px 2px rgba(30,25,15,.05),0 8px 22px rgba(30,25,15,.07);--r:14px}
-  @media (prefers-color-scheme:dark){:root{--bg:#121417;--panel:#1b1e22;--panel-2:#23272c;--ink:#e9eaec;--ink-soft:#9aa0a8;--ink-mute:#727880;--line:#2b3037;--line-strong:#3a4048;--accent:#F0A23E;--accent-ink:#F0A23E;--accent-on:#1a1205;--cheap:#46B873;--cheap-ink:#8ad9a8;--pricey:#E67A50;--pricey-ink:#f0a488;--grid:#262b31;--thr:#E67A50;--shadow:0 1px 2px rgba(0,0,0,.3),0 10px 26px rgba(0,0,0,.4)}}
-  :root[data-theme="light"]{--bg:#FBFAF7;--panel:#fff;--panel-2:#F3F1EB;--ink:#1a1d21;--ink-soft:#5f656e;--ink-mute:#8b9098;--line:#E6E2D9;--line-strong:#d5d0c4;--accent:#E0871F;--accent-ink:#8a5310;--accent-on:#fff;--cheap:#2E9E5B;--cheap-ink:#1c6b3c;--pricey:#D2542E;--pricey-ink:#a23c1c;--grid:#ECE8DF;--thr:#C0442E}
-  :root[data-theme="dark"]{--bg:#121417;--panel:#1b1e22;--panel-2:#23272c;--ink:#e9eaec;--ink-soft:#9aa0a8;--ink-mute:#727880;--line:#2b3037;--line-strong:#3a4048;--accent:#F0A23E;--accent-ink:#F0A23E;--accent-on:#1a1205;--cheap:#46B873;--cheap-ink:#8ad9a8;--pricey:#E67A50;--pricey-ink:#f0a488;--grid:#262b31;--thr:#E67A50}
+  :root{--bg:#FBFAF7;--panel:#fff;--panel-2:#F3F1EB;--ink:#1a1d21;--ink-soft:#5f656e;--ink-mute:#8b9098;--line:#E6E2D9;--line-strong:#d5d0c4;--accent:#E0871F;--accent-ink:#8a5310;--accent-on:#fff;--accent-soft:#F7E6CC;--cheap:#2E9E5B;--cheap-ink:#1c6b3c;--pricey:#D2542E;--pricey-ink:#a23c1c;--grid:#ECE8DF;--thr:#C0442E;--shadow:0 1px 2px rgba(30,25,15,.05),0 8px 22px rgba(30,25,15,.07);--r:14px}
+  @media (prefers-color-scheme:dark){:root{--bg:#121417;--panel:#1b1e22;--panel-2:#23272c;--ink:#e9eaec;--ink-soft:#9aa0a8;--ink-mute:#727880;--line:#2b3037;--line-strong:#3a4048;--accent:#F0A23E;--accent-ink:#F0A23E;--accent-on:#1a1205;--accent-soft:#3a2c17;--cheap:#46B873;--cheap-ink:#8ad9a8;--pricey:#E67A50;--pricey-ink:#f0a488;--grid:#262b31;--thr:#E67A50;--shadow:0 1px 2px rgba(0,0,0,.3),0 10px 26px rgba(0,0,0,.4)}}
+  :root[data-theme="light"]{--bg:#FBFAF7;--panel:#fff;--panel-2:#F3F1EB;--ink:#1a1d21;--ink-soft:#5f656e;--ink-mute:#8b9098;--line:#E6E2D9;--line-strong:#d5d0c4;--accent:#E0871F;--accent-ink:#8a5310;--accent-on:#fff;--accent-soft:#F7E6CC;--cheap:#2E9E5B;--cheap-ink:#1c6b3c;--pricey:#D2542E;--pricey-ink:#a23c1c;--grid:#ECE8DF;--thr:#C0442E}
+  :root[data-theme="dark"]{--bg:#121417;--panel:#1b1e22;--panel-2:#23272c;--ink:#e9eaec;--ink-soft:#9aa0a8;--ink-mute:#727880;--line:#2b3037;--line-strong:#3a4048;--accent:#F0A23E;--accent-ink:#F0A23E;--accent-on:#1a1205;--accent-soft:#3a2c17;--cheap:#46B873;--cheap-ink:#8ad9a8;--pricey:#E67A50;--pricey-ink:#f0a488;--grid:#262b31;--thr:#E67A50}
   *{box-sizing:border-box}
   body{margin:0;background:var(--bg);color:var(--ink);font-family:ui-sans-serif,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;font-size:15px;line-height:1.45;-webkit-font-smoothing:antialiased;-webkit-text-size-adjust:100%;padding:clamp(12px,2.5vw,24px)}
   .wrap{max-width:1000px;margin:0 auto}
@@ -61,7 +61,17 @@
   .ctbl tbody tr:hover td{background:var(--panel-2)}
   .ctbl .pc{font-weight:800} .ctbl .pc.c{color:var(--cheap-ink)} .ctbl .pc.p{color:var(--pricey-ink)}
   .ctbl .dot{display:inline-block;width:8px;height:8px;border-radius:2px;margin-right:7px;vertical-align:1px}
+  .ctbl .bmute{color:var(--ink-soft);font-weight:600}
+  .ctbl .pw{font-weight:800;font-size:13.5px;color:var(--accent-ink);background:var(--accent-soft);padding:2px 8px;border-radius:6px;letter-spacing:-.01em;margin-left:4px}
   .ctbl .fr{color:var(--ink-soft);font-size:11.5px}
+  .ctbl td.pricecell{min-width:158px}
+  .pcflex{display:flex;align-items:center;gap:9px}
+  .pbar{position:relative;flex:1;height:15px;min-width:72px;background:var(--panel-2);border:1px solid var(--line);border-radius:4px;overflow:hidden}
+  .pfill{position:absolute;left:0;top:0;bottom:0;border-radius:3px 4px 4px 3px;min-width:2px}
+  .pfill.c{background:var(--cheap)} .pfill.p{background:var(--pricey)}
+  .pthr{position:absolute;top:-1px;bottom:-1px;left:33.33%;width:2px;background:var(--thr);opacity:.8}
+  .pval{font-weight:800;font-variant-numeric:tabular-nums;min-width:46px;text-align:right;font-size:12.5px}
+  .pval.c{color:var(--cheap-ink)} .pval.p{color:var(--pricey-ink)}
   .ctbl tfoot td{font-weight:800;border-top:2px solid var(--line-strong);border-bottom:none;padding-top:9px;color:var(--ink)}
   footer{margin-top:14px;padding:0 4px;color:var(--ink-mute);font-size:10.5px;line-height:1.55}
   @media (prefers-reduced-motion:reduce){*{transition:none!important}}
@@ -104,7 +114,7 @@
           <th data-k="frame" data-i18n="th_frame">Frame</th>
           <th class="r" data-k="mod" data-i18n="th_mod">Modules</th>
           <th data-k="inc" data-i18n="th_inc">Incoterm</th>
-          <th class="r" data-k="cents" data-i18n="th_price">Price ¢/Wp</th>
+          <th data-k="cents" data-i18n="th_price">Price ¢/Wp · scale 13–16</th>
         </tr></thead>
         <tbody id="tbody"></tbody>
         <tfoot id="tfoot"></tfoot>
@@ -131,7 +141,7 @@ const T={
    sub:"Each shipment is a stack of circles — one per container. Left to right = when it lands. Higher = more expensive. A taller stack = a bigger lot arriving.",
    lg_cheap:"at / below 14¢ — cheaper",lg_pricey:"above 14¢ — pricier",lg_size:"each circle = 1 container",
    ax_price:"Price · ¢/Wp landed",ax_date:"Arrival date →",thr:"expensive > 14¢",
-   tbl_title:"Container detail",th_num:"#",th_arr:"Arrives",th_panel:"Panel",th_frame:"Frame",th_mod:"Modules",th_inc:"Incoterm",th_price:"Price ¢/Wp",
+   tbl_title:"Container detail",th_num:"#",th_arr:"Arrives",th_panel:"Panel",th_frame:"Frame",th_mod:"Modules",th_inc:"Incoterm",th_price:"Price ¢/Wp · scale 13–16",
    inWaw:"in WAW warehouse",tip_arr:"Arrives",tip_qty:"Quantity",tip_break:"Breakdown",tip_price:"Chmielnicki price",
    cont:"cont",containers:"containers",total:"Total",sortedby:"sorted by",
    frames:{silver:"silver",black:"black"},
@@ -140,7 +150,7 @@ const T={
    sub:"Кожна поставка — це стос кіл, по одному на контейнер. Зліва направо — коли прибуває. Вище — дорожче. Вищий стос = більша партія.",
    lg_cheap:"≤ 14¢ — дешевше",lg_pricey:"> 14¢ — дорожче",lg_size:"кожне коло = 1 контейнер",
    ax_price:"Ціна · ¢/Вт (Хмельницький)",ax_date:"Дата прибуття →",thr:"дорого > 14¢",
-   tbl_title:"Деталі по контейнерах",th_num:"№",th_arr:"Прибуває",th_panel:"Панель",th_frame:"Рама",th_mod:"Модулів",th_inc:"Інкотермс",th_price:"Ціна ¢/Вт",
+   tbl_title:"Деталі по контейнерах",th_num:"№",th_arr:"Прибуває",th_panel:"Панель",th_frame:"Рама",th_mod:"Модулів",th_inc:"Інкотермс",th_price:"Ціна ¢/Вт · шкала 13–16",
    inWaw:"на складі WAW",tip_arr:"Прибуває",tip_qty:"Кількість",tip_break:"Розбивка",tip_price:"Ціна у Хмельницькому",
    cont:"конт",containers:"контейнерів",total:"Разом",sortedby:"сортування:",
    frames:{silver:"срібляста",black:"чорна"},
@@ -200,11 +210,12 @@ function render(){
 function buildTable(){
   const rows=DATA.map(c=>({lp:c.lp,date:etaDate(c.eta),eta:c.eta,brand:c.brand,power:c.power,frame:c.frame||"",mod:c.mod,inc:c.inc,cents:c.cents,prod:c.brand+" "+c.power}));
   rows.sort((a,b)=>{if(sortK==="date")return (a.date-b.date||a.cents-b.cents)*sortDir;let x=a[sortK],y=b[sortK];if(typeof x==="string")return x.localeCompare(y)*sortDir;return (x-y)*sortDir;});
-  let h="";rows.forEach(r=>{const p=r.cents>THR+1e-9;const fr=T[lang].frames[r.frame]||r.frame;
+  let h="";rows.forEach(r=>{const p=r.cents>THR+1e-9;const fr=T[lang].frames[r.frame]||r.frame;const cls=p?'p':'c';
+    const pct=Math.max(0,Math.min(1,(r.cents-13)/3))*100;
     h+=`<tr><td>${r.lp}</td><td>${arrivesTxt(r.eta,r.date)}</td>`+
-      `<td><span class="dot" style="background:${p?'var(--pricey)':'var(--cheap)'}"></span>${r.prod}W</td>`+
+      `<td><span class="bmute">${r.brand}</span><span class="pw">${r.power}W</span></td>`+
       `<td class="fr">${fr}</td><td class="r">${r.mod}</td><td>${r.inc}</td>`+
-      `<td class="r pc ${p?'p':'c'}">${r.cents.toFixed(2)}¢</td></tr>`;});
+      `<td class="pricecell"><div class="pcflex"><div class="pbar"><div class="pfill ${cls}" style="width:${pct.toFixed(1)}%"></div><div class="pthr"></div></div><span class="pval ${cls}">${r.cents.toFixed(2)}¢</span></div></td></tr>`;});
   $("tbody").innerHTML=h;
   const tm=DATA.reduce((s,c)=>s+c.mod,0);
   $("tfoot").innerHTML=`<tr><td colspan="4">${T[lang].total} · ${DATA.length} ${T[lang].containers}</td><td class="r">${tm.toLocaleString("en-US")}</td><td></td><td></td></tr>`;
