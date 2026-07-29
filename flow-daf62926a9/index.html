@@ -28,6 +28,7 @@
   .bub{display:inline-block;border-radius:50%;border:2px solid}
   .bub.c{background:color-mix(in srgb,var(--cheap) 80%,transparent);border-color:var(--cheap-ink)}
   .bub.p{background:color-mix(in srgb,var(--pricey) 80%,transparent);border-color:var(--pricey-ink)}
+  .stk{display:inline-flex} .stk .bub{width:13px;height:13px} .stk .bub+.bub{margin-left:-6px}
   .chartwrap{padding:4px 8px 12px}
   svg.flow{width:100%;height:auto;display:block;overflow:visible}
   .axislbl{fill:var(--ink-mute);font-size:11px;font-weight:600}
@@ -73,7 +74,7 @@
     <div>
       <div class="brand" data-i18n="eyebrow">Energynat Ukraine · sales board</div>
       <h1 data-i18n="title">What's coming — and at what price</h1>
-      <p class="sub" data-i18n="sub">Every bubble is a shipment. Left to right = when it lands. Higher = more expensive. Bubble size = how many containers.</p>
+      <p class="sub" data-i18n="sub">Each shipment is a stack of circles — one per container. Left to right = when it lands. Higher = more expensive. A taller stack = a bigger lot arriving.</p>
     </div>
     <div class="hctl">
       <div class="lang" id="langseg"><button type="button" data-l="en" class="on">EN</button><button type="button" data-l="ua">UA</button></div>
@@ -86,7 +87,7 @@
       <div class="legend">
         <span class="lg"><span class="bub c" style="width:13px;height:13px"></span><span data-i18n="lg_cheap">at / below 14¢ — cheaper</span></span>
         <span class="lg"><span class="bub p" style="width:13px;height:13px"></span><span data-i18n="lg_pricey">above 14¢ — pricier</span></span>
-        <span class="lg"><span class="bub c" style="width:9px;height:9px"></span><span class="bub c" style="width:15px;height:15px"></span><span class="bub c" style="width:21px;height:21px"></span>&nbsp;<span data-i18n="lg_size">bigger = more containers</span></span>
+        <span class="lg"><span class="stk"><span class="bub c"></span><span class="bub c"></span><span class="bub c"></span></span>&nbsp;<span data-i18n="lg_size">each circle = 1 container</span></span>
       </div>
     </div>
     <div class="chartwrap"><div id="chart"></div></div>
@@ -127,8 +128,8 @@ const DFMT=new Intl.DateTimeFormat("en-GB",{day:"numeric",month:"short"});
 let lang="en", sortK="date", sortDir=1;
 const T={
  en:{eyebrow:"Energynat Ukraine · sales board",title:"What's coming — and at what price",
-   sub:"Every bubble is a shipment. Left to right = when it lands. Higher = more expensive. Bubble size = how many containers.",
-   lg_cheap:"at / below 14¢ — cheaper",lg_pricey:"above 14¢ — pricier",lg_size:"bigger = more containers",
+   sub:"Each shipment is a stack of circles — one per container. Left to right = when it lands. Higher = more expensive. A taller stack = a bigger lot arriving.",
+   lg_cheap:"at / below 14¢ — cheaper",lg_pricey:"above 14¢ — pricier",lg_size:"each circle = 1 container",
    ax_price:"Price · ¢/Wp landed",ax_date:"Arrival date →",thr:"expensive > 14¢",
    tbl_title:"Container detail",th_num:"#",th_arr:"Arrives",th_panel:"Panel",th_frame:"Frame",th_mod:"Modules",th_inc:"Incoterm",th_price:"Price ¢/Wp",
    inWaw:"in WAW warehouse",tip_arr:"Arrives",tip_qty:"Quantity",tip_break:"Breakdown",tip_price:"Chmielnicki price",
@@ -136,8 +137,8 @@ const T={
    frames:{silver:"silver",black:"black"},
    foot:(n,a,b)=>n+" containers · arriving "+a+" – "+b+". Price = Chmielnicki landed cost (¢/Wp), read from Stock_flow_EN_July_29. Tap a bubble or click a table header to sort."},
  ua:{eyebrow:"Energynat Україна · дошка продажів",title:"Що прибуває — і за якою ціною",
-   sub:"Кожна бульбашка — це поставка. Зліва направо — коли прибуває. Вище — дорожче. Розмір — скільки контейнерів.",
-   lg_cheap:"≤ 14¢ — дешевше",lg_pricey:"> 14¢ — дорожче",lg_size:"більше = більше контейнерів",
+   sub:"Кожна поставка — це стос кіл, по одному на контейнер. Зліва направо — коли прибуває. Вище — дорожче. Вищий стос = більша партія.",
+   lg_cheap:"≤ 14¢ — дешевше",lg_pricey:"> 14¢ — дорожче",lg_size:"кожне коло = 1 контейнер",
    ax_price:"Ціна · ¢/Вт (Хмельницький)",ax_date:"Дата прибуття →",thr:"дорого > 14¢",
    tbl_title:"Деталі по контейнерах",th_num:"№",th_arr:"Прибуває",th_panel:"Панель",th_frame:"Рама",th_mod:"Модулів",th_inc:"Інкотермс",th_price:"Ціна ¢/Вт",
    inWaw:"на складі WAW",tip_arr:"Прибуває",tip_qty:"Кількість",tip_break:"Розбивка",tip_price:"Ціна у Хмельницькому",
@@ -150,7 +151,7 @@ function arrivesTxt(eta,d){return isAvail(eta)?T[lang].inWaw:DFMT.format(d);}
 function groups(){
   const g={};
   DATA.forEach(c=>{const d=etaDate(c.eta);const key=d.getTime()+"|"+fam(c.power)+"|"+c.cents.toFixed(2);
-    const o=g[key]||(g[key]={date:d,fam:fam(c.power),eta:c.eta,n:0,wp:0,csum:0,brand:c.brand,powers:{}});
+    const o=g[key]||(g[key]={date:d,fam:fam(c.power),eta:c.eta,n:0,wp:0,csum:0,brand:c.brand,wpc:c.power*c.mod,powers:{}});
     o.n++;o.wp+=c.power*c.mod;o.csum+=c.cents*c.power*c.mod;o.powers[c.power]=(o.powers[c.power]||0)+1;});
   return Object.values(g).map(o=>{o.cents=o.csum/o.wp;return o;}).sort((a,b)=>a.date-b.date||a.cents-b.cents);
 }
@@ -161,7 +162,7 @@ function render(){
   const span=end-start,x=d=>padL+(d-start)/span*plotW;
   const cs=G.map(g=>g.cents);let yMin=Math.floor(Math.min(...cs)-0.6),yMax=Math.ceil(Math.max(...cs,THR)+0.6);if(yMax-yMin<3)yMax=yMin+3;
   const y=v=>padT+plotH-(v-yMin)/(yMax-yMin)*plotH;
-  const nMax=Math.max(...G.map(g=>g.n)),rOf=n=>10+16*Math.sqrt(n/nMax);
+  const wps=G.map(g=>g.wpc),wpMin=Math.min(...wps),wpMax=Math.max(...wps),rOf=w=>wpMax>wpMin?12+6*(w-wpMin)/(wpMax-wpMin):15;
   let s='';
   for(let v=yMin;v<=yMax+0.001;v+=1){const yy=y(v);s+=`<line class="gridline" x1="${padL}" y1="${yy}" x2="${padL+plotW}" y2="${yy}"/><text class="axislbl" x="${padL-8}" y="${yy+4}" text-anchor="end">${v.toFixed(0)}¢</text>`;}
   s+=`<text class="axistitle" transform="translate(14,${padT+plotH/2}) rotate(-90)" text-anchor="middle">${T[lang].ax_price}</text>`;
@@ -170,12 +171,16 @@ function render(){
   const ty=y(THR);s+=`<line class="thrline" x1="${padL}" y1="${ty}" x2="${padL+plotW}" y2="${ty}"/><text class="thrlbl" x="${padL+plotW}" y="${ty-6}" text-anchor="end">${T[lang].thr}</text>`;
   const byDate={};G.forEach(g=>{(byDate[g.date.getTime()]=byDate[g.date.getTime()]||[]).push(g);});
   const pos=new Map();Object.values(byDate).forEach(a=>{a.sort((p,q)=>p.cents-q.cents);a.forEach((g,i)=>pos.set(g,(i-(a.length-1)/2)*22));});
-  const B=G.map((g,i)=>({g,cx:x(g.date)+(pos.get(g)||0),cy:y(g.cents),r:rOf(g.n),p:g.cents>THR+1e-9,i}));
+  const OX=5,OY=4;
+  const B=G.map((g,i)=>({g,cx:x(g.date)+(pos.get(g)||0),cy:y(g.cents),r:rOf(g.wpc),p:g.cents>THR+1e-9,i}));
+  // pass 1: stacked discs (one per container), back (upper-right) to front (on the data point)
   B.forEach(b=>{const col=b.p?'var(--pricey)':'var(--cheap)',ink=b.p?'var(--pricey-ink)':'var(--cheap-ink)';
-    s+=`<circle class="bubble" data-i="${b.i}" cx="${b.cx}" cy="${b.cy}" r="${b.r}" fill="${col}" fill-opacity="0.82" stroke="${ink}"/>`+
-       `<text class="bublab" x="${b.cx}" y="${b.cy}" dy="0.32em" style="font-size:${b.r>18?14:b.r>13?12:10}px">${b.g.fam}</text>`+
-       `<text class="bubcnt" x="${b.cx}" y="${b.cy-b.r-4}">${b.g.n}×</text>`+
-       `<text class="bubpr" x="${b.cx}" y="${b.cy+b.r+13}" fill="${b.p?'var(--pricey-ink)':'var(--cheap-ink)'}">${b.g.cents.toFixed(1)}¢</text>`;});
+    for(let k=b.g.n-1;k>=0;k--){s+=`<circle class="bubble" data-i="${b.i}" cx="${b.cx+k*OX}" cy="${b.cy-k*OY}" r="${b.r}" fill="${col}" fill-opacity="0.9" stroke="${ink}" stroke-width="1.5"/>`;}});
+  // pass 2: labels on top of all discs
+  B.forEach(b=>{const ink=b.p?'var(--pricey-ink)':'var(--cheap-ink)',N=b.g.n;
+    s+=`<text class="bublab" x="${b.cx}" y="${b.cy}" dy="0.32em" style="font-size:${b.r>15?13:11}px">${b.g.fam}</text>`+
+       `<text class="bubcnt" x="${b.cx+(N-1)*OX/2}" y="${b.cy-(N-1)*OY-b.r-5}">${N}×</text>`+
+       `<text class="bubpr" x="${b.cx}" y="${b.cy+b.r+13}" fill="${ink}">${b.g.cents.toFixed(1)}¢</text>`;});
   $("chart").innerHTML=`<svg class="flow" viewBox="0 0 ${W} ${H}" role="img">${s}</svg>`;
   const tip=$("tip");
   $("chart").querySelectorAll(".bubble").forEach(el=>{
